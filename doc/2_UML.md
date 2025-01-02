@@ -8,6 +8,12 @@
   <img src="../assets/doc/uml/img.png" alt="img" style="zoom: 70%"/>
 </div>
 
+## 예매 유저 흐름도
+
+<div style="text-align: center;">
+  <img src="../assets/doc/uml/img-1.png" alt="img_1" style="zoom: 70%"/>
+</div>
+
 # 2. State Diagram
 
 ## 예약 상태 다이어그램
