@@ -19,7 +19,7 @@
 ## 예약 상태 다이어그램
 
 <div style="text-align: center;">
-  <img src="../assets/doc/uml/img_1.png" alt="img_1"/>
+  <img src="../assets/doc/uml/img_1.png" alt="img_1" style="zoom: 70%"/>
 </div>
 
 ### 설명
