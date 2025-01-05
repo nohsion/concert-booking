@@ -1,4 +1,4 @@
-package com.sion.concertbooking.global.config;
+package com.sion.concertbooking.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
