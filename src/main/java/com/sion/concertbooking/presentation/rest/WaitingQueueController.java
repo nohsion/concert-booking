@@ -1,5 +1,7 @@
 package com.sion.concertbooking.presentation.rest;
 
+import com.sion.concertbooking.domain.dto.WaitingQueueDto;
+import com.sion.concertbooking.domain.service.WaitingQueueService;
 import com.sion.concertbooking.presentation.request.WaitingQueueRegisterRequest;
 import com.sion.concertbooking.presentation.response.QueueResponse;
 import com.sion.concertbooking.presentation.response.WaitingQueueRegisterResponse;
@@ -11,11 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/waiting")
-public class WaitingController {
+public class WaitingQueueController {
+
+    private final WaitingQueueService waitingQueueService;
+
+    public WaitingQueueController(
+            WaitingQueueService waitingQueueService
+    ) {
+        this.waitingQueueService = waitingQueueService;
+    }
 
     private static final String TAG_NAME = "waiting";
 
@@ -28,13 +37,12 @@ public class WaitingController {
     public ResponseEntity<WaitingQueueRegisterResponse> waitQueueAndIssueToken(
             @RequestBody WaitingQueueRegisterRequest waitingQueueRegisterRequest
     ) {
-        String tokenId = UUID.randomUUID().toString().replace("-", "");
-        LocalDateTime now = LocalDateTime.now();
-
-        WaitingQueueRegisterResponse waitingQueueRegisterResponse = new WaitingQueueRegisterResponse(
-                waitingQueueRegisterRequest.userId(), waitingQueueRegisterRequest.concertId(), tokenId, now, now
+        WaitingQueueDto waitingQueueDto = waitingQueueService.waitQueueAndIssueToken(
+                waitingQueueRegisterRequest.userId(),
+                waitingQueueRegisterRequest.concertId(),
+                LocalDateTime.now()
         );
-        return ResponseEntity.ok(waitingQueueRegisterResponse);
+        return ResponseEntity.ok(WaitingQueueRegisterResponse.fromDto(waitingQueueDto));
     }
 
     @Operation(summary = "대기열 정보 조회", description = "토큰을 통해 대기열 정보를 조회한다.",

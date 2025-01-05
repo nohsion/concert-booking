@@ -1,6 +1,9 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sion.concertbooking.domain.dto.WaitingQueueDto;
+import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
+import com.sion.concertbooking.domain.service.WaitingQueueService;
 import com.sion.concertbooking.presentation.request.WaitingQueueRegisterRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,17 +11,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(WaitingController.class)
-class WaitingControllerTest {
+@WebMvcTest(WaitingQueueController.class)
+class WaitingQueueControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockitoBean
+    private WaitingQueueService waitingQueueService;
 
     private ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
 
@@ -28,11 +41,17 @@ class WaitingControllerTest {
         // given
         long userId = 1L;
         long concertId = 1L;
+        LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
+        WaitingQueueDto waitingQueueDto = new WaitingQueueDto(
+                1L, "token-id", userId, concertId, WaitingQueueStatus.WAITING, now, now.plusMinutes(10)
+        );
 
         WaitingQueueRegisterRequest waitingQueueRegisterRequest = new WaitingQueueRegisterRequest(userId, concertId);
         String requestJson = mapper.writeValueAsString(waitingQueueRegisterRequest);
 
         // when
+        when(waitingQueueService.waitQueueAndIssueToken(eq(userId), eq(concertId), any(LocalDateTime.class)))
+                .thenReturn(waitingQueueDto);
 
         // then
         mockMvc.perform(post("/api/v1/waiting")
@@ -41,7 +60,12 @@ class WaitingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.userId").value(userId))
-                .andExpect(jsonPath("$.concertId").value(concertId));
+                .andExpect(jsonPath("$.concertId").value(concertId))
+                .andExpect(jsonPath("$.tokenId").value("token-id"))
+                .andExpect(jsonPath("$.createdAt").value(
+                        now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                .andExpect(jsonPath("$.expiredAt").value(
+                        now.plusMinutes(10).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
     }
 
     @DisplayName("대기열 정보 조회시 남은 순서와 예상 대기 시간을 반환한다.")

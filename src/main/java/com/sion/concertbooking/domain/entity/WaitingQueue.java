@@ -3,14 +3,18 @@ package com.sion.concertbooking.domain.entity;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "waiting_queue")
-public class WaitingQueue {
+public class WaitingQueue extends BaseEntity {
+
+    private static final int EXPIRED_MINUTES = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +37,13 @@ public class WaitingQueue {
     @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
 
+    public static WaitingQueue of(String tokenId, long userId, long concertId, LocalDateTime now) {
+        WaitingQueue waitingQueue = new WaitingQueue();
+        waitingQueue.tokenId = tokenId;
+        waitingQueue.userId = userId;
+        waitingQueue.concertId = concertId;
+        waitingQueue.status = WaitingQueueStatus.WAITING;
+        waitingQueue.expiredAt = now.plusMinutes(EXPIRED_MINUTES);
+        return waitingQueue;
+    }
 }
