@@ -1,18 +1,26 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.sion.concertbooking.domain.dto.WaitingQueueDto;
+import com.sion.concertbooking.domain.dto.WaitingQueueInfo;
 import com.sion.concertbooking.domain.service.WaitingQueueService;
+import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
+import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
+import com.sion.concertbooking.infrastructure.aspect.TokenUtils;
 import com.sion.concertbooking.presentation.request.WaitingQueueRegisterRequest;
-import com.sion.concertbooking.presentation.response.QueueResponse;
+import com.sion.concertbooking.presentation.response.WaitingQueueInfoResponse;
 import com.sion.concertbooking.presentation.response.WaitingQueueRegisterResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
+
+import static com.sion.concertbooking.domain.service.TokenProvider.CONCERT_TOKEN_HEADER;
 
 @RestController
 @RequestMapping(value = "/api/v1/waiting")
@@ -46,15 +54,18 @@ public class WaitingQueueController {
     }
 
     @Operation(summary = "대기열 정보 조회", description = "토큰을 통해 대기열 정보를 조회한다.",
-            tags = {TAG_NAME})
+            tags = {TAG_NAME}, security = {@SecurityRequirement(name = CONCERT_TOKEN_HEADER)}
+    )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "대기열 정보 조회 성공")
+            @ApiResponse(responseCode = "200", description = "대기열 정보 조회 성공"),
+            @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰")
     })
+    @TokenRequired
     @GetMapping
-    public ResponseEntity<QueueResponse> getQueueByToken(
-            @RequestParam(value = "tokenId") String tokenId
-    ) {
-        QueueResponse queueResponse = new QueueResponse(tokenId, 10, 50);
-        return ResponseEntity.ok(queueResponse);
+    public ResponseEntity<WaitingQueueInfoResponse> getQueueByToken() throws AuthenticationException {
+        TokenInfo tokenInfo = TokenUtils.getTokenInfo();
+        String tokenId = tokenInfo.tokenId();
+        WaitingQueueInfo waitingQueueInfo = waitingQueueService.getQueueInfoByTokenId(tokenId);
+        return ResponseEntity.ok(WaitingQueueInfoResponse.fromDto(waitingQueueInfo));
     }
 }

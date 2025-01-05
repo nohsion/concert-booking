@@ -10,8 +10,6 @@ import java.util.UUID;
 @Component
 public class UUIDTokenProvider implements TokenProvider {
 
-    private static final String CONCERT_TOKEN_HEADER = "X-Concert-Token";
-
     @Override
     public String generateToken() {
         return UUID.randomUUID().toString();

@@ -17,4 +17,9 @@ public class WaitingQueueCoreRepository implements WaitingQueueRepository {
     public WaitingQueue save(WaitingQueue waitingQueue) {
         return waitingQueueJpaRepository.save(waitingQueue);
     }
+
+    @Override
+    public WaitingQueue findByTokenId(final String tokenId) {
+        return waitingQueueJpaRepository.findByTokenId(tokenId);
+    }
 }

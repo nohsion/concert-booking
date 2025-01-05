@@ -9,7 +9,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaAuditing
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = {
+        "com.sion.concertbooking.infrastructure.repository",
+        "com.sion.concertbooking.domain.repository"
+})
 public class JpaConfiguration {
 
     @Bean

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.naming.AuthenticationException;
+
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,6 +37,17 @@ public class GlobalExceptionHandler {
     })
     public ApiErrorResponse badRequest(Exception e) {
         log.info("[BadRequest] {}", e.getMessage(), e);
+        return new ApiErrorResponse(e.getMessage());
+    }
+
+    /**
+     * AOP에서 발생한 AuthenticationException을 여기서 처리하려면, 컨트롤러 메소드에서 throws로 명시적으로 선언해야 한다.
+     */
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(AuthenticationException.class)
+    public ApiErrorResponse handleAuthenticationException(AuthenticationException e) {
+        log.info("[AuthenticationException] {}", e.getMessage(), e);
         return new ApiErrorResponse(e.getMessage());
     }
 
