@@ -2,8 +2,10 @@ package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sion.concertbooking.domain.dto.WaitingQueueDto;
+import com.sion.concertbooking.domain.dto.WaitingQueueInfo;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.service.WaitingQueueService;
+import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.presentation.request.WaitingQueueRegisterRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,11 +78,16 @@ class WaitingQueueControllerTest {
         int remainingWaitingSec = 50;
         String tokenId = "token-id";
 
+        TokenInfo tokenInfo = new TokenInfo(tokenId, 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());
+
         // when
+        when(waitingQueueService.getQueueInfoByTokenId(tokenId))
+                .thenReturn(new WaitingQueueInfo(tokenId, remainingWaitingOrder, remainingWaitingSec));
 
         // then
         mockMvc.perform(get("/api/v1/waiting")
-                        .param("tokenId", tokenId))
+                        .param("tokenId", tokenId)
+                        .requestAttr("tokenInfo", tokenInfo)) // TokenInfo attribute 추가
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.tokenId").value(tokenId))

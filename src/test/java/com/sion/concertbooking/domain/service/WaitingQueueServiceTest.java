@@ -1,6 +1,7 @@
 package com.sion.concertbooking.domain.service;
 
 import com.sion.concertbooking.domain.dto.WaitingQueueDto;
+import com.sion.concertbooking.domain.dto.WaitingQueueInfo;
 import com.sion.concertbooking.domain.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
@@ -65,4 +66,28 @@ class WaitingQueueServiceTest {
         assertThat(result.createdAt()).isEqualTo(now);
         assertThat(result.expiredAt()).isEqualTo(now.plusMinutes(10));
     }
+
+    @DisplayName("대기열 정보 조회시 스케쥴러에 의해 입장한 경우, 남은 순서와 대기 시간은 0으로 반환한다.")
+    @Test
+    void getQueueInfoByTokenIdEntered() {
+        // given
+        String tokenId = "tokenId";
+        WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
+                .set(field(WaitingQueue::getId), 1L)
+                .set(field(WaitingQueue::getTokenId), tokenId)
+                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .create();
+
+        when(waitingQueueRepository.findByTokenId(tokenId))
+                .thenReturn(waitingQueue);
+
+        // when
+        WaitingQueueInfo result = sut.getQueueInfoByTokenId(tokenId);
+
+        // then
+        assertThat(result.tokenId()).isEqualTo(tokenId);
+        assertThat(result.remainingWaitingOrder()).isZero();
+        assertThat(result.remainingWaitingSec()).isZero();
+    }
+
 }

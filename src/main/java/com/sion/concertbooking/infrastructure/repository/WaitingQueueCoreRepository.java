@@ -1,8 +1,12 @@
 package com.sion.concertbooking.infrastructure.repository;
 
 import com.sion.concertbooking.domain.entity.WaitingQueue;
+import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public class WaitingQueueCoreRepository implements WaitingQueueRepository {
@@ -21,5 +25,10 @@ public class WaitingQueueCoreRepository implements WaitingQueueRepository {
     @Override
     public WaitingQueue findByTokenId(final String tokenId) {
         return waitingQueueJpaRepository.findByTokenId(tokenId);
+    }
+
+    @Override
+    public List<WaitingQueue> findWaitingQueue(LocalDateTime now) {
+        return waitingQueueJpaRepository.findByStatusAndExpiredAtBeforeOrderByIdAsc(WaitingQueueStatus.WAITING, now);
     }
 }
