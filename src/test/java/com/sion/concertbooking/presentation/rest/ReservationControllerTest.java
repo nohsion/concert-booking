@@ -3,8 +3,8 @@ package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.enums.ReservationStatus;
+import com.sion.concertbooking.domain.enums.SeatGrade;
 import com.sion.concertbooking.presentation.request.ReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.ReservationResponse;
 import org.junit.jupiter.api.DisplayName;

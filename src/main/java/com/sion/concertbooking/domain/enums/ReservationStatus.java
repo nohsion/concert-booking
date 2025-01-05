@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.reservation;
+package com.sion.concertbooking.domain.enums;
 
 public enum ReservationStatus {
     SUSPEND,

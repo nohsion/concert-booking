@@ -1,7 +1,8 @@
-package com.sion.concertbooking.domain.reservation;
+package com.sion.concertbooking.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.enums.ReservationStatus;
+import com.sion.concertbooking.domain.enums.SeatGrade;
 
 import java.time.LocalDateTime;
 

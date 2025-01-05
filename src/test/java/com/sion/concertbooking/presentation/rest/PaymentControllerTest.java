@@ -1,10 +1,10 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.domain.reservation.ReservationDto;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
-import com.sion.concertbooking.domain.seat.SeatGrade;
-import com.sion.concertbooking.domain.userpoint.UserPointDto;
+import com.sion.concertbooking.domain.dto.ReservationDto;
+import com.sion.concertbooking.domain.enums.ReservationStatus;
+import com.sion.concertbooking.domain.enums.SeatGrade;
+import com.sion.concertbooking.domain.dto.UserPointDto;
 import com.sion.concertbooking.presentation.request.ReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.PaymentResponse;
 import org.junit.jupiter.api.DisplayName;

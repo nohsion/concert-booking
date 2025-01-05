@@ -2,8 +2,8 @@ package com.sion.concertbooking.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.enums.ReservationStatus;
+import com.sion.concertbooking.domain.enums.SeatGrade;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.userpoint;
+package com.sion.concertbooking.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
