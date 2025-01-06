@@ -35,6 +35,7 @@ class PaymentControllerTest {
     @Test
     void processPayment() throws Exception {
         // given
+        long pointId = 1L;
         long userId = 1L;
         int point = 1000;
 
@@ -44,7 +45,7 @@ class PaymentControllerTest {
         String requestJson = mapper.writeValueAsString(concertReservationCreateRequest);
 
         PaymentResponse paymentResponse = new PaymentResponse(
-                new PointDto(userId, point, dateTime),
+                new PointDto(pointId, userId, point, dateTime),
                 List.of(
                         new ReservationDto(1L,  userId,1L, "지킬앤하이드", 1L, dateTime,
                                 10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),

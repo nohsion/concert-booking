@@ -1,12 +1,16 @@
 package com.sion.concertbooking.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sion.concertbooking.domain.entity.Point;
 
 import java.time.LocalDateTime;
 
 public record PointDto(
-        @JsonProperty(value = "userId") long userId,
-        @JsonProperty(value = "point") int point,
-        @JsonProperty(value = "updatedAt") LocalDateTime updatedAt
+        long id,
+        long userId,
+        int point,
+        LocalDateTime updatedAt
 ) {
+    public static PointDto fromEntity(Point point) {
+        return new PointDto(point.getId(), point.getUserId(), point.getAmount(), point.getUpdatedAt());
+    }
 }

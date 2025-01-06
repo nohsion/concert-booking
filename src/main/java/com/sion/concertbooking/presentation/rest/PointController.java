@@ -1,5 +1,9 @@
 package com.sion.concertbooking.presentation.rest;
 
+import com.sion.concertbooking.application.PaymentType;
+import com.sion.concertbooking.application.PointCharger;
+import com.sion.concertbooking.application.PointDeductor;
+import com.sion.concertbooking.domain.dto.PointDto;
 import com.sion.concertbooking.presentation.response.PointResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,29 +14,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-
+/**
+ * 포인트 충전/사용/조회는 서비스 토큰이 없어도 가능하다.
+ */
 @RestController
 @RequestMapping(value = "/api/v1/point")
 public class PointController {
 
+    private final PointCharger pointCharger;
+    private final PointDeductor pointDeductor;
+
+    public PointController(PointCharger pointCharger, PointDeductor pointDeductor) {
+        this.pointCharger = pointCharger;
+        this.pointDeductor = pointDeductor;
+    }
+
     private static final String TAG_NAME = "point";
 
-    @Operation(summary = "포인트 충전", description = "유저의 포인트를 충전한다.",
+    @Operation(summary = "포인트 충전", description = "결제수단에 맞게 유저의 포인트를 충전한다.",
             tags = {TAG_NAME})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "포인트 충전 성공")
     })
     @PostMapping("/charge")
     public ResponseEntity<PointResponse> chargePoint(
-            @RequestParam(value = "tokenId") String tokenId,
-            @RequestParam(value = "amount") int amount
+            @RequestParam(value = "userId") long userId,
+            @RequestParam(value = "amount") int amount,
+            @RequestParam(value = "paymentType", defaultValue = "FREE") String paymentType
     ) {
-        long userId = 1L;
-        int point = 1000;
-        LocalDateTime updatedAt = LocalDateTime.of(2025, 1, 3, 0, 0);
-        PointResponse pointResponse = new PointResponse(userId, point, updatedAt);
-        return ResponseEntity.ok(pointResponse);
+        PointDto currentPoint = pointCharger.chargePoint(userId, amount, PaymentType.valueOf(paymentType));
+
+        return ResponseEntity.ok(PointResponse.fromDto(currentPoint));
     }
 
     @Operation(summary = "포인트 사용", description = "유저의 포인트를 사용한다.",
@@ -42,13 +54,11 @@ public class PointController {
     })
     @PostMapping("/use")
     public ResponseEntity<PointResponse> usePoint(
-            @RequestParam(value = "tokenId") String tokenId,
+            @RequestParam(value = "userId") long userId,
             @RequestParam(value = "amount") int amount
     ) {
-        long userId = 1L;
-        int point = 1000;
-        LocalDateTime updatedAt = LocalDateTime.of(2025, 1, 3, 0, 0);
-        PointResponse pointResponse = new PointResponse(userId, point, updatedAt);
-        return ResponseEntity.ok(pointResponse);
+        PointDto currentPoint = pointDeductor.usePoint(userId, amount);
+
+        return ResponseEntity.ok(PointResponse.fromDto(currentPoint));
     }
 }

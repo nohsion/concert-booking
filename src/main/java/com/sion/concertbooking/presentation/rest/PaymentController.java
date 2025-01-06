@@ -31,13 +31,14 @@ public class PaymentController {
             @RequestParam(value = "tokenId") String tokenId,
             @RequestBody ConcertReservationCreateRequest concertReservationCreateRequest
     ) {
+        long pointId = 1L;
         long userId = 1L;
         int point = 1000;
 
         LocalDateTime dateTime = LocalDateTime.of(2025, 1, 3, 0, 0);
 
         PaymentResponse paymentResponse = new PaymentResponse(
-                new PointDto(userId, point, dateTime),
+                new PointDto(pointId, userId, point, dateTime),
                 List.of(
                         new ReservationDto(1L, userId, 1L, "지킬앤하이드", 1L, dateTime,
                                 10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),

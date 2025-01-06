@@ -3,8 +3,10 @@ package com.sion.concertbooking.domain.entity;
 import com.sion.concertbooking.domain.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "point_history")
@@ -25,4 +27,19 @@ public class PointHistory extends BaseEntity {
     @Column(name = "type", nullable = false)
     private TransactionType type;
 
+    public static PointHistory ofCharge(long pointId, int amount) {
+        PointHistory pointHistory = new PointHistory();
+        pointHistory.pointId = pointId;
+        pointHistory.amount = amount;
+        pointHistory.type = TransactionType.CHARGE;
+        return pointHistory;
+    }
+
+    public static PointHistory ofUse(long pointId, int amount) {
+        PointHistory pointHistory = new PointHistory();
+        pointHistory.pointId = pointId;
+        pointHistory.amount = amount;
+        pointHistory.type = TransactionType.USE;
+        return pointHistory;
+    }
 }
