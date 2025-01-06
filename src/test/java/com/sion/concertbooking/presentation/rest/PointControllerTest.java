@@ -1,7 +1,7 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.presentation.response.UserPointResponse;
+import com.sion.concertbooking.presentation.response.PointResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserPointController.class)
+@WebMvcTest(PointController.class)
 class PointControllerTest {
 
     @Autowired
@@ -36,19 +36,19 @@ class PointControllerTest {
         int point = 1000;
         LocalDateTime updatedAt = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        UserPointResponse userPointResponse = new UserPointResponse(userId, point, updatedAt);
+        PointResponse pointResponse = new PointResponse(userId, point, updatedAt);
 
         // when
         // then
-        mockMvc.perform(post("/api/v1/user-point/charge")
+        mockMvc.perform(post("/api/v1/point/charge")
                         .param("tokenId", tokenId)
                         .param("amount", String.valueOf(amountToCharge)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
                     String responseJson = result.getResponse().getContentAsString();
-                    UserPointResponse response = mapper.readValue(responseJson, UserPointResponse.class);
-                    assertThat(response).usingRecursiveComparison().isEqualTo(userPointResponse);
+                    PointResponse response = mapper.readValue(responseJson, PointResponse.class);
+                    assertThat(response).usingRecursiveComparison().isEqualTo(pointResponse);
                 });
     }
 
@@ -63,19 +63,19 @@ class PointControllerTest {
         int point = 1000;
         LocalDateTime updatedAt = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        UserPointResponse userPointResponse = new UserPointResponse(userId, point, updatedAt);
+        PointResponse pointResponse = new PointResponse(userId, point, updatedAt);
 
         // when
         // then
-        mockMvc.perform(post("/api/v1/user-point/use")
+        mockMvc.perform(post("/api/v1/point/use")
                         .param("tokenId", tokenId)
                         .param("amount", String.valueOf(amountToUse)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
                     String responseJson = result.getResponse().getContentAsString();
-                    UserPointResponse response = mapper.readValue(responseJson, UserPointResponse.class);
-                    assertThat(response).usingRecursiveComparison().isEqualTo(userPointResponse);
+                    PointResponse response = mapper.readValue(responseJson, PointResponse.class);
+                    assertThat(response).usingRecursiveComparison().isEqualTo(pointResponse);
                 });
     }
 

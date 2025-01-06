@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sion.concertbooking.domain.dto.ReservationDto;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
-import com.sion.concertbooking.domain.dto.UserPointDto;
+import com.sion.concertbooking.domain.dto.PointDto;
 import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.PaymentResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ class PaymentControllerTest {
         String requestJson = mapper.writeValueAsString(concertReservationCreateRequest);
 
         PaymentResponse paymentResponse = new PaymentResponse(
-                new UserPointDto(userId, point, dateTime),
+                new PointDto(userId, point, dateTime),
                 List.of(
                         new ReservationDto(1L,  userId,1L, "지킬앤하이드", 1L, dateTime,
                                 10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),

@@ -3,7 +3,7 @@ package com.sion.concertbooking.presentation.rest;
 import com.sion.concertbooking.domain.dto.ReservationDto;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
-import com.sion.concertbooking.domain.dto.UserPointDto;
+import com.sion.concertbooking.domain.dto.PointDto;
 import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +37,7 @@ public class PaymentController {
         LocalDateTime dateTime = LocalDateTime.of(2025, 1, 3, 0, 0);
 
         PaymentResponse paymentResponse = new PaymentResponse(
-                new UserPointDto(userId, point, dateTime),
+                new PointDto(userId, point, dateTime),
                 List.of(
                         new ReservationDto(1L, userId, 1L, "지킬앤하이드", 1L, dateTime,
                                 10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),
