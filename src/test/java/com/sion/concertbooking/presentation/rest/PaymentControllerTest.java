@@ -5,7 +5,7 @@ import com.sion.concertbooking.domain.dto.ReservationDto;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
 import com.sion.concertbooking.domain.dto.UserPointDto;
-import com.sion.concertbooking.presentation.request.ReservationCreateRequest;
+import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.PaymentResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,15 +40,15 @@ class PaymentControllerTest {
 
         LocalDateTime dateTime = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        ReservationCreateRequest reservationCreateRequest = new ReservationCreateRequest(1L, 1L, List.of(10L, 11L));
-        String requestJson = mapper.writeValueAsString(reservationCreateRequest);
+        ConcertReservationCreateRequest concertReservationCreateRequest = new ConcertReservationCreateRequest(1L, 1L, List.of(10L, 11L));
+        String requestJson = mapper.writeValueAsString(concertReservationCreateRequest);
 
         PaymentResponse paymentResponse = new PaymentResponse(
                 new UserPointDto(userId, point, dateTime),
                 List.of(
-                        new ReservationDto(1L, 1L, "지킬앤하이드", 1L, dateTime,
+                        new ReservationDto(1L,  userId,1L, "지킬앤하이드", 1L, dateTime,
                                 10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),
-                        new ReservationDto(2L, 1L, "지킬앤하이드", 1L, dateTime,
+                        new ReservationDto(2L, userId,1L, "지킬앤하이드", 1L, dateTime,
                                 11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS)
                 )
         );

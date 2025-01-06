@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
-import com.sion.concertbooking.presentation.request.ReservationCreateRequest;
+import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.ReservationResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,8 +40,8 @@ class ReservationControllerTest {
         List<Long> seatIds = List.of(10L, 11L);
         LocalDateTime playDateTime = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        ReservationCreateRequest reservationCreateRequest = new ReservationCreateRequest(concertId, concertScheduleId, seatIds);
-        String requestJson = mapper.writeValueAsString(reservationCreateRequest);
+        ConcertReservationCreateRequest concertReservationCreateRequest = new ConcertReservationCreateRequest(concertId, concertScheduleId, seatIds);
+        String requestJson = mapper.writeValueAsString(concertReservationCreateRequest);
 
         // when
         List<ReservationResponse> reservationResponses = List.of(

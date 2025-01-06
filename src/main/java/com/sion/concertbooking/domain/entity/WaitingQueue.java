@@ -46,4 +46,8 @@ public class WaitingQueue extends BaseEntity {
         waitingQueue.expiredAt = now.plusMinutes(EXPIRED_MINUTES);
         return waitingQueue;
     }
+
+    public boolean isExpired(LocalDateTime now) {
+        return expiredAt.isBefore(now);
+    }
 }

@@ -4,7 +4,7 @@ import com.sion.concertbooking.domain.dto.ReservationDto;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
 import com.sion.concertbooking.domain.dto.UserPointDto;
-import com.sion.concertbooking.presentation.request.ReservationCreateRequest;
+import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +29,7 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<PaymentResponse> processPayment(
             @RequestParam(value = "tokenId") String tokenId,
-            @RequestBody ReservationCreateRequest reservationCreateRequest
+            @RequestBody ConcertReservationCreateRequest concertReservationCreateRequest
     ) {
         long userId = 1L;
         int point = 1000;
@@ -39,9 +39,9 @@ public class PaymentController {
         PaymentResponse paymentResponse = new PaymentResponse(
                 new UserPointDto(userId, point, dateTime),
                 List.of(
-                        new ReservationDto(1L, 1L, "지킬앤하이드", 1L, dateTime,
+                        new ReservationDto(1L, userId, 1L, "지킬앤하이드", 1L, dateTime,
                                 10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),
-                        new ReservationDto(2L, 1L, "지킬앤하이드", 1L, dateTime,
+                        new ReservationDto(2L, userId, 1L, "지킬앤하이드", 1L, dateTime,
                                 11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS)
                 )
         );

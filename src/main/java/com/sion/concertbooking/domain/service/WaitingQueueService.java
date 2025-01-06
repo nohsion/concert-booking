@@ -62,9 +62,6 @@ public class WaitingQueueService {
         if (waitingQueue == null) {
             return false;
         }
-        if (waitingQueue.getExpiredAt().isBefore(now)) {
-            return false;
-        }
-        return true;
+        return !waitingQueue.isExpired(now);
     }
 }

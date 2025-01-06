@@ -1,0 +1,53 @@
+package com.sion.concertbooking.domain.service;
+
+import com.sion.concertbooking.domain.dto.ReservationCreateDto;
+import com.sion.concertbooking.domain.dto.ReservationDto;
+import com.sion.concertbooking.domain.entity.Reservation;
+import com.sion.concertbooking.domain.repository.ReservationRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class ReservationService {
+
+    private final ReservationRepository reservationRepository;
+
+    public ReservationService(
+            final ReservationRepository reservationRepository
+    ) {
+        this.reservationRepository = reservationRepository;
+    }
+
+    public boolean isReservedSeat(long concertScheduleId, long seatId, LocalDateTime now) {
+        return reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId)
+                .stream()
+                // 예약완료 혹은 결제대기 중인 예약이 하나라도 있는지 확인
+                .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));
+    }
+
+    @Transactional
+    public List<ReservationDto> createReservations(ReservationCreateDto createDto) {
+        List<ReservationCreateDto.SeatCreateDto> seats = createDto.getSeats();
+        List<Reservation> reservations = seats.stream()
+                .map(seat -> Reservation.of(
+                        createDto.getUserId(),
+                        createDto.getConcertId(),
+                        createDto.getConcertTitle(),
+                        createDto.getConcertScheduleId(),
+                        createDto.getPlayDateTime(),
+                        createDto.getNow(),
+                        seat.getSeatId(),
+                        seat.getSeatNum(),
+                        seat.getSeatGrade(),
+                        seat.getSeatPrice()
+                ))
+                .toList();
+        List<Reservation> savedReservationEntities = reservationRepository.saveAll(reservations);
+        return savedReservationEntities.stream()
+                .map(ReservationDto::ofEntity)
+                .toList();
+    }
+}
