@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "reservation")
 public class Reservation extends BaseEntity {
 
+    private static final int TEMPORARY_EXPIRE_MINUTES = 5;
     private static final int CANCEL_DEADLINE_DAYS_FROM_NOW = 7;
     private static final int CANCEL_DEADLINE_DAYS_BEFORE_PLAY = 1;
 
@@ -89,6 +90,7 @@ public class Reservation extends BaseEntity {
         reservation.seatGrade = seatGrade;
         reservation.seatPrice = seatPrice;
         reservation.status = ReservationStatus.SUSPEND;
+        reservation.expiredAt = now.plusMinutes(TEMPORARY_EXPIRE_MINUTES);
 
         return reservation;
     }
