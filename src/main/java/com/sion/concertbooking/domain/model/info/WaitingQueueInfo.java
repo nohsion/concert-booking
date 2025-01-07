@@ -1,12 +1,12 @@
-package com.sion.concertbooking.domain.dto;
+package com.sion.concertbooking.domain.model.info;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.entity.WaitingQueue;
+import com.sion.concertbooking.domain.model.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 
 import java.time.LocalDateTime;
 
-public record WaitingQueueDto(
+public record WaitingQueueInfo(
         @JsonProperty(value = "waitingQueueId") long waitingQueueId,
         @JsonProperty(value = "tokenId") String tokenId,
         @JsonProperty(value = "userId") long userId,
@@ -15,8 +15,8 @@ public record WaitingQueueDto(
         @JsonProperty(value = "createdAt") LocalDateTime createdAt,
         @JsonProperty(value = "expiredAt") LocalDateTime expiredAt
 ) {
-    public static WaitingQueueDto fromEntity(WaitingQueue entity) {
-        return new WaitingQueueDto(
+    public static WaitingQueueInfo fromEntity(WaitingQueue entity) {
+        return new WaitingQueueInfo(
                 entity.getId(),
                 entity.getTokenId(),
                 entity.getUserId(),

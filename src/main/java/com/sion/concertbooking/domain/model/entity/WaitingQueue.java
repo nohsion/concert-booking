@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.entity;
+package com.sion.concertbooking.domain.model.entity;
 
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import jakarta.persistence.*;

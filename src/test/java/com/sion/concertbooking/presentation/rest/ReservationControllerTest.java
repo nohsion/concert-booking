@@ -3,7 +3,7 @@ package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sion.concertbooking.application.ConcertReservationFacade;
-import com.sion.concertbooking.domain.dto.ReservationDto;
+import com.sion.concertbooking.domain.model.info.ReservationInfo;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
@@ -53,14 +53,14 @@ class ReservationControllerTest {
         ConcertReservationCreateRequest concertReservationCreateRequest = new ConcertReservationCreateRequest(concertId, concertScheduleId, seatIds);
         String requestJson = mapper.writeValueAsString(concertReservationCreateRequest);
 
-        List<ReservationDto> reservationDtos = List.of(
-                new ReservationDto(1L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
+        List<ReservationInfo> reservationInfos = List.of(
+                new ReservationInfo(1L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
                         10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),
-                new ReservationDto(2L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
+                new ReservationInfo(2L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
                         11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS)
         );
         when(concertReservationFacade.reserve(eq(userId), eq(concertReservationCreateRequest)))
-                .thenReturn(reservationDtos);
+                .thenReturn(reservationInfos);
 
         TokenInfo tokenInfo = new TokenInfo("token-id", 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());
 

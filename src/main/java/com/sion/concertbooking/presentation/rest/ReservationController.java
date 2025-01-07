@@ -1,7 +1,7 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.sion.concertbooking.application.ConcertReservationFacade;
-import com.sion.concertbooking.domain.dto.ReservationDto;
+import com.sion.concertbooking.domain.model.info.ReservationInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
 import com.sion.concertbooking.infrastructure.aspect.TokenUtils;
@@ -44,8 +44,8 @@ public class ReservationController {
     ) throws AuthenticationException {
         TokenInfo tokenInfo = TokenUtils.getTokenInfo();
         long userId = tokenInfo.userId();
-        List<ReservationDto> reservationDtos = concertReservationFacade.reserve(userId, concertReservationCreateRequest);
-        List<ReservationResponse> reservationResponses = reservationDtos.stream()
+        List<ReservationInfo> reservationInfos = concertReservationFacade.reserve(userId, concertReservationCreateRequest);
+        List<ReservationResponse> reservationResponses = reservationInfos.stream()
                 .map(ReservationResponse::fromDto)
                 .toList();
 

@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.dto;
+package com.sion.concertbooking.domain.dto.command;
 
 import com.sion.concertbooking.domain.enums.SeatGrade;
 import lombok.AllArgsConstructor;

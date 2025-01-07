@@ -2,7 +2,7 @@ package com.sion.concertbooking.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.dto.PointDto;
+import com.sion.concertbooking.domain.model.info.PointInfo;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ public record PointResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         @JsonProperty(value = "updatedAt") LocalDateTime updatedAt
 ) {
-        public static PointResponse fromDto(PointDto dto) {
+        public static PointResponse fromDto(PointInfo dto) {
                 return new PointResponse(dto.userId(), dto.point(), dto.updatedAt());
         }
 }

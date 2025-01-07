@@ -3,7 +3,7 @@ package com.sion.concertbooking.presentation.rest;
 import com.sion.concertbooking.application.PaymentType;
 import com.sion.concertbooking.application.PointCharger;
 import com.sion.concertbooking.application.PointDeductor;
-import com.sion.concertbooking.domain.dto.PointDto;
+import com.sion.concertbooking.domain.model.info.PointInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +42,8 @@ class PointControllerTest {
         int point = 1000;
         LocalDateTime updatedAt = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        PointDto pointDto = new PointDto(pointId, userId, point, updatedAt);
-        when(pointCharger.chargePoint(userId, amountToCharge, PaymentType.FREE)).thenReturn(pointDto);
+        PointInfo pointInfo = new PointInfo(pointId, userId, point, updatedAt);
+        when(pointCharger.chargePoint(userId, amountToCharge, PaymentType.FREE)).thenReturn(pointInfo);
 
         // when
         // then
@@ -71,8 +71,8 @@ class PointControllerTest {
         int point = 1000;
         LocalDateTime updatedAt = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        PointDto pointDto = new PointDto(pointId, userId, point, updatedAt);
-        when(pointDeductor.usePoint(userId, point)).thenReturn(pointDto);
+        PointInfo pointInfo = new PointInfo(pointId, userId, point, updatedAt);
+        when(pointDeductor.usePoint(userId, point)).thenReturn(pointInfo);
 
         // when
         // then

@@ -1,6 +1,6 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.entity.PointHistory;
+import com.sion.concertbooking.domain.model.entity.PointHistory;
 import com.sion.concertbooking.domain.repository.PointHistoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,14 +15,16 @@ public class PointHistoryService {
     }
 
     @Transactional
-    public PointHistory chargePointHistory(long pointId, int amount) {
+    public long chargePointHistory(long pointId, int amount) {
         PointHistory pointHistoryToCharge = PointHistory.ofCharge(pointId, amount);
-        return pointHistoryRepository.save(pointHistoryToCharge);
+        PointHistory chargedPointHistory = pointHistoryRepository.save(pointHistoryToCharge);
+        return chargedPointHistory.getId();
     }
 
     @Transactional
-    public PointHistory usePointHistory(long pointId, int amount) {
+    public long usePointHistory(long pointId, int amount) {
         PointHistory pointHistoryToUse = PointHistory.ofUse(pointId, amount);
-        return pointHistoryRepository.save(pointHistoryToUse);
+        PointHistory usedPointHistory = pointHistoryRepository.save(pointHistoryToUse);
+        return usedPointHistory.getId();
     }
 }

@@ -1,6 +1,6 @@
 package com.sion.concertbooking.infrastructure.aspect;
 
-import com.sion.concertbooking.domain.dto.WaitingQueueDto;
+import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
 import com.sion.concertbooking.domain.service.TokenProvider;
 import com.sion.concertbooking.domain.service.WaitingQueueService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,13 +34,13 @@ public class TokenAspect {
         if (!tokenValid) {
             throw new AuthenticationException("Invalid token");
         }
-        WaitingQueueDto waitingQueueDto = waitingQueueService.getQueueByTokenId(tokenId);
+        WaitingQueueInfo waitingQueueInfo = waitingQueueService.getQueueByTokenId(tokenId);
         TokenInfo tokenInfo = new TokenInfo(
-                waitingQueueDto.tokenId(),
-                waitingQueueDto.userId(),
-                waitingQueueDto.concertId(),
-                waitingQueueDto.status(),
-                waitingQueueDto.expiredAt()
+                waitingQueueInfo.tokenId(),
+                waitingQueueInfo.userId(),
+                waitingQueueInfo.concertId(),
+                waitingQueueInfo.status(),
+                waitingQueueInfo.expiredAt()
         );
 
         request.setAttribute("tokenInfo", tokenInfo);

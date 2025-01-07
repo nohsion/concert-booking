@@ -2,7 +2,7 @@ package com.sion.concertbooking.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.dto.ReservationDto;
+import com.sion.concertbooking.domain.model.info.ReservationInfo;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
 
@@ -22,18 +22,18 @@ public record ReservationResponse(
         @JsonProperty(value = "reservationStatus") ReservationStatus reservationStatus
 ) {
 
-    public static ReservationResponse fromDto(ReservationDto reservationDto) {
+    public static ReservationResponse fromDto(ReservationInfo reservationInfo) {
         return new ReservationResponse(
-                reservationDto.reservationId(),
-                reservationDto.concertId(),
-                reservationDto.concertTitle(),
-                reservationDto.concertScheduleId(),
-                reservationDto.playDateTime(),
-                reservationDto.seatId(),
-                reservationDto.seatNum(),
-                reservationDto.seatGrade(),
-                reservationDto.seatPrice(),
-                reservationDto.reservationStatus()
+                reservationInfo.reservationId(),
+                reservationInfo.concertId(),
+                reservationInfo.concertTitle(),
+                reservationInfo.concertScheduleId(),
+                reservationInfo.playDateTime(),
+                reservationInfo.seatId(),
+                reservationInfo.seatNum(),
+                reservationInfo.seatGrade(),
+                reservationInfo.seatPrice(),
+                reservationInfo.reservationStatus()
         );
     }
 }

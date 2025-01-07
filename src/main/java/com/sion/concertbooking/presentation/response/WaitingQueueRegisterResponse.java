@@ -2,7 +2,7 @@ package com.sion.concertbooking.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.dto.WaitingQueueDto;
+import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +16,7 @@ public record WaitingQueueRegisterResponse(
         @JsonProperty(value = "expiredAt") LocalDateTime expiredAt
 ) {
 
-        public static WaitingQueueRegisterResponse fromDto(WaitingQueueDto dto) {
+        public static WaitingQueueRegisterResponse fromDto(WaitingQueueInfo dto) {
                 return new WaitingQueueRegisterResponse(
                         dto.userId(),
                         dto.concertId(),

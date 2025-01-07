@@ -1,8 +1,9 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.dto.ReservationCreateDto;
-import com.sion.concertbooking.domain.entity.Reservation;
+import com.sion.concertbooking.domain.dto.command.ReservationCreateDto;
+import com.sion.concertbooking.domain.model.entity.Reservation;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
+import com.sion.concertbooking.domain.model.info.ReservationInfo;
 import com.sion.concertbooking.domain.repository.ReservationRepository;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -187,7 +188,7 @@ class ReservationServiceTest {
                 .thenReturn(reservations);
 
         // when
-        List<Reservation> savedReservations = sut.createReservations(reservationCreateDto);
+        List<ReservationInfo> savedReservations = sut.createReservations(reservationCreateDto);
 
         // then
         assertThat(savedReservations).hasSize(3);

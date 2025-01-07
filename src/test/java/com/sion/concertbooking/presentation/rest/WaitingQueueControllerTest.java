@@ -1,8 +1,8 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.domain.dto.WaitingQueueDto;
-import com.sion.concertbooking.domain.dto.WaitingQueueInfo;
+import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
+import com.sion.concertbooking.domain.dto.WaitingQueueDetailInfo;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.service.WaitingQueueService;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
@@ -44,7 +44,7 @@ class WaitingQueueControllerTest {
         long userId = 1L;
         long concertId = 1L;
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
-        WaitingQueueDto waitingQueueDto = new WaitingQueueDto(
+        WaitingQueueInfo waitingQueueInfo = new WaitingQueueInfo(
                 1L, "token-id", userId, concertId, WaitingQueueStatus.WAITING, now, now.plusMinutes(10)
         );
 
@@ -53,7 +53,7 @@ class WaitingQueueControllerTest {
 
         // when
         when(waitingQueueService.waitQueueAndIssueToken(eq(userId), eq(concertId), any(LocalDateTime.class)))
-                .thenReturn(waitingQueueDto);
+                .thenReturn(waitingQueueInfo);
 
         // then
         mockMvc.perform(post("/api/v1/waiting")
@@ -82,7 +82,7 @@ class WaitingQueueControllerTest {
 
         // when
         when(waitingQueueService.getQueueInfoByTokenId(tokenId))
-                .thenReturn(new WaitingQueueInfo(tokenId, remainingWaitingOrder, remainingWaitingSec));
+                .thenReturn(new WaitingQueueDetailInfo(tokenId, remainingWaitingOrder, remainingWaitingSec));
 
         // then
         mockMvc.perform(get("/api/v1/waiting")

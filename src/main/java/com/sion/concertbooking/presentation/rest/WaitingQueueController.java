@@ -1,7 +1,7 @@
 package com.sion.concertbooking.presentation.rest;
 
-import com.sion.concertbooking.domain.dto.WaitingQueueDto;
-import com.sion.concertbooking.domain.dto.WaitingQueueInfo;
+import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
+import com.sion.concertbooking.domain.dto.WaitingQueueDetailInfo;
 import com.sion.concertbooking.domain.service.WaitingQueueService;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
@@ -45,12 +45,12 @@ public class WaitingQueueController {
     public ResponseEntity<WaitingQueueRegisterResponse> waitQueueAndIssueToken(
             @RequestBody WaitingQueueRegisterRequest waitingQueueRegisterRequest
     ) {
-        WaitingQueueDto waitingQueueDto = waitingQueueService.waitQueueAndIssueToken(
+        WaitingQueueInfo waitingQueueInfo = waitingQueueService.waitQueueAndIssueToken(
                 waitingQueueRegisterRequest.userId(),
                 waitingQueueRegisterRequest.concertId(),
                 LocalDateTime.now()
         );
-        return ResponseEntity.ok(WaitingQueueRegisterResponse.fromDto(waitingQueueDto));
+        return ResponseEntity.ok(WaitingQueueRegisterResponse.fromDto(waitingQueueInfo));
     }
 
     @Operation(summary = "대기열 정보 조회", description = "토큰을 통해 대기열 정보를 조회한다.",
@@ -65,7 +65,7 @@ public class WaitingQueueController {
     public ResponseEntity<WaitingQueueInfoResponse> getQueueByToken() throws AuthenticationException {
         TokenInfo tokenInfo = TokenUtils.getTokenInfo();
         String tokenId = tokenInfo.tokenId();
-        WaitingQueueInfo waitingQueueInfo = waitingQueueService.getQueueInfoByTokenId(tokenId);
-        return ResponseEntity.ok(WaitingQueueInfoResponse.fromDto(waitingQueueInfo));
+        WaitingQueueDetailInfo waitingQueueDetailInfo = waitingQueueService.getQueueInfoByTokenId(tokenId);
+        return ResponseEntity.ok(WaitingQueueInfoResponse.fromDto(waitingQueueDetailInfo));
     }
 }

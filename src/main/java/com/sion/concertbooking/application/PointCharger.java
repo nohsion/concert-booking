@@ -1,8 +1,6 @@
 package com.sion.concertbooking.application;
 
-import com.sion.concertbooking.domain.dto.PointDto;
-import com.sion.concertbooking.domain.entity.Point;
-import com.sion.concertbooking.domain.entity.PointHistory;
+import com.sion.concertbooking.domain.model.info.PointInfo;
 import com.sion.concertbooking.domain.service.PaymentCharger;
 import com.sion.concertbooking.domain.service.PointHistoryService;
 import com.sion.concertbooking.domain.service.PointService;
@@ -25,18 +23,18 @@ public class PointCharger {
         this.pointChargerResolver = pointChargerResolver;
     }
 
-    public PointDto chargePoint(long userId, int amount, PaymentType paymentType) {
+    public PointInfo chargePoint(long userId, int amount, PaymentType paymentType) {
         // 1. 외부 결제수단 결제 처리
         PaymentCharger paymentCharger = pointChargerResolver.resolve(paymentType);
         paymentCharger.payment(amount);
 
         // 2. 포인트 충전 처리
-        Point chargedPoint = pointService.chargePoint(userId, amount);
+        long chargedPointId = pointService.chargePoint(userId, amount);
 
         // 3. 포인트 충전 이력 저장
-        PointHistory chargedPointHistory = pointHistoryService.chargePointHistory(chargedPoint.getId(), amount);
+        long chargedPointHistoryId = pointHistoryService.chargePointHistory(chargedPointId, amount);
 
-        return PointDto.fromEntity(chargedPoint);
+        return pointService.getPointByUserId(userId); // todo: facade용 DTO로 변환 (포인트+이력)
     }
 
 }

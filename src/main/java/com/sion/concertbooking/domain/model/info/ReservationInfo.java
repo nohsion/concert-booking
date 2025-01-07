@@ -1,13 +1,13 @@
-package com.sion.concertbooking.domain.dto;
+package com.sion.concertbooking.domain.model.info;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.entity.Reservation;
+import com.sion.concertbooking.domain.model.entity.Reservation;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
 
 import java.time.LocalDateTime;
 
-public record ReservationDto(
+public record ReservationInfo(
         @JsonProperty(value = "reservationId") long reservationId,
         @JsonProperty(value = "userId") long userId,
         @JsonProperty(value = "concertId") long concertId,
@@ -21,8 +21,8 @@ public record ReservationDto(
         @JsonProperty(value = "reservationStatus") ReservationStatus reservationStatus
 ) {
 
-    public static ReservationDto ofEntity(Reservation reservation) {
-        return new ReservationDto(
+    public static ReservationInfo ofEntity(Reservation reservation) {
+        return new ReservationInfo(
                 reservation.getId(),
                 reservation.getUserId(),
                 reservation.getConcertId(),

@@ -1,6 +1,7 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.entity.Seat;
+import com.sion.concertbooking.domain.model.entity.Seat;
+import com.sion.concertbooking.domain.model.info.SeatInfo;
 import com.sion.concertbooking.domain.repository.SeatRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,9 @@ public class SeatService {
         this.seatRepository = seatRepository;
     }
 
-    public Seat getSeatById(long seatId) {
-        return seatRepository.findById(seatId)
+    public SeatInfo getSeatById(long seatId) {
+        Seat seat = seatRepository.findById(seatId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다."));
+        return SeatInfo.fromEntity(seat);
     }
 }

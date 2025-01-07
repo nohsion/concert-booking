@@ -3,7 +3,7 @@ package com.sion.concertbooking.presentation.rest;
 import com.sion.concertbooking.application.PaymentType;
 import com.sion.concertbooking.application.PointCharger;
 import com.sion.concertbooking.application.PointDeductor;
-import com.sion.concertbooking.domain.dto.PointDto;
+import com.sion.concertbooking.domain.model.info.PointInfo;
 import com.sion.concertbooking.presentation.response.PointResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -42,7 +42,7 @@ public class PointController {
             @RequestParam(value = "amount") int amount,
             @RequestParam(value = "paymentType", defaultValue = "FREE") String paymentType
     ) {
-        PointDto currentPoint = pointCharger.chargePoint(userId, amount, PaymentType.valueOf(paymentType));
+        PointInfo currentPoint = pointCharger.chargePoint(userId, amount, PaymentType.valueOf(paymentType));
 
         return ResponseEntity.ok(PointResponse.fromDto(currentPoint));
     }
@@ -57,7 +57,7 @@ public class PointController {
             @RequestParam(value = "userId") long userId,
             @RequestParam(value = "amount") int amount
     ) {
-        PointDto currentPoint = pointDeductor.usePoint(userId, amount);
+        PointInfo currentPoint = pointDeductor.usePoint(userId, amount);
 
         return ResponseEntity.ok(PointResponse.fromDto(currentPoint));
     }

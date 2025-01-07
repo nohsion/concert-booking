@@ -1,7 +1,8 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.dto.ReservationCreateDto;
-import com.sion.concertbooking.domain.entity.Reservation;
+import com.sion.concertbooking.domain.dto.command.ReservationCreateDto;
+import com.sion.concertbooking.domain.model.entity.Reservation;
+import com.sion.concertbooking.domain.model.info.ReservationInfo;
 import com.sion.concertbooking.domain.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public List<Reservation> createReservations(ReservationCreateDto createDto) {
+    public List<ReservationInfo> createReservations(ReservationCreateDto createDto) {
         List<ReservationCreateDto.SeatCreateDto> seats = createDto.getSeats();
         List<Reservation> reservations = seats.stream()
                 .map(seat -> Reservation.of(
@@ -44,6 +45,9 @@ public class ReservationService {
                         seat.getSeatPrice()
                 ))
                 .toList();
-        return reservationRepository.saveAll(reservations);
+        List<Reservation> savedReservations = reservationRepository.saveAll(reservations);
+        return savedReservations.stream()
+                .map(ReservationInfo::ofEntity)
+                .toList();
     }
 }

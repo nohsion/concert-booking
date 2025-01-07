@@ -1,6 +1,6 @@
 package com.sion.concertbooking.domain.repository;
 
-import com.sion.concertbooking.domain.entity.Seat;
+import com.sion.concertbooking.domain.model.entity.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

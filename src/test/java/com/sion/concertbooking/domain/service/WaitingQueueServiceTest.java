@@ -1,8 +1,8 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.dto.WaitingQueueDto;
-import com.sion.concertbooking.domain.dto.WaitingQueueInfo;
-import com.sion.concertbooking.domain.entity.WaitingQueue;
+import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
+import com.sion.concertbooking.domain.dto.WaitingQueueDetailInfo;
+import com.sion.concertbooking.domain.model.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
 import org.instancio.Instancio;
@@ -54,7 +54,7 @@ class WaitingQueueServiceTest {
                 .thenReturn(waitingQueue);
 
         // when
-        WaitingQueueDto result = sut.waitQueueAndIssueToken(userId, concertId, now);
+        WaitingQueueInfo result = sut.waitQueueAndIssueToken(userId, concertId, now);
 
         // then
         assertThat(result.waitingQueueId()).isEqualTo(1L);
@@ -82,7 +82,7 @@ class WaitingQueueServiceTest {
                 .thenReturn(waitingQueue);
 
         // when
-        WaitingQueueInfo result = sut.getQueueInfoByTokenId(tokenId);
+        WaitingQueueDetailInfo result = sut.getQueueInfoByTokenId(tokenId);
 
         // then
         assertThat(result.tokenId()).isEqualTo(tokenId);

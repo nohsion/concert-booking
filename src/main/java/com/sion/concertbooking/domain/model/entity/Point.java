@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.entity;
+package com.sion.concertbooking.domain.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
