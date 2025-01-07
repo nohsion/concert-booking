@@ -17,7 +17,8 @@ public record ReservationInfo(
         int seatNum,
         SeatGrade seatGrade,
         int seatPrice,
-        ReservationStatus reservationStatus
+        ReservationStatus reservationStatus,
+        LocalDateTime expiredAt
 ) {
 
     public static ReservationInfo ofEntity(Reservation reservation) {
@@ -32,7 +33,8 @@ public record ReservationInfo(
                 reservation.getSeatNum(),
                 reservation.getSeatGrade(),
                 reservation.getSeatPrice(),
-                reservation.getStatus()
+                reservation.getStatus(),
+                reservation.getExpiredAt()
         );
     }
 }

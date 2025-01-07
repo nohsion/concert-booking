@@ -6,6 +6,7 @@ import com.sion.concertbooking.domain.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class WaitingQueueService {
         this.tokenProvider = tokenProvider;
     }
 
+    @Transactional
     public WaitingQueueInfo waitQueueAndIssueToken(long userId, long concertId, LocalDateTime now) {
         String tokenId = tokenProvider.generateToken();
         WaitingQueue waitingQueue = WaitingQueue.of(tokenId, userId, concertId, now);
@@ -32,6 +34,7 @@ public class WaitingQueueService {
         return WaitingQueueInfo.fromEntity(savedEntity);
     }
 
+    @Transactional
     public WaitingQueueInfo getQueueByTokenId(String tokenId) {
         WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
         if (waitingQueue == null) {
@@ -40,6 +43,7 @@ public class WaitingQueueService {
         return WaitingQueueInfo.fromEntity(waitingQueue);
     }
 
+    @Transactional
     public WaitingQueueDetailInfo getQueueInfoByTokenId(String tokenId) {
         WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
         if (waitingQueue == null) {
@@ -62,6 +66,15 @@ public class WaitingQueueService {
         if (waitingQueue == null) {
             return false;
         }
-        return !waitingQueue.isExpired(now);
+        return waitingQueue.isTokenValid(now);
+    }
+
+    @Transactional
+    public void expireToken(String tokenId) {
+        WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
+        if (waitingQueue == null) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+        waitingQueue.markExpired();
     }
 }

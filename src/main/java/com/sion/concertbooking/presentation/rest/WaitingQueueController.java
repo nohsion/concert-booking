@@ -54,8 +54,7 @@ public class WaitingQueueController {
     }
 
     @Operation(summary = "대기열 정보 조회", description = "토큰을 통해 대기열 정보를 조회한다.",
-            tags = {TAG_NAME}, security = {@SecurityRequirement(name = CONCERT_TOKEN_HEADER)}
-    )
+            tags = {TAG_NAME}, security = {@SecurityRequirement(name = CONCERT_TOKEN_HEADER)})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "대기열 정보 조회 성공"),
             @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰")

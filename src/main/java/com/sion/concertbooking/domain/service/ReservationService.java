@@ -28,6 +28,25 @@ public class ReservationService {
                 .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));
     }
 
+    public boolean isExpiredReservation(long reservationId, LocalDateTime now) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
+        return reservation.isExpired(now);
+    }
+
+    @Transactional
+    public void completeReservation(long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
+        reservation.markSuccess();
+    }
+
+    public ReservationInfo getReservationById(long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
+        return ReservationInfo.ofEntity(reservation);
+    }
+
     @Transactional
     public List<ReservationInfo> createReservations(ReservationCreateCommand createDto) {
         List<ReservationCreateCommand.SeatCreateCommand> seats = createDto.getSeats();

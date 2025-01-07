@@ -5,6 +5,7 @@ import com.sion.concertbooking.domain.repository.ReservationRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReservationCoreRepository implements ReservationRepository {
@@ -26,5 +27,10 @@ public class ReservationCoreRepository implements ReservationRepository {
     @Override
     public List<Reservation> findByConcertScheduleIdAndSeatId(final long concertScheduleId, final long seatId) {
         return reservationJpaRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId);
+    }
+
+    @Override
+    public Optional<Reservation> findById(final long reservationId) {
+        return reservationJpaRepository.findById(reservationId);
     }
 }

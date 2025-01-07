@@ -103,14 +103,14 @@ public class Reservation extends BaseEntity {
         return ReservationStatus.SUCCESS == status;
     }
 
-    public boolean isCanceled() {
-        return ReservationStatus.CANCEL == status;
-    }
-
     /**
      * 결제 대기 상태는 예약 만료 시간이 지나지 않았을 때만 가능하다.
      */
     public boolean isSuspend(LocalDateTime now) {
         return ReservationStatus.SUSPEND == status && !isExpired(now);
+    }
+
+    public void markSuccess() {
+        this.status = ReservationStatus.SUCCESS;
     }
 }

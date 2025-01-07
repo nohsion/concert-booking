@@ -50,4 +50,12 @@ public class WaitingQueue extends BaseEntity {
     public boolean isExpired(LocalDateTime now) {
         return expiredAt.isBefore(now);
     }
+
+    public void markExpired() {
+        this.status = WaitingQueueStatus.EXPIRED;
+    }
+
+    public boolean isTokenValid(LocalDateTime now) {
+        return this.status == WaitingQueueStatus.ENTERED && !isExpired(now);
+    }
 }
