@@ -1,7 +1,6 @@
 package com.sion.concertbooking.domain.service;
 
 import com.sion.concertbooking.domain.dto.ReservationCreateDto;
-import com.sion.concertbooking.domain.dto.ReservationDto;
 import com.sion.concertbooking.domain.entity.Reservation;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.repository.ReservationRepository;
@@ -162,7 +161,7 @@ class ReservationServiceTest {
         assertThat(result).isTrue();
     }
 
-    @DisplayName("요청 좌석들에 대해 예약에 성공하면 DTO 리스트로 반환한다.")
+    @DisplayName("요청 좌석들에 대해 예약에 성공하면 객체 도메인 리스트로 반환한다.")
     @Test
     void createReservationsSuccess() {
         // given
@@ -188,11 +187,11 @@ class ReservationServiceTest {
                 .thenReturn(reservations);
 
         // when
-        List<ReservationDto> reservationDtos = sut.createReservations(reservationCreateDto);
+        List<Reservation> savedReservations = sut.createReservations(reservationCreateDto);
 
         // then
-        assertThat(reservationDtos).hasSize(3);
-        reservationDtos.forEach(dto -> assertThat(dto).isNotNull());
+        assertThat(savedReservations).hasSize(3);
+        savedReservations.forEach(reservation -> assertThat(reservation).isNotNull());
     }
 
 }

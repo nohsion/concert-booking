@@ -1,6 +1,10 @@
 package com.sion.concertbooking.application;
 
 import com.sion.concertbooking.domain.dto.*;
+import com.sion.concertbooking.domain.entity.Concert;
+import com.sion.concertbooking.domain.entity.ConcertSchedule;
+import com.sion.concertbooking.domain.entity.Reservation;
+import com.sion.concertbooking.domain.entity.Seat;
 import com.sion.concertbooking.domain.service.ConcertScheduleService;
 import com.sion.concertbooking.domain.service.ConcertService;
 import com.sion.concertbooking.domain.service.ReservationService;
@@ -40,25 +44,25 @@ public class ConcertReservationFacade {
         List<Long> seatIds = concertReservationCreateRequest.seatIds();
 
         // 0. 콘서트 정보를 가져온다.
-        ConcertDto concert = concertService.getConcertById(concertId);
-        ConcertScheduleDto concertSchedule = concertScheduleService.getConcertScheduleById(concertScheduleId);
+        Concert concert = concertService.getConcertById(concertId);
+        ConcertSchedule concertSchedule = concertScheduleService.getConcertScheduleById(concertScheduleId);
 
         // 1. 예약된 좌석이 없는지 확인한다.
         boolean allSeatsAvailable = seatIds.stream()
                 .noneMatch(seatId -> reservationService.isReservedSeat(concertScheduleId, seatId, now));
         if (!allSeatsAvailable) {
-            throw new IllegalArgumentException("이미 예약된 좌석입니다.");
+            throw new IllegalArgumentException("이미 예약중인 좌석입니다.");
         }
 
         // 2. 좌석 정보를 가져온다.
         List<ReservationCreateDto.SeatCreateDto> seatCreateDtos = seatIds.stream()
                 .map(seatId -> {
-                    SeatDto seat = seatService.getSeatById(seatId);
+                    Seat seat = seatService.getSeatById(seatId);
                     return new ReservationCreateDto.SeatCreateDto(
                             seatId,
-                            seat.seatNum(),
-                            seat.seatGrade(),
-                            seat.seatPrice()
+                            seat.getSeatNum(),
+                            seat.getSeatGrade(),
+                            seat.getSeatPrice()
                     );
                 })
                 .toList();
@@ -67,13 +71,16 @@ public class ConcertReservationFacade {
         ReservationCreateDto reservationCreateDto = ReservationCreateDto.builder()
                 .userId(userId)
                 .concertId(concertId)
-                .concertTitle(concert.concertTitle())
+                .concertTitle(concert.getTitle())
                 .concertScheduleId(concertScheduleId)
-                .playDateTime(concertSchedule.playDateTime())
+                .playDateTime(concertSchedule.getPlayDateTime())
                 .now(now)
                 .seats(seatCreateDtos)
                 .build();
 
-        return reservationService.createReservations(reservationCreateDto);
+        List<Reservation> reservations = reservationService.createReservations(reservationCreateDto);
+        return reservations.stream()
+                .map(ReservationDto::ofEntity)
+                .toList();
     }
 }

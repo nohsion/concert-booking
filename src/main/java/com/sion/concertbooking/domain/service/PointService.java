@@ -1,6 +1,5 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.dto.PointDto;
 import com.sion.concertbooking.domain.entity.Point;
 import com.sion.concertbooking.domain.repository.PointRepository;
 import org.springframework.stereotype.Service;
@@ -16,23 +15,23 @@ public class PointService {
     }
 
     @Transactional
-    public PointDto chargePoint(long userId, int amount) {
+    public Point chargePoint(long userId, int amount) {
         Point point = pointRepository.findByUserId(userId);
         if (point == null) {
             throw new IllegalArgumentException("존재하지 않는 유저입니다.");
         }
         point.chargePoint(amount);
-        return PointDto.fromEntity(point);
+        return point;
     }
 
     @Transactional
-    public PointDto usePoint(long userId, int amount) {
+    public Point usePoint(long userId, int amount) {
         Point point = pointRepository.findByUserId(userId);
         if (point == null) {
             throw new IllegalArgumentException("존재하지 않는 유저입니다.");
         }
         point.usePoint(amount);
-        return PointDto.fromEntity(point);
+        return point;
     }
 
 }

@@ -1,7 +1,8 @@
 package com.sion.concertbooking.application;
 
 import com.sion.concertbooking.domain.dto.PointDto;
-import com.sion.concertbooking.domain.dto.PointHistoryDto;
+import com.sion.concertbooking.domain.entity.Point;
+import com.sion.concertbooking.domain.entity.PointHistory;
 import com.sion.concertbooking.domain.service.PaymentCharger;
 import com.sion.concertbooking.domain.service.PointHistoryService;
 import com.sion.concertbooking.domain.service.PointService;
@@ -30,12 +31,12 @@ public class PointCharger {
         paymentCharger.payment(amount);
 
         // 2. 포인트 충전 처리
-        PointDto chargedPoint = pointService.chargePoint(userId, amount);
+        Point chargedPoint = pointService.chargePoint(userId, amount);
 
         // 3. 포인트 충전 이력 저장
-        PointHistoryDto chargedPointHistory = pointHistoryService.chargePointHistory(chargedPoint.id(), amount);
+        PointHistory chargedPointHistory = pointHistoryService.chargePointHistory(chargedPoint.getId(), amount);
 
-        return chargedPoint;
+        return PointDto.fromEntity(chargedPoint);
     }
 
 }
