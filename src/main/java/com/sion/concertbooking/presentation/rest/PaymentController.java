@@ -1,9 +1,9 @@
 package com.sion.concertbooking.presentation.rest;
 
-import com.sion.concertbooking.domain.model.info.ReservationInfo;
+import com.sion.concertbooking.domain.info.ReservationInfo;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
-import com.sion.concertbooking.domain.model.info.PointInfo;
+import com.sion.concertbooking.domain.info.PointInfo;
 import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.presentation.response.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;

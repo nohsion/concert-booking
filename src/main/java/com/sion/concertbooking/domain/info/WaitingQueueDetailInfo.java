@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.dto;
+package com.sion.concertbooking.domain.info;
 
 public record WaitingQueueDetailInfo(
         String tokenId,

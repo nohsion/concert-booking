@@ -1,6 +1,6 @@
-package com.sion.concertbooking.domain.model.info;
+package com.sion.concertbooking.domain.info;
 
-import com.sion.concertbooking.domain.model.entity.Seat;
+import com.sion.concertbooking.domain.entity.Seat;
 import com.sion.concertbooking.domain.enums.SeatGrade;
 
 public record SeatInfo(

@@ -3,8 +3,9 @@ package com.sion.concertbooking.presentation.rest;
 import com.sion.concertbooking.application.PaymentType;
 import com.sion.concertbooking.application.PointCharger;
 import com.sion.concertbooking.application.PointDeductor;
-import com.sion.concertbooking.domain.model.info.PointInfo;
-import com.sion.concertbooking.presentation.response.PointResponse;
+import com.sion.concertbooking.application.result.PointResult;
+import com.sion.concertbooking.presentation.response.PointChargeResponse;
+import com.sion.concertbooking.presentation.response.PointUseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,7 +30,7 @@ public class PointController {
         this.pointDeductor = pointDeductor;
     }
 
-    private static final String TAG_NAME = "point";
+    private static final String TAG_NAME = "amount";
 
     @Operation(summary = "포인트 충전", description = "결제수단에 맞게 유저의 포인트를 충전한다.",
             tags = {TAG_NAME})
@@ -37,14 +38,14 @@ public class PointController {
             @ApiResponse(responseCode = "200", description = "포인트 충전 성공")
     })
     @PostMapping("/charge")
-    public ResponseEntity<PointResponse> chargePoint(
+    public ResponseEntity<PointChargeResponse> chargePoint(
             @RequestParam(value = "userId") long userId,
             @RequestParam(value = "amount") int amount,
             @RequestParam(value = "paymentType", defaultValue = "FREE") String paymentType
     ) {
-        PointInfo currentPoint = pointCharger.chargePoint(userId, amount, PaymentType.valueOf(paymentType));
+        PointResult.Charge pointChargeResult = pointCharger.chargePoint(userId, amount, PaymentType.valueOf(paymentType));
 
-        return ResponseEntity.ok(PointResponse.fromDto(currentPoint));
+        return ResponseEntity.ok(PointChargeResponse.fromResult(pointChargeResult));
     }
 
     @Operation(summary = "포인트 사용", description = "유저의 포인트를 사용한다.",
@@ -53,12 +54,12 @@ public class PointController {
             @ApiResponse(responseCode = "200", description = "포인트 사용 성공")
     })
     @PostMapping("/use")
-    public ResponseEntity<PointResponse> usePoint(
+    public ResponseEntity<PointUseResponse> usePoint(
             @RequestParam(value = "userId") long userId,
             @RequestParam(value = "amount") int amount
     ) {
-        PointInfo currentPoint = pointDeductor.usePoint(userId, amount);
+        PointResult.Use pointUseResult = pointDeductor.usePoint(userId, amount);
 
-        return ResponseEntity.ok(PointResponse.fromDto(currentPoint));
+        return ResponseEntity.ok(PointUseResponse.fromResult(pointUseResult));
     }
 }

@@ -1,6 +1,8 @@
 package com.sion.concertbooking.application;
 
-import com.sion.concertbooking.domain.model.info.PointInfo;
+import com.sion.concertbooking.application.result.PointResult;
+import com.sion.concertbooking.domain.info.PointHistoryInfo;
+import com.sion.concertbooking.domain.info.PointInfo;
 import com.sion.concertbooking.domain.service.PointHistoryService;
 import com.sion.concertbooking.domain.service.PointService;
 import org.springframework.stereotype.Component;
@@ -18,11 +20,15 @@ public class PointDeductor {
     }
 
     @Transactional
-    public PointInfo usePoint(long userId, int amount) {
+    public PointResult.Use usePoint(long userId, int amount) {
         // 1. 포인트 사용
         long usedPointId = pointService.usePoint(userId, amount);
         // 2. 포인트 사용 이력 저장
         long usedPointHistoryId = pointHistoryService.usePointHistory(usedPointId, amount);
-        return pointService.getPointByUserId(userId);
+
+        PointInfo savedPoint = pointService.getPointById(usedPointId);
+        PointHistoryInfo savedPointHistory = pointHistoryService.getPointHistoryById(usedPointHistoryId);
+
+        return PointResult.Use.of(savedPoint, savedPointHistory);
     }
 }

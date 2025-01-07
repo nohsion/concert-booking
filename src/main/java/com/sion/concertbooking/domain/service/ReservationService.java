@@ -1,8 +1,8 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.dto.command.ReservationCreateDto;
-import com.sion.concertbooking.domain.model.entity.Reservation;
-import com.sion.concertbooking.domain.model.info.ReservationInfo;
+import com.sion.concertbooking.domain.command.ReservationCreateCommand;
+import com.sion.concertbooking.domain.entity.Reservation;
+import com.sion.concertbooking.domain.info.ReservationInfo;
 import com.sion.concertbooking.domain.repository.ReservationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +29,8 @@ public class ReservationService {
     }
 
     @Transactional
-    public List<ReservationInfo> createReservations(ReservationCreateDto createDto) {
-        List<ReservationCreateDto.SeatCreateDto> seats = createDto.getSeats();
+    public List<ReservationInfo> createReservations(ReservationCreateCommand createDto) {
+        List<ReservationCreateCommand.SeatCreateCommand> seats = createDto.getSeats();
         List<Reservation> reservations = seats.stream()
                 .map(seat -> Reservation.of(
                         createDto.getUserId(),

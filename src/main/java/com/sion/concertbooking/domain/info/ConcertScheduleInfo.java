@@ -1,6 +1,6 @@
-package com.sion.concertbooking.domain.model.info;
+package com.sion.concertbooking.domain.info;
 
-import com.sion.concertbooking.domain.model.entity.ConcertSchedule;
+import com.sion.concertbooking.domain.entity.ConcertSchedule;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,6 @@
 package com.sion.concertbooking.infrastructure.repository;
 
-import com.sion.concertbooking.domain.model.entity.WaitingQueue;
+import com.sion.concertbooking.domain.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
 import com.sion.concertbooking.test.TestDataCleaner;

@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.model.entity;
+package com.sion.concertbooking.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "point")
+@Table(name = "amount")
 public class Point extends BaseEntity {
 
     private static final long USER_MAX_POINT = 100_000_000L;

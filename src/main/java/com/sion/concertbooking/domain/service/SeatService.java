@@ -1,7 +1,7 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.model.entity.Seat;
-import com.sion.concertbooking.domain.model.info.SeatInfo;
+import com.sion.concertbooking.domain.entity.Seat;
+import com.sion.concertbooking.domain.info.SeatInfo;
 import com.sion.concertbooking.domain.repository.SeatRepository;
 import org.springframework.stereotype.Service;
 

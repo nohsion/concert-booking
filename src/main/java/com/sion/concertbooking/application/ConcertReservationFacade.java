@@ -1,10 +1,11 @@
 package com.sion.concertbooking.application;
 
-import com.sion.concertbooking.domain.dto.command.ReservationCreateDto;
-import com.sion.concertbooking.domain.model.info.ConcertInfo;
-import com.sion.concertbooking.domain.model.info.ConcertScheduleInfo;
-import com.sion.concertbooking.domain.model.info.ReservationInfo;
-import com.sion.concertbooking.domain.model.info.SeatInfo;
+import com.sion.concertbooking.application.result.ReservationResult;
+import com.sion.concertbooking.domain.command.ReservationCreateCommand;
+import com.sion.concertbooking.domain.info.ConcertInfo;
+import com.sion.concertbooking.domain.info.ConcertScheduleInfo;
+import com.sion.concertbooking.domain.info.ReservationInfo;
+import com.sion.concertbooking.domain.info.SeatInfo;
 import com.sion.concertbooking.domain.service.ConcertScheduleService;
 import com.sion.concertbooking.domain.service.ConcertService;
 import com.sion.concertbooking.domain.service.ReservationService;
@@ -37,7 +38,7 @@ public class ConcertReservationFacade {
     }
 
     @Transactional
-    public List<ReservationInfo> reserve(long userId, ConcertReservationCreateRequest concertReservationCreateRequest) {
+    public List<ReservationResult> reserve(long userId, ConcertReservationCreateRequest concertReservationCreateRequest) {
         LocalDateTime now = LocalDateTime.now();
         long concertId = concertReservationCreateRequest.concertId();
         long concertScheduleId = concertReservationCreateRequest.concertScheduleId();
@@ -55,10 +56,10 @@ public class ConcertReservationFacade {
         }
 
         // 2. 좌석 정보를 가져온다.
-        List<ReservationCreateDto.SeatCreateDto> seatCreateDtos = seatIds.stream()
+        List<ReservationCreateCommand.SeatCreateCommand> seatCreateCommands = seatIds.stream()
                 .map(seatId -> {
                     SeatInfo seat = seatService.getSeatById(seatId);
-                    return new ReservationCreateDto.SeatCreateDto(
+                    return new ReservationCreateCommand.SeatCreateCommand(
                             seatId,
                             seat.seatNum(),
                             seat.seatGrade(),
@@ -68,17 +69,19 @@ public class ConcertReservationFacade {
                 .toList();
 
         // 3. 예약된 좌석이 없다면, 해당 좌석들을 예약한다.
-        ReservationCreateDto reservationCreateDto = ReservationCreateDto.builder()
+        ReservationCreateCommand reservationCreateCommand = ReservationCreateCommand.builder()
                 .userId(userId)
                 .concertId(concertId)
                 .concertTitle(concert.concertTitle())
                 .concertScheduleId(concertScheduleId)
                 .playDateTime(concertSchedule.playDateTime())
                 .now(now)
-                .seats(seatCreateDtos)
+                .seats(seatCreateCommands)
                 .build();
 
-        List<ReservationInfo> reservations = reservationService.createReservations(reservationCreateDto);
-        return reservations; // todo: Facade용 반환 DTO로 변경하자. (XXResult)
+        List<ReservationInfo> reservations = reservationService.createReservations(reservationCreateCommand);
+        return reservations.stream()
+                .map(ReservationResult::fromInfo)
+                .toList();
     }
 }

@@ -2,7 +2,7 @@ package com.sion.concertbooking.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
+import com.sion.concertbooking.domain.info.WaitingQueueInfo;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.dto.command;
+package com.sion.concertbooking.domain.command;
 
 import com.sion.concertbooking.domain.enums.SeatGrade;
 import lombok.AllArgsConstructor;
@@ -13,23 +13,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ReservationCreateDto {
+public class ReservationCreateCommand {
     private long userId;
     private long concertId;
     private String concertTitle;
     private long concertScheduleId;
     private LocalDateTime playDateTime;
     private LocalDateTime now;
-    private List<SeatCreateDto> seats;
+    private List<SeatCreateCommand> seats;
 
     @Getter
-    public static class SeatCreateDto {
+    public static class SeatCreateCommand {
         long seatId;
         int seatNum;
         SeatGrade seatGrade;
         int seatPrice;
 
-        public SeatCreateDto(long seatId, int seatNum, SeatGrade seatGrade, int seatPrice) {
+        public SeatCreateCommand(long seatId, int seatNum, SeatGrade seatGrade, int seatPrice) {
             this.seatId = seatId;
             this.seatNum = seatNum;
             this.seatGrade = seatGrade;

@@ -1,10 +1,13 @@
 package com.sion.concertbooking.application;
 
-import com.sion.concertbooking.domain.model.info.PointInfo;
+import com.sion.concertbooking.application.result.PointResult;
+import com.sion.concertbooking.domain.info.PointHistoryInfo;
+import com.sion.concertbooking.domain.info.PointInfo;
 import com.sion.concertbooking.domain.service.PaymentCharger;
 import com.sion.concertbooking.domain.service.PointHistoryService;
 import com.sion.concertbooking.domain.service.PointService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class PointCharger {
@@ -23,7 +26,8 @@ public class PointCharger {
         this.pointChargerResolver = pointChargerResolver;
     }
 
-    public PointInfo chargePoint(long userId, int amount, PaymentType paymentType) {
+    @Transactional
+    public PointResult.Charge chargePoint(long userId, int amount, PaymentType paymentType) {
         // 1. 외부 결제수단 결제 처리
         PaymentCharger paymentCharger = pointChargerResolver.resolve(paymentType);
         paymentCharger.payment(amount);
@@ -34,7 +38,9 @@ public class PointCharger {
         // 3. 포인트 충전 이력 저장
         long chargedPointHistoryId = pointHistoryService.chargePointHistory(chargedPointId, amount);
 
-        return pointService.getPointByUserId(userId); // todo: facade용 DTO로 변환 (포인트+이력)
+        PointInfo savedPoint = pointService.getPointById(chargedPointId);
+        PointHistoryInfo savedPointHistory = pointHistoryService.getPointHistoryById(chargedPointHistoryId);
+        return PointResult.Charge.of(savedPoint, savedPointHistory, paymentType);
     }
 
 }

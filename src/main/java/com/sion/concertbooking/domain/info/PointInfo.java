@@ -1,13 +1,13 @@
-package com.sion.concertbooking.domain.model.info;
+package com.sion.concertbooking.domain.info;
 
-import com.sion.concertbooking.domain.model.entity.Point;
+import com.sion.concertbooking.domain.entity.Point;
 
 import java.time.LocalDateTime;
 
 public record PointInfo(
         long id,
         long userId,
-        int point,
+        int amount,
         LocalDateTime updatedAt
 ) {
     public static PointInfo fromEntity(Point point) {

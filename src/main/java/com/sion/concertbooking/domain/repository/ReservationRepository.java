@@ -1,6 +1,6 @@
 package com.sion.concertbooking.domain.repository;
 
-import com.sion.concertbooking.domain.model.entity.Reservation;
+import com.sion.concertbooking.domain.entity.Reservation;
 
 import java.util.List;
 

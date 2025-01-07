@@ -1,7 +1,7 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.model.entity.ConcertSchedule;
-import com.sion.concertbooking.domain.model.info.ConcertScheduleInfo;
+import com.sion.concertbooking.domain.entity.ConcertSchedule;
+import com.sion.concertbooking.domain.info.ConcertScheduleInfo;
 import com.sion.concertbooking.domain.repository.ConcertScheduleRepository;
 import org.springframework.stereotype.Service;
 

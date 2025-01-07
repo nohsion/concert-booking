@@ -1,9 +1,9 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.dto.command.ReservationCreateDto;
-import com.sion.concertbooking.domain.model.entity.Reservation;
+import com.sion.concertbooking.domain.command.ReservationCreateCommand;
+import com.sion.concertbooking.domain.entity.Reservation;
 import com.sion.concertbooking.domain.enums.ReservationStatus;
-import com.sion.concertbooking.domain.model.info.ReservationInfo;
+import com.sion.concertbooking.domain.info.ReservationInfo;
 import com.sion.concertbooking.domain.repository.ReservationRepository;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -171,10 +171,10 @@ class ReservationServiceTest {
         String concertTitle = "지킬앤하이드 28주년";
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
                 .create();
-        List<ReservationCreateDto.SeatCreateDto> seats = Instancio.ofList(ReservationCreateDto.SeatCreateDto.class)
+        List<ReservationCreateCommand.SeatCreateCommand> seats = Instancio.ofList(ReservationCreateCommand.SeatCreateCommand.class)
                 .size(3)
                 .create();
-        ReservationCreateDto reservationCreateDto = ReservationCreateDto.builder()
+        ReservationCreateCommand reservationCreateCommand = ReservationCreateCommand.builder()
                 .userId(userId)
                 .concertId(concertId)
                 .concertTitle(concertTitle)
@@ -188,7 +188,7 @@ class ReservationServiceTest {
                 .thenReturn(reservations);
 
         // when
-        List<ReservationInfo> savedReservations = sut.createReservations(reservationCreateDto);
+        List<ReservationInfo> savedReservations = sut.createReservations(reservationCreateCommand);
 
         // then
         assertThat(savedReservations).hasSize(3);

@@ -1,6 +1,6 @@
 package com.sion.concertbooking.infrastructure.aspect;
 
-import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
+import com.sion.concertbooking.domain.info.WaitingQueueInfo;
 import com.sion.concertbooking.domain.service.TokenProvider;
 import com.sion.concertbooking.domain.service.WaitingQueueService;
 import jakarta.servlet.http.HttpServletRequest;

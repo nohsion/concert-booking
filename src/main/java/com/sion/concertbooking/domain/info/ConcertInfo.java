@@ -1,6 +1,6 @@
-package com.sion.concertbooking.domain.model.info;
+package com.sion.concertbooking.domain.info;
 
-import com.sion.concertbooking.domain.model.entity.Concert;
+import com.sion.concertbooking.domain.entity.Concert;
 
 public record ConcertInfo(
         long concertId,

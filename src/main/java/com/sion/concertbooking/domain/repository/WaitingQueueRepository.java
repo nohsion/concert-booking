@@ -1,6 +1,6 @@
 package com.sion.concertbooking.domain.repository;
 
-import com.sion.concertbooking.domain.model.entity.WaitingQueue;
+import com.sion.concertbooking.domain.entity.WaitingQueue;
 
 import java.time.LocalDateTime;
 import java.util.List;

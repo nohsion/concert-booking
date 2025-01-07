@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.model.entity;
+package com.sion.concertbooking.domain.entity;
 
 import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;

@@ -1,7 +1,7 @@
-package com.sion.concertbooking.domain.model.info;
+package com.sion.concertbooking.domain.info;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.model.entity.WaitingQueue;
+import com.sion.concertbooking.domain.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.model.entity;
+package com.sion.concertbooking.domain.entity;
 
 import com.sion.concertbooking.domain.enums.TransactionType;
 import jakarta.persistence.*;

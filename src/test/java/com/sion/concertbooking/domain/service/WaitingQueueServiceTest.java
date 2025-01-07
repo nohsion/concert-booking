@@ -1,8 +1,8 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
-import com.sion.concertbooking.domain.dto.WaitingQueueDetailInfo;
-import com.sion.concertbooking.domain.model.entity.WaitingQueue;
+import com.sion.concertbooking.domain.info.WaitingQueueInfo;
+import com.sion.concertbooking.domain.info.WaitingQueueDetailInfo;
+import com.sion.concertbooking.domain.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
 import org.instancio.Instancio;

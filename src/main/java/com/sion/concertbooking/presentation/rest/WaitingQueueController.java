@@ -1,7 +1,7 @@
 package com.sion.concertbooking.presentation.rest;
 
-import com.sion.concertbooking.domain.model.info.WaitingQueueInfo;
-import com.sion.concertbooking.domain.dto.WaitingQueueDetailInfo;
+import com.sion.concertbooking.domain.info.WaitingQueueInfo;
+import com.sion.concertbooking.domain.info.WaitingQueueDetailInfo;
 import com.sion.concertbooking.domain.service.WaitingQueueService;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
@@ -66,6 +66,6 @@ public class WaitingQueueController {
         TokenInfo tokenInfo = TokenUtils.getTokenInfo();
         String tokenId = tokenInfo.tokenId();
         WaitingQueueDetailInfo waitingQueueDetailInfo = waitingQueueService.getQueueInfoByTokenId(tokenId);
-        return ResponseEntity.ok(WaitingQueueInfoResponse.fromDto(waitingQueueDetailInfo));
+        return ResponseEntity.ok(WaitingQueueInfoResponse.fromInfo(waitingQueueDetailInfo));
     }
 }
