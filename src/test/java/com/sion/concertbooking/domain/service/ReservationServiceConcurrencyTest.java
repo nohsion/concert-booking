@@ -5,6 +5,7 @@ import com.sion.concertbooking.domain.entity.Concert;
 import com.sion.concertbooking.domain.entity.ConcertSchedule;
 import com.sion.concertbooking.domain.entity.Reservation;
 import com.sion.concertbooking.domain.entity.Seat;
+import com.sion.concertbooking.domain.enums.ReservationStatus;
 import com.sion.concertbooking.domain.enums.SeatGrade;
 import com.sion.concertbooking.domain.repository.ConcertRepository;
 import com.sion.concertbooking.domain.repository.ConcertScheduleRepository;
@@ -128,10 +129,13 @@ class ReservationServiceConcurrencyTest {
 
         List<Reservation> allReservations = reservationJpaRepository.findAll();
         assertThat(allReservations)
-                .as("오직 유저 한명이 시도한 좌석 2개에 대한 예약만 생성되어야 한다.")
+                .as("오직 유저 한명이 시도한 좌석 2개에 대한 예약만 생성되어야 하고 초기상태는 SUSPEND여야 한다.")
                 .hasSize(2);
         assertThat(allReservations.get(0).getUserId())
                 .isEqualTo(allReservations.get(1).getUserId());
+        allReservations.forEach(reservation -> {
+            assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.SUSPEND);
+        });
     }
 
     private Concert createConcert() {
