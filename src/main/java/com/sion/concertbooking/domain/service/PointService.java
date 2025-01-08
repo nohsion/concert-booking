@@ -19,7 +19,7 @@ public class PointService {
     public long chargePoint(long userId, int amount) {
         Point point = pointRepository.findByUserId(userId);
         if (point == null) {
-            throw new IllegalArgumentException("존재하지 않는 유저입니다.");
+            throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
         }
         point.chargePoint(amount);
         return point.getId();
@@ -29,7 +29,7 @@ public class PointService {
     public long usePoint(long userId, int amount) {
         Point point = pointRepository.findByUserId(userId);
         if (point == null) {
-            throw new IllegalArgumentException("존재하지 않는 유저입니다.");
+            throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
         }
         point.usePoint(amount);
         return point.getId();
@@ -38,6 +38,14 @@ public class PointService {
     public PointInfo getPointById(long pointId) {
         Point point = pointRepository.findById(pointId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포인트입니다."));
+        return PointInfo.fromEntity(point);
+    }
+
+    public PointInfo getPointByUserId(long userId) {
+        Point point = pointRepository.findByUserId(userId);
+        if (point == null) {
+            throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
+        }
         return PointInfo.fromEntity(point);
     }
 

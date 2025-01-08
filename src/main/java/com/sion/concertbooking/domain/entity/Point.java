@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "amount")
+@Table(name = "point")
 public class Point extends BaseEntity {
 
     private static final long USER_MAX_POINT = 100_000_000L;
