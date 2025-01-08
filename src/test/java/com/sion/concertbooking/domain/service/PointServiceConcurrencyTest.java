@@ -1,7 +1,6 @@
-package com.sion.concertbooking.integrationtest.concurrency;
+package com.sion.concertbooking.domain.service;
 
 import com.sion.concertbooking.domain.info.PointInfo;
-import com.sion.concertbooking.domain.service.PointService;
 import com.sion.concertbooking.test.TestDataCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

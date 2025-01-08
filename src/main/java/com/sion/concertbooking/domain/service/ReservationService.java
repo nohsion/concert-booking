@@ -21,8 +21,9 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
+    @Transactional
     public boolean isReservedSeat(long concertScheduleId, long seatId, LocalDateTime now) {
-        return reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId)
+        return reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId)
                 .stream()
                 // 예약완료 혹은 결제대기 중인 예약이 하나라도 있는지 확인
                 .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));
@@ -48,16 +49,31 @@ public class ReservationService {
     }
 
     @Transactional
-    public List<ReservationInfo> createReservations(ReservationCreateCommand createDto) {
-        List<ReservationCreateCommand.SeatCreateCommand> seats = createDto.getSeats();
+    public List<ReservationInfo> createReservations(ReservationCreateCommand command) {
+        LocalDateTime now = command.getNow();
+        long concertScheduleId = command.getConcertScheduleId();
+        List<ReservationCreateCommand.SeatCreateCommand> seats = command.getSeats();
+
+        // 1. 예약된 좌석이 없는지 확인한다.
+        for (ReservationCreateCommand.SeatCreateCommand seat : seats) {
+            boolean isReserved = reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seat.getSeatId())
+                    .stream()
+                    // 예약완료 혹은 결제대기 중인 예약이 하나라도 있는지 확인
+                    .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));
+            if (isReserved) {
+                throw new IllegalArgumentException("이미 예약중인 좌석입니다.");
+            }
+        }
+
+        // 2. 모든 좌석에 대해 예약을 생성한다.
         List<Reservation> reservations = seats.stream()
-                .map(seat -> Reservation.of(
-                        createDto.getUserId(),
-                        createDto.getConcertId(),
-                        createDto.getConcertTitle(),
-                        createDto.getConcertScheduleId(),
-                        createDto.getPlayDateTime(),
-                        createDto.getNow(),
+                .map(seat -> Reservation.createReservation(
+                        command.getUserId(),
+                        command.getConcertId(),
+                        command.getConcertTitle(),
+                        command.getConcertScheduleId(),
+                        command.getPlayDateTime(),
+                        command.getNow(),
                         seat.getSeatId(),
                         seat.getSeatNum(),
                         seat.getSeatGrade(),

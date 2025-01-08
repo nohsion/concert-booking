@@ -39,7 +39,7 @@ class ReservationServiceTest {
         long seatId = 1L;
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId))
                 .thenReturn(List.of());
 
         // when
@@ -60,7 +60,7 @@ class ReservationServiceTest {
                 .set(field(Reservation::getStatus), ReservationStatus.CANCEL)
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId))
                 .thenReturn(reservations);
 
         // when
@@ -81,7 +81,7 @@ class ReservationServiceTest {
                 .set(field(Reservation::getStatus), ReservationStatus.SUCCESS)
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId))
                 .thenReturn(reservations);
 
         // when
@@ -103,7 +103,7 @@ class ReservationServiceTest {
                 .set(field(Reservation::getExpiredAt), now.plusMinutes(3)) // 아직 만료되지 않음
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId))
                 .thenReturn(reservations);
 
         // when
@@ -125,7 +125,7 @@ class ReservationServiceTest {
                 .set(field(Reservation::getExpiredAt), now.minusMinutes(3)) // 만료됨
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId))
                 .thenReturn(reservations);
 
         // when
@@ -152,7 +152,7 @@ class ReservationServiceTest {
         mixedReservations.addAll(successReservations);
         mixedReservations.addAll(cancelReservations);
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId))
                 .thenReturn(mixedReservations);
 
         // when
