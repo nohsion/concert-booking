@@ -16,23 +16,23 @@ public class PointService {
     }
 
     @Transactional
-    public long chargePoint(long userId, int amount) {
+    public PointInfo chargePoint(long userId, int amount) {
         Point point = pointRepository.findByUserIdWithLock(userId);
         if (point == null) {
             throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
         }
         point.chargePoint(amount);
-        return point.getId();
+        return PointInfo.fromEntity(point);
     }
 
     @Transactional
-    public long usePoint(long userId, int amount) {
+    public PointInfo usePoint(long userId, int amount) {
         Point point = pointRepository.findByUserIdWithLock(userId);
         if (point == null) {
             throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
         }
         point.usePoint(amount);
-        return point.getId();
+        return PointInfo.fromEntity(point);
     }
 
     public PointInfo getPointById(long pointId) {
