@@ -17,7 +17,7 @@ public class PointService {
 
     @Transactional
     public long chargePoint(long userId, int amount) {
-        Point point = pointRepository.findByUserId(userId);
+        Point point = pointRepository.findByUserIdWithLock(userId);
         if (point == null) {
             throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
         }
@@ -27,7 +27,7 @@ public class PointService {
 
     @Transactional
     public long usePoint(long userId, int amount) {
-        Point point = pointRepository.findByUserId(userId);
+        Point point = pointRepository.findByUserIdWithLock(userId);
         if (point == null) {
             throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
         }
@@ -47,6 +47,13 @@ public class PointService {
             throw new IllegalArgumentException("존재하지 않는 포인트입니다.");
         }
         return PointInfo.fromEntity(point);
+    }
+
+    @Transactional
+    public PointInfo createPoint(long userId) {
+        Point pointWallet = Point.createWallet(userId);
+        Point savedPoint = pointRepository.save(pointWallet);
+        return PointInfo.fromEntity(savedPoint);
     }
 
 }
