@@ -34,47 +34,88 @@ class WaitingQueueCoreRepositoryTest {
         testDataCleaner.cleanUp();
     }
 
-    @DisplayName("현재 대기중이면서 만료되지 않은 WaitingQueue만 조회한다.")
+    @DisplayName("현재 WAITING 상태인 WaitingQueue만 조회한다.")
     @Test
-    void findWaitingQueueTest() {
+    void findWaitingQueueStatusWaitingTest() {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
         List<WaitingQueue> waitingQueues = Instancio.ofList(WaitingQueue.class).size(3)
                 .set(field(WaitingQueue::getId), null)
                 .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
-                .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(5))
+                .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(5)) // 만료시간이 지나지 않음
                 .create();
         List<WaitingQueue> enteredQueues = Instancio.ofList(WaitingQueue.class).size(2)
                 .set(field(WaitingQueue::getId), null)
                 .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
                 .create();
+        List<WaitingQueue> expiredQueues = Instancio.ofList(WaitingQueue.class).size(2)
+                .set(field(WaitingQueue::getId), null)
+                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.EXPIRED)
+                .create();
         waitingQueueJpaRepository.saveAll(waitingQueues);
         waitingQueueJpaRepository.saveAll(enteredQueues);
+        waitingQueueJpaRepository.saveAll(expiredQueues);
 
         // when
-        List<WaitingQueue> result = waitingQueueRepository.findWaitingQueue(now);
+        List<WaitingQueue> result = waitingQueueRepository.getWaitingStatusTokens();
 
         // then
         assertThat(result).hasSize(3);
     }
 
-    @DisplayName("현재 대기중이지만 만료된 WaitingQueue는 조회하지 않는다.")
+    @DisplayName("만료시간과 상관없이 WAITING 상태인 모든 WaitingQueue를 조회한다.") // 만료시간 체크는 Domain에서 처리한다.
     @Test
-    void findWaitingQueueExpiredTest() {
+    void findWaitingQueueStatusWaitingButExpiredTimeTest() {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
         List<WaitingQueue> waitingQueues = Instancio.ofList(WaitingQueue.class).size(3)
                 .set(field(WaitingQueue::getId), null)
                 .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
-                .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(5))
+                .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(5)) // 만료시간이 지남
                 .create();
+        List<WaitingQueue> enteredQueues = Instancio.ofList(WaitingQueue.class).size(2)
+                .set(field(WaitingQueue::getId), null)
+                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .create();
+        List<WaitingQueue> expiredQueues = Instancio.ofList(WaitingQueue.class).size(2)
+                .set(field(WaitingQueue::getId), null)
+                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.EXPIRED)
+                .create();
+        waitingQueueJpaRepository.saveAll(waitingQueues);
+        waitingQueueJpaRepository.saveAll(enteredQueues);
+        waitingQueueJpaRepository.saveAll(expiredQueues);
+
+        // when
+        List<WaitingQueue> result = waitingQueueRepository.getWaitingStatusTokens();
+
+        // then
+        assertThat(result).hasSize(3);
+    }
+
+    @DisplayName("100개의 WaitingQueue의 상태를 일괄 업데이트시킨다.")
+    @Test
+    void updateStatusInBatchSuccess() {
+        // given
+        LocalDateTime now = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+        List<WaitingQueue> waitingQueues = Instancio.ofList(WaitingQueue.class).size(100)
+                .set(field(WaitingQueue::getId), null)
+                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(5)) // 만료시간이 지나지 않음
+                .create();
+
+        List<String> tokens = waitingQueues.stream().map(WaitingQueue::getTokenId).toList();
+
         waitingQueueJpaRepository.saveAll(waitingQueues);
 
         // when
-        List<WaitingQueue> result = waitingQueueRepository.findWaitingQueue(now);
+        int successCount = waitingQueueRepository.updateStatusInBatch(tokens, WaitingQueueStatus.ENTERED);
 
         // then
-        assertThat(result).isEmpty();
+        assertThat(successCount).isEqualTo(100);
+
+        List<WaitingQueue> savedResult = waitingQueueJpaRepository.findAll();
+        assertThat(savedResult).hasSize(100)
+                .allMatch(waitingQueue -> waitingQueue.getStatus() == WaitingQueueStatus.ENTERED);
     }
 
 }

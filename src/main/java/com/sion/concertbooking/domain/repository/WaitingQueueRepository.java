@@ -1,8 +1,8 @@
 package com.sion.concertbooking.domain.repository;
 
 import com.sion.concertbooking.domain.entity.WaitingQueue;
+import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface WaitingQueueRepository {
@@ -11,5 +11,7 @@ public interface WaitingQueueRepository {
 
     WaitingQueue findByTokenId(String tokenId);
 
-    List<WaitingQueue> findWaitingQueue(LocalDateTime now);
+    List<WaitingQueue> getWaitingStatusTokens();
+
+    int updateStatusInBatch(List<String> tokens, WaitingQueueStatus status);
 }

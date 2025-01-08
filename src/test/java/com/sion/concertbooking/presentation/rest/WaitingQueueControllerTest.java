@@ -81,7 +81,7 @@ class WaitingQueueControllerTest {
         TokenInfo tokenInfo = new TokenInfo(tokenId, 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());
 
         // when
-        when(waitingQueueService.getQueueInfoByTokenId(tokenId))
+        when(waitingQueueService.getQueueDetailByTokenId(eq(tokenId), any(LocalDateTime.class)))
                 .thenReturn(new WaitingQueueDetailInfo(tokenId, remainingWaitingOrder, remainingWaitingSec));
 
         // then

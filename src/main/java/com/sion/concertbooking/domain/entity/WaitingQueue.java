@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,6 +16,9 @@ import java.time.LocalDateTime;
 public class WaitingQueue extends BaseEntity {
 
     private static final int EXPIRED_MINUTES = 10;
+    private static final List<WaitingQueueStatus> VALID_STATUSES = List.of(
+            WaitingQueueStatus.WAITING, WaitingQueueStatus.ENTERED
+    );
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,15 +51,19 @@ public class WaitingQueue extends BaseEntity {
         return waitingQueue;
     }
 
-    public boolean isExpired(LocalDateTime now) {
-        return expiredAt.isBefore(now);
-    }
-
-    public void markExpired() {
+    public void updateStatusExpired() {
         this.status = WaitingQueueStatus.EXPIRED;
     }
 
+    public boolean isExpiredTime(LocalDateTime now) {
+        return this.expiredAt.isBefore(now);
+    }
+
     public boolean isTokenValid(LocalDateTime now) {
-        return this.status == WaitingQueueStatus.ENTERED && !isExpired(now);
+        return !isExpiredTime(now) && VALID_STATUSES.contains(this.status);
+    }
+
+    public boolean isEntered(LocalDateTime now) {
+        return !isExpiredTime(now) && this.status == WaitingQueueStatus.ENTERED;
     }
 }

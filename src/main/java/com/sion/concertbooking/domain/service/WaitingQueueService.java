@@ -44,9 +44,9 @@ public class WaitingQueueService {
     }
 
     @Transactional
-    public WaitingQueueDetailInfo getQueueInfoByTokenId(String tokenId) {
+    public WaitingQueueDetailInfo getQueueDetailByTokenId(String tokenId, LocalDateTime now) {
         WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
-        if (waitingQueue == null) {
+        if (waitingQueue == null || !waitingQueue.isTokenValid(now)) {
             throw new IllegalArgumentException("Invalid token");
         }
         // 입장한 경우
@@ -54,7 +54,9 @@ public class WaitingQueueService {
             return new WaitingQueueDetailInfo(waitingQueue.getTokenId(), 0, 0);
         }
         // 대기중인 경우
-        List<WaitingQueue> waitingQueues = waitingQueueRepository.findWaitingQueue(LocalDateTime.now());
+        List<WaitingQueue> waitingQueues = waitingQueueRepository.getWaitingStatusTokens().stream()
+                .filter(queue -> !queue.isExpiredTime(now))
+                .toList();
         int remainingWaitingOrder = waitingQueues.indexOf(waitingQueue) + 1;
         int remainingTimeSec = 10; // TODO: 남은 대기 시간 계산.. 10초로 임시 설정
 
@@ -75,6 +77,46 @@ public class WaitingQueueService {
         if (waitingQueue == null) {
             throw new IllegalArgumentException("Invalid token");
         }
-        waitingQueue.markExpired();
+        waitingQueue.updateStatusExpired();
+    }
+
+    /**
+     * 현재 시간 기준으로 대기중인 토큰들을 반환한다.
+     */
+    public List<WaitingQueueInfo> getWaitingTokens(LocalDateTime now) {
+        return waitingQueueRepository.getWaitingStatusTokens().stream()
+                .filter(queue -> !queue.isExpiredTime(now))
+                .map(WaitingQueueInfo::fromEntity)
+                .toList();
+    }
+
+    /**
+     * 현재 시간 기준으로 만료 처리시켜야 할 토큰들을 반환한다.
+     */
+    public List<WaitingQueueInfo> getWaitingTokensToExpire(LocalDateTime now) {
+        return waitingQueueRepository.getWaitingStatusTokens().stream()
+                .filter(queue -> queue.isExpiredTime(now))
+                .map(WaitingQueueInfo::fromEntity)
+                .toList();
+    }
+
+    /**
+     * 현재 시간 기준으로 입장된 토큰들을 반환한다.
+     */
+    public List<WaitingQueueInfo> getEnteredTokens(LocalDateTime now) {
+        return waitingQueueRepository.getWaitingStatusTokens().stream()
+                .filter(queue -> queue.isEntered(now))
+                .map(WaitingQueueInfo::fromEntity)
+                .toList();
+    }
+
+    @Transactional
+    public int enterWaitingTokens(List<String> tokenIds) {
+        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueueStatus.ENTERED);
+    }
+
+    @Transactional
+    public int expireWaitingTokens(List<String> tokenIds) {
+        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueueStatus.EXPIRED);
     }
 }

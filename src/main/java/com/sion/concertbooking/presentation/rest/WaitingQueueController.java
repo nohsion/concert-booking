@@ -64,7 +64,8 @@ public class WaitingQueueController {
     public ResponseEntity<WaitingQueueInfoResponse> getQueueByToken() throws AuthenticationException {
         TokenInfo tokenInfo = TokenUtils.getTokenInfo();
         String tokenId = tokenInfo.tokenId();
-        WaitingQueueDetailInfo waitingQueueDetailInfo = waitingQueueService.getQueueInfoByTokenId(tokenId);
+        WaitingQueueDetailInfo waitingQueueDetailInfo =
+                waitingQueueService.getQueueDetailByTokenId(tokenId, LocalDateTime.now());
         return ResponseEntity.ok(WaitingQueueInfoResponse.fromInfo(waitingQueueDetailInfo));
     }
 }

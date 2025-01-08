@@ -4,8 +4,8 @@ import com.sion.concertbooking.domain.entity.WaitingQueue;
 import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
 import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -28,7 +28,16 @@ public class WaitingQueueCoreRepository implements WaitingQueueRepository {
     }
 
     @Override
-    public List<WaitingQueue> findWaitingQueue(LocalDateTime now) {
-        return waitingQueueJpaRepository.findByStatusAndExpiredAtBeforeOrderByIdAsc(WaitingQueueStatus.WAITING, now);
+    public List<WaitingQueue> getWaitingStatusTokens() {
+        return waitingQueueJpaRepository.findByStatusOrderById(WaitingQueueStatus.WAITING);
+    }
+
+    @Transactional
+    @Override
+    public int updateStatusInBatch(
+            final List<String> tokens,
+            final WaitingQueueStatus status
+    ) {
+        return waitingQueueJpaRepository.updateStatusInBatch(tokens, status);
     }
 }
