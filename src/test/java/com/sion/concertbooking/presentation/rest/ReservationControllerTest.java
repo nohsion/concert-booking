@@ -1,24 +1,29 @@
 package com.sion.concertbooking.presentation.rest;
 
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
-import com.sion.concertbooking.domain.seat.SeatGrade;
-import com.sion.concertbooking.presentation.request.ReservationCreateRequest;
-import com.sion.concertbooking.presentation.response.ReservationResponse;
+import com.sion.concertbooking.application.ConcertReservationFacade;
+import com.sion.concertbooking.application.result.ReservationResult;
+import com.sion.concertbooking.domain.enums.ReservationStatus;
+import com.sion.concertbooking.domain.enums.SeatGrade;
+import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
+import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
+import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -27,6 +32,9 @@ class ReservationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockitoBean
+    private ConcertReservationFacade concertReservationFacade;
 
     private final ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
 
@@ -37,39 +45,52 @@ class ReservationControllerTest {
         // given
         long concertId = 1L;
         long concertScheduleId = 1L;
+        long userId = 1L;
+        String concertTitle = "지킬앤하이드";
         List<Long> seatIds = List.of(10L, 11L);
         LocalDateTime playDateTime = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        ReservationCreateRequest reservationCreateRequest = new ReservationCreateRequest(concertId, concertScheduleId, seatIds);
-        String requestJson = mapper.writeValueAsString(reservationCreateRequest);
+        ConcertReservationCreateRequest concertReservationCreateRequest = new ConcertReservationCreateRequest(concertId, concertScheduleId, seatIds);
+        String requestJson = mapper.writeValueAsString(concertReservationCreateRequest);
+
+        List<ReservationResult> reservationResults = List.of(
+                new ReservationResult(1L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
+                        10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS),
+                new ReservationResult(2L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
+                        11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS)
+        );
+        when(concertReservationFacade.reserve(eq(userId), eq(concertReservationCreateRequest)))
+                .thenReturn(reservationResults);
+
+        TokenInfo tokenInfo = new TokenInfo("token-id", 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());
 
         // when
-        List<ReservationResponse> reservationResponses = List.of(
-                new ReservationResponse(
-                        1L, 1L, "아리아나그란데 내한", 1L, playDateTime,
-                        10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUSPEND
-                ),
-                new ReservationResponse(
-                        2L, 1L, "아리아나그란데 내한", 1L, playDateTime,
-                        11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUSPEND
-                )
-        );
-
-        TypeReference<List<ReservationResponse>> typeReference = new TypeReference<>() {
-        };
-
         // then
         mockMvc.perform(post("/api/v1/reservation")
-                        .queryParam("tokenId", "token-id")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestJson))
+                        .content(requestJson)
+                        .requestAttr("tokenInfo", tokenInfo)) // TokenInfo attribute 추가
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(result -> {
-                    String responseJson = result.getResponse().getContentAsString();
-                    List<ReservationResponse> actual = mapper.readValue(responseJson, typeReference);
-                    assertThat(actual).usingRecursiveComparison().isEqualTo(reservationResponses);
-                });
+                .andExpect(jsonPath("$[0].reservationId").value(1L))
+                .andExpect(jsonPath("$[0].concertScheduleId").value(concertScheduleId))
+                .andExpect(jsonPath("$[0].playDateTime").value(
+                        playDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                .andExpect(jsonPath("$[0].seatId").value(10L))
+                .andExpect(jsonPath("$[0].seatNum").value(10))
+                .andExpect(jsonPath("$[0].seatGrade").value(SeatGrade.VIP.name()))
+                .andExpect(jsonPath("$[0].seatPrice").value(100_000))
+                .andExpect(jsonPath("$[0].reservationStatus").value(ReservationStatus.SUCCESS.name()))
+                .andExpect(jsonPath("$[1].reservationId").value(2L))
+                .andExpect(jsonPath("$[1].concertScheduleId").value(concertScheduleId))
+                .andExpect(jsonPath("$[1].playDateTime").value(
+                        playDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                .andExpect(jsonPath("$[1].seatId").value(11L))
+                .andExpect(jsonPath("$[1].seatNum").value(11))
+                .andExpect(jsonPath("$[1].seatGrade").value(SeatGrade.VIP.name()))
+                .andExpect(jsonPath("$[1].seatPrice").value(100_000))
+                .andExpect(jsonPath("$[1].reservationStatus").value(ReservationStatus.SUCCESS.name()));
+
     }
 
 }
