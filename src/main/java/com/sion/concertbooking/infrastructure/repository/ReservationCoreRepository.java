@@ -20,6 +20,11 @@ public class ReservationCoreRepository implements ReservationRepository {
 
 
     @Override
+    public Reservation save(final Reservation reservation) {
+        return reservationJpaRepository.save(reservation);
+    }
+
+    @Override
     public List<Reservation> saveAll(List<Reservation> reservations) {
         return reservationJpaRepository.saveAll(reservations);
     }

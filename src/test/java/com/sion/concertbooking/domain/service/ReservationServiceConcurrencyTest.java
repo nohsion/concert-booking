@@ -68,6 +68,12 @@ class ReservationServiceConcurrencyTest {
         Seat seat1 = seatRepository.save(createSeat(1, SeatGrade.VIP, 170_000));
         Seat seat2 = seatRepository.save(createSeat(2, SeatGrade.VIP, 170_000));
 
+        // 초기 Reservation 데이터 수가 0이면 데드락이 발생하므로 초기 데이터를 넣어준다. (그런데 왜..??)
+        reservationJpaRepository.save(Instancio.of(Reservation.class)
+                .set(field(Reservation::getId), null)
+                .set(field(Reservation::getConcertScheduleId), concertSchedule.getId() + 1000)
+                .create());
+
         long concertId = concert.getId();
         long concertScheduleId = concertSchedule.getId();
         LocalDateTime now = LocalDateTime.of(2025, 1, 9, 1, 0);
@@ -94,38 +100,19 @@ class ReservationServiceConcurrencyTest {
         AtomicInteger failCount = new AtomicInteger(0);
 
         // when
-        executorService.submit(() -> {
-            try {
-                reservationService.createReservations(createCommandUser1);
-                successCount.incrementAndGet();
-            } catch (Exception e) {
-                logger.error("error", e);
-                failCount.incrementAndGet();
-            } finally {
-                latch.countDown();
-            }
-        });
-        executorService.submit(() -> {
-            try {
-                reservationService.createReservations(createCommandUser2);
-                successCount.incrementAndGet();
-            } catch (Exception e) {
-                logger.error("error", e);
-                failCount.incrementAndGet();
-            } finally {
-                latch.countDown();
-            }
-        });
-        executorService.submit(() -> {
-            try {
-                reservationService.createReservations(createCommandUser3);
-                successCount.incrementAndGet();
-            } catch (Exception e) {
-                logger.error("error", e);
-                failCount.incrementAndGet();
-            } finally {
-                latch.countDown();
-            }
+        List.of(createCommandUser1, createCommandUser2, createCommandUser3).forEach(command -> {
+            executorService.submit(() -> {
+                try {
+                    reservationService.createReservations(command);
+                    successCount.incrementAndGet();
+                } catch (Exception e) {
+                    assertThat(e).isInstanceOf(IllegalArgumentException.class)
+                            .hasMessage("이미 예약중인 좌석입니다.");
+                    failCount.incrementAndGet();
+                } finally {
+                    latch.countDown();
+                }
+            });
         });
         latch.await();
         executorService.shutdown();
@@ -135,6 +122,8 @@ class ReservationServiceConcurrencyTest {
         assertThat(failCount.get()).isEqualTo(2);
 
         List<Reservation> allReservations = reservationJpaRepository.findAll();
+        allReservations.removeFirst(); // 데드락 방지를 위한 초기 데이터는 제거한다.
+
         assertThat(allReservations)
                 .as("오직 유저 한명이 시도한 좌석 2개에 대한 예약만 생성되어야 하고 초기상태는 SUSPEND여야 한다.")
                 .hasSize(2);
