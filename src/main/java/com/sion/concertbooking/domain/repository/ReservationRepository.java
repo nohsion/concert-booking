@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ReservationRepository {
     List<Reservation> saveAll(List<Reservation> reservations);
 
-    List<Reservation> findByConcertScheduleIdAndSeatIdWithLock(long concertScheduleId, long seatId);
+    List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(long concertScheduleId, List<Long> seatIds);
 
     Optional<Reservation> findById(long reservationId);
 }

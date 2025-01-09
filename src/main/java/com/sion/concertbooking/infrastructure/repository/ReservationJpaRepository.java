@@ -14,9 +14,9 @@ import java.util.List;
 public interface ReservationJpaRepository extends JpaRepository<Reservation, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT r FROM Reservation r WHERE r.concertScheduleId = :concertScheduleId AND r.seatId = :seatId")
-    List<Reservation> findByConcertScheduleIdAndSeatIdWithLock(
+    @Query("SELECT r FROM Reservation r WHERE r.concertScheduleId = :concertScheduleId AND r.seatId IN :seatIds")
+    List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(
             @Param("concertScheduleId") long concertScheduleId,
-            @Param("seatId") long seatId
+            @Param("seatIds") List<Long> seatIds
     );
 }

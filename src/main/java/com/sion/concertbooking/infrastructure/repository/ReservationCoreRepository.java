@@ -25,8 +25,8 @@ public class ReservationCoreRepository implements ReservationRepository {
     }
 
     @Override
-    public List<Reservation> findByConcertScheduleIdAndSeatIdWithLock(final long concertScheduleId, final long seatId) {
-        return reservationJpaRepository.findByConcertScheduleIdAndSeatIdWithLock(concertScheduleId, seatId);
+    public List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(final long concertScheduleId, final List<Long> seatIds) {
+        return reservationJpaRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds);
     }
 
     @Override

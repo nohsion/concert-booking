@@ -16,6 +16,8 @@ import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -31,6 +33,8 @@ import static org.instancio.Select.field;
 
 @SpringBootTest
 class ReservationServiceConcurrencyTest {
+
+    Logger logger = LoggerFactory.getLogger(ReservationServiceConcurrencyTest.class);
 
     @Autowired
     ReservationService reservationService;
@@ -95,6 +99,7 @@ class ReservationServiceConcurrencyTest {
                 reservationService.createReservations(createCommandUser1);
                 successCount.incrementAndGet();
             } catch (Exception e) {
+                logger.error("error", e);
                 failCount.incrementAndGet();
             } finally {
                 latch.countDown();
@@ -105,6 +110,7 @@ class ReservationServiceConcurrencyTest {
                 reservationService.createReservations(createCommandUser2);
                 successCount.incrementAndGet();
             } catch (Exception e) {
+                logger.error("error", e);
                 failCount.incrementAndGet();
             } finally {
                 latch.countDown();
@@ -115,6 +121,7 @@ class ReservationServiceConcurrencyTest {
                 reservationService.createReservations(createCommandUser3);
                 successCount.incrementAndGet();
             } catch (Exception e) {
+                logger.error("error", e);
                 failCount.incrementAndGet();
             } finally {
                 latch.countDown();
