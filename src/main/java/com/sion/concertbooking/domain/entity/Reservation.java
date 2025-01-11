@@ -62,7 +62,7 @@ public class Reservation extends BaseEntity {
     @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
 
-    public static Reservation of(
+    public static Reservation createReservation(
             long userId,
             long concertId,
             String concertTitle,

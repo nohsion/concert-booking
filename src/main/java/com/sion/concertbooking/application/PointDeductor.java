@@ -22,13 +22,10 @@ public class PointDeductor {
     @Transactional
     public PointResult.Use usePoint(long userId, int amount) {
         // 1. 포인트 사용
-        long usedPointId = pointService.usePoint(userId, amount);
+        PointInfo pointInfo = pointService.usePoint(userId, amount);
         // 2. 포인트 사용 이력 저장
-        long usedPointHistoryId = pointHistoryService.usePointHistory(usedPointId, amount);
+        PointHistoryInfo pointHistoryInfo = pointHistoryService.usePointHistory(pointInfo.id(), amount);
 
-        PointInfo savedPoint = pointService.getPointById(usedPointId);
-        PointHistoryInfo savedPointHistory = pointHistoryService.getPointHistoryById(usedPointHistoryId);
-
-        return PointResult.Use.of(savedPoint, savedPointHistory);
+        return PointResult.Use.of(pointInfo, pointHistoryInfo);
     }
 }

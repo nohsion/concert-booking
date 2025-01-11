@@ -36,14 +36,14 @@ class ReservationServiceTest {
     void isReservedSeatFalseWhenReservationIsEmpty() {
         // given
         long concertScheduleId = 1L;
-        long seatId = 1L;
+        List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
                 .thenReturn(List.of());
 
         // when
-        boolean result = sut.isReservedSeat(concertScheduleId, seatId, now);
+        boolean result = sut.isReservedSeats(concertScheduleId, seatIds, now);
 
         // then
         assertThat(result).isFalse();
@@ -54,17 +54,17 @@ class ReservationServiceTest {
     void isReservedSeatFalseWhenAllReservationIsCanceled() {
         // given
         long concertScheduleId = 1L;
-        long seatId = 1L;
+        List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
                 .set(field(Reservation::getStatus), ReservationStatus.CANCEL)
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
                 .thenReturn(reservations);
 
         // when
-        boolean result = sut.isReservedSeat(concertScheduleId, seatId, now);
+        boolean result = sut.isReservedSeats(concertScheduleId, seatIds, now);
 
         // then
         assertThat(result).isFalse();
@@ -75,17 +75,17 @@ class ReservationServiceTest {
     void isReservedSeatTrueWhenAllReservationIsReserved() {
         // given
         long concertScheduleId = 1L;
-        long seatId = 1L;
+        List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
                 .set(field(Reservation::getStatus), ReservationStatus.SUCCESS)
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
                 .thenReturn(reservations);
 
         // when
-        boolean result = sut.isReservedSeat(concertScheduleId, seatId, now);
+        boolean result = sut.isReservedSeats(concertScheduleId, seatIds, now);
 
         // then
         assertThat(result).isTrue();
@@ -96,18 +96,18 @@ class ReservationServiceTest {
     void isReservedSeatTrueWhenAllReservationIsSuspend() {
         // given
         long concertScheduleId = 1L;
-        long seatId = 1L;
+        List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
                 .set(field(Reservation::getStatus), ReservationStatus.SUSPEND)
                 .set(field(Reservation::getExpiredAt), now.plusMinutes(3)) // 아직 만료되지 않음
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
                 .thenReturn(reservations);
 
         // when
-        boolean result = sut.isReservedSeat(concertScheduleId, seatId, now);
+        boolean result = sut.isReservedSeats(concertScheduleId, seatIds, now);
 
         // then
         assertThat(result).isTrue();
@@ -118,18 +118,18 @@ class ReservationServiceTest {
     void isReservedSeatFalseWhenAllReservationIsSuspendButExpired() {
         // given
         long concertScheduleId = 1L;
-        long seatId = 1L;
+        List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
                 .set(field(Reservation::getStatus), ReservationStatus.SUSPEND)
                 .set(field(Reservation::getExpiredAt), now.minusMinutes(3)) // 만료됨
                 .create();
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
                 .thenReturn(reservations);
 
         // when
-        boolean result = sut.isReservedSeat(concertScheduleId, seatId, now);
+        boolean result = sut.isReservedSeats(concertScheduleId, seatIds, now);
 
         // then
         assertThat(result).isFalse();
@@ -140,7 +140,7 @@ class ReservationServiceTest {
     void isReservedSeatTrueWhenReservationIsMixed() {
         // given
         long concertScheduleId = 1L;
-        long seatId = 1L;
+        List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> successReservations = Instancio.ofList(Reservation.class).size(3)
                 .set(field(Reservation::getStatus), ReservationStatus.SUCCESS)
@@ -152,11 +152,11 @@ class ReservationServiceTest {
         mixedReservations.addAll(successReservations);
         mixedReservations.addAll(cancelReservations);
 
-        when(reservationRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId))
+        when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
                 .thenReturn(mixedReservations);
 
         // when
-        boolean result = sut.isReservedSeat(concertScheduleId, seatId, now);
+        boolean result = sut.isReservedSeats(concertScheduleId, seatIds, now);
 
         // then
         assertThat(result).isTrue();

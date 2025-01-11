@@ -50,8 +50,7 @@ public class PaymentFacade {
 
         // 예약한 가격만큼 포인트를 차감한다.
         long userId = criteria.userId();
-        long usedPointId = pointService.usePoint(userId, totalPrice);
-        PointInfo currentPoint = pointService.getPointById(usedPointId);
+        PointInfo currentPoint = pointService.usePoint(userId, totalPrice);
 
         // 예약 상태를 결제 완료로 변경한다.
         reservationIds.forEach(reservationService::completeReservation);

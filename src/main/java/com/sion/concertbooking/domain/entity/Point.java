@@ -25,6 +25,15 @@ public class Point extends BaseEntity {
     @Column(name = "amount", nullable = false)
     private int amount;
 
+    private Point(long userId) {
+        this.userId = userId;
+        this.amount = 0;
+    }
+
+    public static Point createWallet(long userId) {
+        return new Point(userId);
+    }
+
     public void chargePoint(int point) {
         if (point <= 0) {
             throw new IllegalArgumentException("0 이하의 금액을 충전할 수 없습니다.");

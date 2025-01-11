@@ -44,18 +44,11 @@ public class ConcertReservationFacade {
         long concertScheduleId = concertReservationCreateRequest.concertScheduleId();
         List<Long> seatIds = concertReservationCreateRequest.seatIds();
 
-        // 0. 콘서트 정보를 가져온다.
+        // 예약할 공연과 공연 일정을 가져온다.
         ConcertInfo concert = concertService.getConcertById(concertId);
         ConcertScheduleInfo concertSchedule = concertScheduleService.getConcertScheduleById(concertScheduleId);
 
-        // 1. 예약된 좌석이 없는지 확인한다.
-        boolean allSeatsAvailable = seatIds.stream()
-                .noneMatch(seatId -> reservationService.isReservedSeat(concertScheduleId, seatId, now));
-        if (!allSeatsAvailable) {
-            throw new IllegalArgumentException("이미 예약중인 좌석입니다.");
-        }
-
-        // 2. 좌석 정보를 가져온다.
+        // 예약할 좌석들을 가져온다.
         List<ReservationCreateCommand.SeatCreateCommand> seatCreateCommands = seatIds.stream()
                 .map(seatId -> {
                     SeatInfo seat = seatService.getSeatById(seatId);
@@ -68,7 +61,7 @@ public class ConcertReservationFacade {
                 })
                 .toList();
 
-        // 3. 예약된 좌석이 없다면, 해당 좌석들을 예약한다.
+        // 예약을 시도한다. 만약 이미 예약된 좌석이라면 실패한다.
         ReservationCreateCommand reservationCreateCommand = ReservationCreateCommand.builder()
                 .userId(userId)
                 .concertId(concertId)
@@ -78,7 +71,6 @@ public class ConcertReservationFacade {
                 .now(now)
                 .seats(seatCreateCommands)
                 .build();
-
         List<ReservationInfo> reservations = reservationService.createReservations(reservationCreateCommand);
         return reservations.stream()
                 .map(ReservationResult::fromInfo)

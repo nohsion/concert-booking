@@ -21,7 +21,7 @@ class ReservationTest {
         LocalDateTime playDateTime = LocalDateTime.of(2025, 2, 1, 19, 0, 0);
 
         // when
-        Reservation reservation = Reservation.of(
+        Reservation reservation = Reservation.createReservation(
                 1L, 1L, "콘서트 타이틀",
                 1L, playDateTime, now,
                 1L, 1, SeatGrade.VIP, 100_000
@@ -39,7 +39,7 @@ class ReservationTest {
         LocalDateTime playDateTime = LocalDateTime.of(2025, 1, 10, 19, 0, 0);
 
         // when
-        Reservation reservation = Reservation.of(
+        Reservation reservation = Reservation.createReservation(
                 1L, 1L, "콘서트 타이틀",
                 1L, playDateTime, now,
                 1L, 1, SeatGrade.VIP, 100_000
