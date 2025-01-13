@@ -1,6 +1,7 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.info.PointInfo;
+import com.sion.concertbooking.domain.point.PointInfo;
+import com.sion.concertbooking.domain.point.PointService;
 import com.sion.concertbooking.test.TestDataCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

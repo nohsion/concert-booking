@@ -1,7 +1,7 @@
 package com.sion.concertbooking.application.result;
 
-import com.sion.concertbooking.domain.enums.TransactionType;
-import com.sion.concertbooking.domain.info.PointHistoryInfo;
+import com.sion.concertbooking.domain.pointhistory.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,6 @@
 package com.sion.concertbooking.infrastructure.payment;
 
-import com.sion.concertbooking.domain.service.PaymentCharger;
+import com.sion.concertbooking.domain.payment.PaymentCharger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

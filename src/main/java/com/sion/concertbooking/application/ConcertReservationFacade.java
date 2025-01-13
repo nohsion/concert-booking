@@ -1,15 +1,15 @@
 package com.sion.concertbooking.application;
 
 import com.sion.concertbooking.application.result.ReservationResult;
-import com.sion.concertbooking.domain.command.ReservationCreateCommand;
-import com.sion.concertbooking.domain.info.ConcertInfo;
-import com.sion.concertbooking.domain.info.ConcertScheduleInfo;
-import com.sion.concertbooking.domain.info.ReservationInfo;
-import com.sion.concertbooking.domain.info.SeatInfo;
-import com.sion.concertbooking.domain.service.ConcertScheduleService;
-import com.sion.concertbooking.domain.service.ConcertService;
-import com.sion.concertbooking.domain.service.ReservationService;
-import com.sion.concertbooking.domain.service.SeatService;
+import com.sion.concertbooking.domain.reservation.ReservationCreateCommand;
+import com.sion.concertbooking.domain.concert.ConcertInfo;
+import com.sion.concertbooking.domain.concertschedule.ConcertScheduleInfo;
+import com.sion.concertbooking.domain.reservation.ReservationInfo;
+import com.sion.concertbooking.domain.seat.SeatInfo;
+import com.sion.concertbooking.domain.concertschedule.ConcertScheduleService;
+import com.sion.concertbooking.domain.concert.ConcertService;
+import com.sion.concertbooking.domain.reservation.ReservationService;
+import com.sion.concertbooking.domain.seat.SeatService;
 import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

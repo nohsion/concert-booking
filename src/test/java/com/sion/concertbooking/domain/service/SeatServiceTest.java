@@ -1,6 +1,7 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.repository.SeatRepository;
+import com.sion.concertbooking.domain.seat.SeatRepository;
+import com.sion.concertbooking.domain.seat.SeatService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.sion.concertbooking.infrastructure.repository;
 
-import com.sion.concertbooking.domain.entity.Point;
 import jakarta.persistence.LockModeType;
+import com.sion.concertbooking.domain.point.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;

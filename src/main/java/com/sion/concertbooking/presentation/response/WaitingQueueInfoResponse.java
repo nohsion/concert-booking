@@ -1,7 +1,7 @@
 package com.sion.concertbooking.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.info.WaitingQueueDetailInfo;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
 
 public record WaitingQueueInfoResponse(
         @JsonProperty(value = "tokenId") String tokenId,

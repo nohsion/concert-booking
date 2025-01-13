@@ -1,8 +1,8 @@
 package com.sion.concertbooking.infrastructure.aspect;
 
-import com.sion.concertbooking.domain.info.WaitingQueueInfo;
-import com.sion.concertbooking.domain.service.TokenProvider;
-import com.sion.concertbooking.domain.service.WaitingQueueService;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
+import com.sion.concertbooking.domain.token.TokenProvider;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

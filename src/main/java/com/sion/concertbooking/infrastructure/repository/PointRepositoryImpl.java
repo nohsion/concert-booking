@@ -1,7 +1,7 @@
 package com.sion.concertbooking.infrastructure.repository;
 
-import com.sion.concertbooking.domain.entity.Point;
-import com.sion.concertbooking.domain.repository.PointRepository;
+import com.sion.concertbooking.domain.point.Point;
+import com.sion.concertbooking.domain.point.PointRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

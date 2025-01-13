@@ -2,11 +2,11 @@ package com.sion.concertbooking.application;
 
 import com.sion.concertbooking.application.criteria.PaymentCriteria;
 import com.sion.concertbooking.application.result.PaymentResult;
-import com.sion.concertbooking.domain.info.PointInfo;
-import com.sion.concertbooking.domain.info.ReservationInfo;
-import com.sion.concertbooking.domain.service.PointService;
-import com.sion.concertbooking.domain.service.ReservationService;
-import com.sion.concertbooking.domain.service.WaitingQueueService;
+import com.sion.concertbooking.domain.point.PointInfo;
+import com.sion.concertbooking.domain.reservation.ReservationInfo;
+import com.sion.concertbooking.domain.point.PointService;
+import com.sion.concertbooking.domain.reservation.ReservationService;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

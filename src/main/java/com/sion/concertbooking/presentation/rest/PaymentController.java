@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
 
-import static com.sion.concertbooking.domain.service.TokenProvider.CONCERT_TOKEN_HEADER;
+import static com.sion.concertbooking.domain.token.TokenProvider.CONCERT_TOKEN_HEADER;
 
 @RestController
 @RequestMapping("/api/v1/payment")

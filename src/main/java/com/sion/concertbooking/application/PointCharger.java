@@ -1,11 +1,11 @@
 package com.sion.concertbooking.application;
 
 import com.sion.concertbooking.application.result.PointResult;
-import com.sion.concertbooking.domain.info.PointHistoryInfo;
-import com.sion.concertbooking.domain.info.PointInfo;
-import com.sion.concertbooking.domain.service.PaymentCharger;
-import com.sion.concertbooking.domain.service.PointHistoryService;
-import com.sion.concertbooking.domain.service.PointService;
+import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;
+import com.sion.concertbooking.domain.point.PointInfo;
+import com.sion.concertbooking.domain.payment.PaymentCharger;
+import com.sion.concertbooking.domain.pointhistory.PointHistoryService;
+import com.sion.concertbooking.domain.point.PointService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

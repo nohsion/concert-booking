@@ -1,6 +1,7 @@
 package com.sion.concertbooking.domain.entity;
 
-import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

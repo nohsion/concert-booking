@@ -1,8 +1,8 @@
 package com.sion.concertbooking.presentation.rest;
 
-import com.sion.concertbooking.domain.info.WaitingQueueInfo;
-import com.sion.concertbooking.domain.info.WaitingQueueDetailInfo;
-import com.sion.concertbooking.domain.service.WaitingQueueService;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
 import com.sion.concertbooking.infrastructure.aspect.TokenUtils;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 
-import static com.sion.concertbooking.domain.service.TokenProvider.CONCERT_TOKEN_HEADER;
+import static com.sion.concertbooking.domain.token.TokenProvider.CONCERT_TOKEN_HEADER;
 
 @RestController
 @RequestMapping(value = "/api/v1/waiting")

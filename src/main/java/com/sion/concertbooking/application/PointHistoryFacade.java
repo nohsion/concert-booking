@@ -2,9 +2,9 @@ package com.sion.concertbooking.application;
 
 import com.sion.concertbooking.application.criteria.PointHistoryCriteria;
 import com.sion.concertbooking.application.result.PointHistoryResult;
-import com.sion.concertbooking.domain.info.PointInfo;
-import com.sion.concertbooking.domain.service.PointHistoryService;
-import com.sion.concertbooking.domain.service.PointService;
+import com.sion.concertbooking.domain.point.PointInfo;
+import com.sion.concertbooking.domain.pointhistory.PointHistoryService;
+import com.sion.concertbooking.domain.point.PointService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;

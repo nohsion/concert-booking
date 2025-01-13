@@ -3,7 +3,7 @@ package com.sion.concertbooking.presentation.rest;
 import com.sion.concertbooking.application.PointHistoryFacade;
 import com.sion.concertbooking.application.criteria.PointHistoryCriteria;
 import com.sion.concertbooking.application.result.PointHistoryResult;
-import com.sion.concertbooking.domain.enums.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import com.sion.concertbooking.presentation.response.PointHistoryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,9 +1,10 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.entity.PointHistory;
-import com.sion.concertbooking.domain.enums.TransactionType;
-import com.sion.concertbooking.domain.info.PointHistoryInfo;
-import com.sion.concertbooking.domain.repository.PointHistoryRepository;
+import com.sion.concertbooking.domain.pointhistory.PointHistory;
+import com.sion.concertbooking.domain.pointhistory.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;
+import com.sion.concertbooking.domain.pointhistory.PointHistoryService;
+import com.sion.concertbooking.domain.pointhistory.PointHistoryRepository;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

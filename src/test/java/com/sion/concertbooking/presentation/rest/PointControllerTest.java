@@ -4,7 +4,7 @@ import com.sion.concertbooking.application.PaymentType;
 import com.sion.concertbooking.application.PointCharger;
 import com.sion.concertbooking.application.PointDeductor;
 import com.sion.concertbooking.application.result.PointResult;
-import com.sion.concertbooking.domain.enums.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

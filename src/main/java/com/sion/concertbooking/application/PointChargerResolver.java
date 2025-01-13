@@ -1,6 +1,6 @@
 package com.sion.concertbooking.application;
 
-import com.sion.concertbooking.domain.service.PaymentCharger;
+import com.sion.concertbooking.domain.payment.PaymentCharger;
 import com.sion.concertbooking.infrastructure.payment.FreePaymentCharger;
 import com.sion.concertbooking.infrastructure.payment.KakaoPaymentCharger;
 import com.sion.concertbooking.infrastructure.payment.NaverPaymentCharger;

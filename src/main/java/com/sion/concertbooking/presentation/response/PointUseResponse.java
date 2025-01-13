@@ -3,7 +3,7 @@ package com.sion.concertbooking.presentation.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sion.concertbooking.application.result.PointResult;
-import com.sion.concertbooking.domain.enums.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.TransactionType;
 
 import java.time.LocalDateTime;
 

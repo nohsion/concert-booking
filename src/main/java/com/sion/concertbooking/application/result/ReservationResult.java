@@ -1,8 +1,8 @@
 package com.sion.concertbooking.application.result;
 
-import com.sion.concertbooking.domain.enums.ReservationStatus;
-import com.sion.concertbooking.domain.enums.SeatGrade;
-import com.sion.concertbooking.domain.info.ReservationInfo;
+import com.sion.concertbooking.domain.reservation.ReservationStatus;
+import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.reservation.ReservationInfo;
 
 import java.time.LocalDateTime;
 

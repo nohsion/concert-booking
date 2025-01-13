@@ -1,7 +1,7 @@
 package com.sion.concertbooking.infrastructure.repository;
 
-import com.sion.concertbooking.domain.entity.Reservation;
-import com.sion.concertbooking.domain.repository.ReservationRepository;
+import com.sion.concertbooking.domain.reservation.Reservation;
+import com.sion.concertbooking.domain.reservation.ReservationRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.sion.concertbooking.infrastructure.scheduler;
 
-import com.sion.concertbooking.domain.info.WaitingQueueInfo;
-import com.sion.concertbooking.domain.service.WaitingQueueService;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

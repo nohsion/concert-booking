@@ -1,10 +1,10 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.domain.info.WaitingQueueInfo;
-import com.sion.concertbooking.domain.info.WaitingQueueDetailInfo;
-import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
-import com.sion.concertbooking.domain.service.WaitingQueueService;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.presentation.request.WaitingQueueRegisterRequest;
 import org.junit.jupiter.api.DisplayName;

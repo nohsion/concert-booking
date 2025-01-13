@@ -1,6 +1,6 @@
 package com.sion.concertbooking.infrastructure.aspect;
 
-import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 
 import java.time.LocalDateTime;
 

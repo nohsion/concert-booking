@@ -1,6 +1,6 @@
 package com.sion.concertbooking.application.result;
 
-import com.sion.concertbooking.domain.info.ReservationInfo;
+import com.sion.concertbooking.domain.reservation.ReservationInfo;
 
 import java.util.List;
 

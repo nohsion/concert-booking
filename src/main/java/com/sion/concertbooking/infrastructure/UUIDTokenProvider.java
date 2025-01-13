@@ -1,6 +1,6 @@
 package com.sion.concertbooking.infrastructure;
 
-import com.sion.concertbooking.domain.service.TokenProvider;
+import com.sion.concertbooking.domain.token.TokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

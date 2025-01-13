@@ -2,7 +2,7 @@ package com.sion.concertbooking.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sion.concertbooking.application.result.PaymentResult;
-import com.sion.concertbooking.domain.info.ReservationInfo;
+import com.sion.concertbooking.domain.reservation.ReservationInfo;
 
 import java.util.List;
 

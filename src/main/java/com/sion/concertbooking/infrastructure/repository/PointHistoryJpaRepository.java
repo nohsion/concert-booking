@@ -1,7 +1,7 @@
 package com.sion.concertbooking.infrastructure.repository;
 
-import com.sion.concertbooking.domain.entity.PointHistory;
-import com.sion.concertbooking.domain.enums.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistory;
+import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
