@@ -1,15 +1,12 @@
-package com.sion.concertbooking.domain.repository;
+package com.sion.concertbooking.infrastructure.repository;
 
 import com.sion.concertbooking.domain.entity.PointHistory;
 import com.sion.concertbooking.domain.enums.TransactionType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
-public interface PointHistoryRepository {
-    Optional<PointHistory> findById(long pointHistoryId);
-    PointHistory save(PointHistory pointHistory);
+public interface PointHistoryJpaRepository extends JpaRepository<PointHistory, Long> {
     Page<PointHistory> findByPointIdAndType(long pointId, TransactionType type, Pageable pageable);
     Page<PointHistory> findByPointId(long pointId, Pageable pageable);
 }

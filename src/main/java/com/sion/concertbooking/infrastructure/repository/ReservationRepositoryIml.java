@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ReservationCoreRepository implements ReservationRepository {
+public class ReservationRepositoryIml implements ReservationRepository {
 
     private final ReservationJpaRepository reservationJpaRepository;
 
-    public ReservationCoreRepository(
+    public ReservationRepositoryIml(
             final ReservationJpaRepository reservationJpaRepository
     ) {
         this.reservationJpaRepository = reservationJpaRepository;

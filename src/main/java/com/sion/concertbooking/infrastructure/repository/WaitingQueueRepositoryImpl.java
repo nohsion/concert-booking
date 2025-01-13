@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class WaitingQueueCoreRepository implements WaitingQueueRepository {
+public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
 
     private final WaitingQueueJpaRepository waitingQueueJpaRepository;
 
-    public WaitingQueueCoreRepository(WaitingQueueJpaRepository waitingQueueJpaRepository) {
+    public WaitingQueueRepositoryImpl(WaitingQueueJpaRepository waitingQueueJpaRepository) {
         this.waitingQueueJpaRepository = waitingQueueJpaRepository;
     }
 

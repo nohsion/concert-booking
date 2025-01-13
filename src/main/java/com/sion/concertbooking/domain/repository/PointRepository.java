@@ -1,8 +1,10 @@
 package com.sion.concertbooking.domain.repository;
 
 import com.sion.concertbooking.domain.entity.Point;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PointRepository extends JpaRepository<Point, Long> {
+import java.util.Optional;
+
+public interface PointRepository {
+    Optional<Point> findById(long pointId);
     Point findByUserId(long userId);
 }
