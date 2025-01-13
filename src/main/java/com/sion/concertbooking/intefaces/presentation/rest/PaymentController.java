@@ -1,4 +1,4 @@
-package com.sion.concertbooking.presentation.rest;
+package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.application.PaymentFacade;
 import com.sion.concertbooking.application.criteria.PaymentCriteria;
@@ -6,8 +6,8 @@ import com.sion.concertbooking.application.result.PaymentResult;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
 import com.sion.concertbooking.infrastructure.aspect.TokenUtils;
-import com.sion.concertbooking.presentation.request.PaymentRequest;
-import com.sion.concertbooking.presentation.response.PaymentResponse;
+import com.sion.concertbooking.intefaces.presentation.request.PaymentRequest;
+import com.sion.concertbooking.intefaces.presentation.response.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

@@ -1,10 +1,10 @@
-package com.sion.concertbooking.presentation.rest;
+package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.application.PointHistoryFacade;
 import com.sion.concertbooking.application.criteria.PointHistoryCriteria;
 import com.sion.concertbooking.application.result.PointHistoryResult;
 import com.sion.concertbooking.domain.pointhistory.TransactionType;
-import com.sion.concertbooking.presentation.response.PointHistoryResponse;
+import com.sion.concertbooking.intefaces.presentation.response.PointHistoryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

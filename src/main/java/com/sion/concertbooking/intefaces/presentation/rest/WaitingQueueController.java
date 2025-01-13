@@ -1,4 +1,4 @@
-package com.sion.concertbooking.presentation.rest;
+package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
@@ -6,9 +6,9 @@ import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
 import com.sion.concertbooking.infrastructure.aspect.TokenUtils;
-import com.sion.concertbooking.presentation.request.WaitingQueueRegisterRequest;
-import com.sion.concertbooking.presentation.response.WaitingQueueInfoResponse;
-import com.sion.concertbooking.presentation.response.WaitingQueueRegisterResponse;
+import com.sion.concertbooking.intefaces.presentation.request.WaitingQueueRegisterRequest;
+import com.sion.concertbooking.intefaces.presentation.response.WaitingQueueInfoResponse;
+import com.sion.concertbooking.intefaces.presentation.response.WaitingQueueRegisterResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

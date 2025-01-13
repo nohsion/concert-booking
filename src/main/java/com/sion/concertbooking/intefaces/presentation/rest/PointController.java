@@ -1,11 +1,11 @@
-package com.sion.concertbooking.presentation.rest;
+package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.application.PaymentType;
 import com.sion.concertbooking.application.PointCharger;
 import com.sion.concertbooking.application.PointDeductor;
 import com.sion.concertbooking.application.result.PointResult;
-import com.sion.concertbooking.presentation.response.PointChargeResponse;
-import com.sion.concertbooking.presentation.response.PointUseResponse;
+import com.sion.concertbooking.intefaces.presentation.response.PointChargeResponse;
+import com.sion.concertbooking.intefaces.presentation.response.PointUseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

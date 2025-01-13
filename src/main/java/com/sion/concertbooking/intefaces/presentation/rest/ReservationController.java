@@ -1,12 +1,12 @@
-package com.sion.concertbooking.presentation.rest;
+package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.application.ConcertReservationFacade;
 import com.sion.concertbooking.application.result.ReservationResult;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
 import com.sion.concertbooking.infrastructure.aspect.TokenUtils;
-import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
-import com.sion.concertbooking.presentation.response.ReservationResponse;
+import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
+import com.sion.concertbooking.intefaces.presentation.response.ReservationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

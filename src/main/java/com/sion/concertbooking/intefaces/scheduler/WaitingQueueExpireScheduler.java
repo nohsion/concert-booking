@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.scheduler;
+package com.sion.concertbooking.intefaces.scheduler;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;

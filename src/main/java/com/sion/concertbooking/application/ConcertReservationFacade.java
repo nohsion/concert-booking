@@ -10,7 +10,7 @@ import com.sion.concertbooking.domain.concertschedule.ConcertScheduleService;
 import com.sion.concertbooking.domain.concert.ConcertService;
 import com.sion.concertbooking.domain.reservation.ReservationService;
 import com.sion.concertbooking.domain.seat.SeatService;
-import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
+import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

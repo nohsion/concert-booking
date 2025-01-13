@@ -1,4 +1,4 @@
-package com.sion.concertbooking.presentation.response;
+package com.sion.concertbooking.intefaces.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -9,6 +9,7 @@ import com.sion.concertbooking.domain.reservation.ReservationInfo;
 import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
+import com.sion.concertbooking.intefaces.presentation.rest.PaymentController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

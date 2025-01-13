@@ -1,6 +1,6 @@
-package com.sion.concertbooking.presentation.exception;
+package com.sion.concertbooking.intefaces.presentation.exception;
 
-import com.sion.concertbooking.presentation.response.ApiErrorResponse;
+import com.sion.concertbooking.intefaces.presentation.response.ApiErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
