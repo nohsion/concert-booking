@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.repository;
+package com.sion.concertbooking.infrastructure.jpa;
 
 import com.sion.concertbooking.domain.concertschedule.ConcertSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;

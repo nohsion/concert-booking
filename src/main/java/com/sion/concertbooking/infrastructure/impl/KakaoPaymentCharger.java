@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.payment;
+package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.payment.PaymentCharger;
 import lombok.extern.slf4j.Slf4j;

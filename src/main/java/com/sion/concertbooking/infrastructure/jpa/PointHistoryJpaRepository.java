@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.repository;
+package com.sion.concertbooking.infrastructure.jpa;
 
 import com.sion.concertbooking.domain.pointhistory.PointHistory;
 import com.sion.concertbooking.domain.pointhistory.TransactionType;

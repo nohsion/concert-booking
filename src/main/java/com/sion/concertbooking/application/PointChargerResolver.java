@@ -1,9 +1,9 @@
 package com.sion.concertbooking.application;
 
 import com.sion.concertbooking.domain.payment.PaymentCharger;
-import com.sion.concertbooking.infrastructure.payment.FreePaymentCharger;
-import com.sion.concertbooking.infrastructure.payment.KakaoPaymentCharger;
-import com.sion.concertbooking.infrastructure.payment.NaverPaymentCharger;
+import com.sion.concertbooking.infrastructure.impl.FreePaymentCharger;
+import com.sion.concertbooking.infrastructure.impl.KakaoPaymentCharger;
+import com.sion.concertbooking.infrastructure.impl.NaverPaymentCharger;
 import org.springframework.stereotype.Component;
 
 @Component

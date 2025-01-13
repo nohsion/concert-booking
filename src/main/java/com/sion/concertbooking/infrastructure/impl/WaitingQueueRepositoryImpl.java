@@ -1,8 +1,9 @@
-package com.sion.concertbooking.infrastructure.repository;
+package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueRepository;
+import com.sion.concertbooking.infrastructure.jpa.WaitingQueueJpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

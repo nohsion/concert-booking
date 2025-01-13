@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.repository;
+package com.sion.concertbooking.infrastructure.jpa;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;

@@ -1,8 +1,9 @@
-package com.sion.concertbooking.infrastructure.repository;
+package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueRepository;
+import com.sion.concertbooking.infrastructure.jpa.WaitingQueueJpaRepository;
 import com.sion.concertbooking.test.TestDataCleaner;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;

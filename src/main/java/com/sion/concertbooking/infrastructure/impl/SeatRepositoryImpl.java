@@ -1,7 +1,8 @@
-package com.sion.concertbooking.infrastructure.repository;
+package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.seat.Seat;
 import com.sion.concertbooking.domain.seat.SeatRepository;
+import com.sion.concertbooking.infrastructure.jpa.SeatJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

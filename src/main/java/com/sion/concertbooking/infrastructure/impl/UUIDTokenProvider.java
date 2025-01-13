@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure;
+package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.token.TokenProvider;
 import jakarta.servlet.http.HttpServletRequest;

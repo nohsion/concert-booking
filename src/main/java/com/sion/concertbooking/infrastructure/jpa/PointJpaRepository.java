@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.repository;
+package com.sion.concertbooking.infrastructure.jpa;
 
 import jakarta.persistence.LockModeType;
 import com.sion.concertbooking.domain.point.Point;

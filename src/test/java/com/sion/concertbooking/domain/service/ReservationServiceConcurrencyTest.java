@@ -11,7 +11,7 @@ import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.Seat;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.domain.seat.SeatRepository;
-import com.sion.concertbooking.infrastructure.repository.ReservationJpaRepository;
+import com.sion.concertbooking.infrastructure.jpa.ReservationJpaRepository;
 import com.sion.concertbooking.test.TestDataCleaner;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
