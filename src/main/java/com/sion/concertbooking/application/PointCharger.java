@@ -33,14 +33,12 @@ public class PointCharger {
         paymentCharger.payment(amount);
 
         // 2. 포인트 충전 처리
-        long chargedPointId = pointService.chargePoint(userId, amount);
+        PointInfo chargedPointInfo = pointService.chargePoint(userId, amount);
 
         // 3. 포인트 충전 이력 저장
-        long chargedPointHistoryId = pointHistoryService.chargePointHistory(chargedPointId, amount);
+        PointHistoryInfo chargedPointHistory = pointHistoryService.chargePointHistory(chargedPointInfo.id(), amount);
 
-        PointInfo savedPoint = pointService.getPointById(chargedPointId);
-        PointHistoryInfo savedPointHistory = pointHistoryService.getPointHistoryById(chargedPointHistoryId);
-        return PointResult.Charge.of(savedPoint, savedPointHistory, paymentType);
+        return PointResult.Charge.of(chargedPointInfo, chargedPointHistory, paymentType);
     }
 
 }

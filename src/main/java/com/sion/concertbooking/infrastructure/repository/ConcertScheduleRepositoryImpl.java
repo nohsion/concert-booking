@@ -19,4 +19,9 @@ public class ConcertScheduleRepositoryImpl implements ConcertScheduleRepository 
     public Optional<ConcertSchedule> findById(final long concertScheduleId) {
         return concertScheduleJpaRepository.findById(concertScheduleId);
     }
+
+    @Override
+    public ConcertSchedule save(final ConcertSchedule concertSchedule) {
+        return concertScheduleJpaRepository.save(concertSchedule);
+    }
 }

@@ -20,13 +20,18 @@ public class ReservationRepositoryIml implements ReservationRepository {
 
 
     @Override
+    public Reservation save(final Reservation reservation) {
+        return reservationJpaRepository.save(reservation);
+    }
+
+    @Override
     public List<Reservation> saveAll(List<Reservation> reservations) {
         return reservationJpaRepository.saveAll(reservations);
     }
 
     @Override
-    public List<Reservation> findByConcertScheduleIdAndSeatId(final long concertScheduleId, final long seatId) {
-        return reservationJpaRepository.findByConcertScheduleIdAndSeatId(concertScheduleId, seatId);
+    public List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(final long concertScheduleId, final List<Long> seatIds) {
+        return reservationJpaRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds);
     }
 
     @Override

@@ -19,17 +19,17 @@ public class PointHistoryService {
     }
 
     @Transactional
-    public long chargePointHistory(long pointId, int amount) {
+    public PointHistoryInfo chargePointHistory(long pointId, int amount) {
         PointHistory pointHistoryToCharge = PointHistory.ofCharge(pointId, amount);
         PointHistory chargedPointHistory = pointHistoryRepository.save(pointHistoryToCharge);
-        return chargedPointHistory.getId();
+        return PointHistoryInfo.fromEntity(chargedPointHistory);
     }
 
     @Transactional
-    public long usePointHistory(long pointId, int amount) {
+    public PointHistoryInfo usePointHistory(long pointId, int amount) {
         PointHistory pointHistoryToUse = PointHistory.ofUse(pointId, amount);
         PointHistory usedPointHistory = pointHistoryRepository.save(pointHistoryToUse);
-        return usedPointHistory.getId();
+        return PointHistoryInfo.fromEntity(usedPointHistory);
     }
 
     public PointHistoryInfo getPointHistoryById(long pointHistoryId) {

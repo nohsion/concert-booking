@@ -19,4 +19,9 @@ public class SeatRepositoryImpl implements SeatRepository {
     public Optional<Seat> findById(final long seatId) {
         return seatJpaRepository.findById(seatId);
     }
+
+    @Override
+    public Seat save(final Seat seat) {
+        return seatJpaRepository.save(seat);
+    }
 }

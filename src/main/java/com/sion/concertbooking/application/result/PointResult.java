@@ -32,7 +32,7 @@ public class PointResult {
                     pointHistoryInfo.amount(),
                     pointInfo.amount(),
                     paymentType,
-                    pointInfo.updatedAt()
+                    pointHistoryInfo.updatedAt()
             );
         }
     }
@@ -53,7 +53,7 @@ public class PointResult {
                     pointInfo.userId(),
                     pointHistoryInfo.amount(),
                     pointInfo.amount(),
-                    pointInfo.updatedAt()
+                    pointHistoryInfo.updatedAt()
             );
         }
     }
