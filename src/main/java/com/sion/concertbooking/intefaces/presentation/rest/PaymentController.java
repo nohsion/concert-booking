@@ -1,8 +1,8 @@
 package com.sion.concertbooking.intefaces.presentation.rest;
 
-import com.sion.concertbooking.application.PaymentFacade;
-import com.sion.concertbooking.application.criteria.PaymentCriteria;
-import com.sion.concertbooking.application.result.PaymentResult;
+import com.sion.concertbooking.application.payment.PaymentFacade;
+import com.sion.concertbooking.application.payment.PaymentCriteria;
+import com.sion.concertbooking.application.payment.PaymentResult;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
 import com.sion.concertbooking.infrastructure.aspect.TokenUtils;

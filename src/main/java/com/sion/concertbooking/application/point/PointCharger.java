@@ -1,6 +1,6 @@
-package com.sion.concertbooking.application;
+package com.sion.concertbooking.application.point;
 
-import com.sion.concertbooking.application.result.PointResult;
+import com.sion.concertbooking.application.payment.PaymentType;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;
 import com.sion.concertbooking.domain.point.PointInfo;
 import com.sion.concertbooking.domain.payment.PaymentCharger;

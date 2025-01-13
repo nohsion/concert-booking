@@ -1,6 +1,5 @@
-package com.sion.concertbooking.application;
+package com.sion.concertbooking.application.reservation;
 
-import com.sion.concertbooking.application.result.ReservationResult;
 import com.sion.concertbooking.domain.reservation.ReservationCreateCommand;
 import com.sion.concertbooking.domain.concert.ConcertInfo;
 import com.sion.concertbooking.domain.concertschedule.ConcertScheduleInfo;

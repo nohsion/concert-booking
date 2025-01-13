@@ -1,4 +1,4 @@
-package com.sion.concertbooking.application.result;
+package com.sion.concertbooking.application.pointhistory;
 
 import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;

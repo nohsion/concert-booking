@@ -1,8 +1,8 @@
 package com.sion.concertbooking.intefaces.presentation.rest;
 
-import com.sion.concertbooking.application.PointHistoryFacade;
-import com.sion.concertbooking.application.criteria.PointHistoryCriteria;
-import com.sion.concertbooking.application.result.PointHistoryResult;
+import com.sion.concertbooking.application.pointhistory.PointHistoryFacade;
+import com.sion.concertbooking.application.pointhistory.PointHistoryCriteria;
+import com.sion.concertbooking.application.pointhistory.PointHistoryResult;
 import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import com.sion.concertbooking.intefaces.presentation.response.PointHistoryResponse;
 import io.swagger.v3.oas.annotations.Operation;

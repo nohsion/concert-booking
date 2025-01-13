@@ -1,7 +1,5 @@
-package com.sion.concertbooking.application;
+package com.sion.concertbooking.application.pointhistory;
 
-import com.sion.concertbooking.application.criteria.PointHistoryCriteria;
-import com.sion.concertbooking.application.result.PointHistoryResult;
 import com.sion.concertbooking.domain.point.PointInfo;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryService;
 import com.sion.concertbooking.domain.point.PointService;

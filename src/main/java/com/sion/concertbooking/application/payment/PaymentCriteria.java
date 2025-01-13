@@ -1,4 +1,4 @@
-package com.sion.concertbooking.application.criteria;
+package com.sion.concertbooking.application.payment;
 
 import java.util.List;
 

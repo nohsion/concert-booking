@@ -1,4 +1,4 @@
-package com.sion.concertbooking.application.result;
+package com.sion.concertbooking.application.reservation;
 
 import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.SeatGrade;

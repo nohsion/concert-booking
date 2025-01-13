@@ -1,9 +1,9 @@
 package com.sion.concertbooking.presentation.rest;
 
-import com.sion.concertbooking.application.PaymentType;
-import com.sion.concertbooking.application.PointCharger;
-import com.sion.concertbooking.application.PointDeductor;
-import com.sion.concertbooking.application.result.PointResult;
+import com.sion.concertbooking.application.payment.PaymentType;
+import com.sion.concertbooking.application.point.PointCharger;
+import com.sion.concertbooking.application.point.PointDeductor;
+import com.sion.concertbooking.application.point.PointResult;
 import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import com.sion.concertbooking.intefaces.presentation.rest.PointController;
 import org.junit.jupiter.api.DisplayName;

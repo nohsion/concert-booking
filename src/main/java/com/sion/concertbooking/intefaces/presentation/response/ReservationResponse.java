@@ -2,7 +2,7 @@ package com.sion.concertbooking.intefaces.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.application.result.ReservationResult;
+import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 

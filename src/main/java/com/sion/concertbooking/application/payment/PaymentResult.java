@@ -1,4 +1,4 @@
-package com.sion.concertbooking.application.result;
+package com.sion.concertbooking.application.payment;
 
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
 

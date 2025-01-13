@@ -1,7 +1,5 @@
-package com.sion.concertbooking.application;
+package com.sion.concertbooking.application.payment;
 
-import com.sion.concertbooking.application.criteria.PaymentCriteria;
-import com.sion.concertbooking.application.result.PaymentResult;
 import com.sion.concertbooking.domain.point.PointInfo;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
 import com.sion.concertbooking.domain.point.PointService;

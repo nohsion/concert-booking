@@ -1,7 +1,7 @@
 package com.sion.concertbooking.intefaces.presentation.rest;
 
-import com.sion.concertbooking.application.ConcertReservationFacade;
-import com.sion.concertbooking.application.result.ReservationResult;
+import com.sion.concertbooking.application.reservation.ConcertReservationFacade;
+import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
 import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
 import com.sion.concertbooking.infrastructure.aspect.TokenUtils;

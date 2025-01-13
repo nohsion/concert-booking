@@ -2,8 +2,8 @@ package com.sion.concertbooking.presentation.rest;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.application.ConcertReservationFacade;
-import com.sion.concertbooking.application.result.ReservationResult;
+import com.sion.concertbooking.application.reservation.ConcertReservationFacade;
+import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
