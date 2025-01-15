@@ -25,17 +25,22 @@ public class ReservationService {
                 .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));
     }
 
-    public boolean isExpiredReservation(long reservationId, LocalDateTime now) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
-        return reservation.isExpired(now);
+    public boolean checkExpiredReservations(List<Long> reservationIds, LocalDateTime now) {
+        return reservationIds.stream()
+                .anyMatch(reservationId -> {
+                    Reservation reservation = reservationRepository.findById(reservationId)
+                            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
+                    return reservation.isExpired(now);
+                });
+
     }
 
     @Transactional
-    public void completeReservation(long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
-        reservation.markSuccess();
+    public void completeReservations(List<Long> reservationIds) {
+        reservationIds.stream()
+                .map(reservationId -> reservationRepository.findById(reservationId)
+                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다.")))
+                .forEach(Reservation::markSuccess);
     }
 
     public ReservationInfo getReservationById(long reservationId) {
@@ -79,5 +84,11 @@ public class ReservationService {
         return savedReservations.stream()
                 .map(ReservationInfo::ofEntity)
                 .toList();
+    }
+
+    public int getTotalPrice(List<ReservationInfo> reservations) {
+        return reservations.stream()
+                .mapToInt(ReservationInfo::seatPrice)
+                .sum();
     }
 }

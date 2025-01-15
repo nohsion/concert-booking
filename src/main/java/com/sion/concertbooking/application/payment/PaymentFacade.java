@@ -1,8 +1,8 @@
 package com.sion.concertbooking.application.payment;
 
 import com.sion.concertbooking.domain.point.PointInfo;
-import com.sion.concertbooking.domain.reservation.ReservationInfo;
 import com.sion.concertbooking.domain.point.PointService;
+import com.sion.concertbooking.domain.reservation.ReservationInfo;
 import com.sion.concertbooking.domain.reservation.ReservationService;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import org.springframework.stereotype.Component;
@@ -33,9 +33,9 @@ public class PaymentFacade {
         // 임시 배정된 좌석이 만료되지는 않았는지 확인한다.
         LocalDateTime now = LocalDateTime.now();
         List<Long> reservationIds = criteria.reservationIds();
-        boolean allSeatsAlive = reservationIds.stream()
-                .noneMatch(reservationId -> reservationService.isExpiredReservation(reservationId, now));
-        if (!allSeatsAlive) {
+
+        boolean hasExpiredReservations = reservationService.checkExpiredReservations(reservationIds, now);
+        if (hasExpiredReservations) {
             throw new IllegalArgumentException("좌석 선점 시간이 만료되었습니다. 다시 시도해주세요.");
         }
 
@@ -51,9 +51,9 @@ public class PaymentFacade {
         PointInfo currentPoint = pointService.usePoint(userId, totalPrice);
 
         // 예약 상태를 결제 완료로 변경한다.
-        reservationIds.forEach(reservationService::completeReservation);
+        reservationService.completeReservations(reservationIds);
 
-        // 대기열 토큰을 만료 시킨다.
+        // 사용자의 대기열 토큰을 만료 시킨다.
         String tokenId = criteria.tokenId();
         waitingQueueService.expireToken(tokenId);
 
