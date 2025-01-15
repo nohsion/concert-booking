@@ -9,7 +9,6 @@ import com.sion.concertbooking.domain.concertschedule.ConcertScheduleService;
 import com.sion.concertbooking.domain.concert.ConcertService;
 import com.sion.concertbooking.domain.reservation.ReservationService;
 import com.sion.concertbooking.domain.seat.SeatService;
-import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,39 +36,18 @@ public class ConcertReservationFacade {
     }
 
     @Transactional
-    public List<ReservationResult> reserve(long userId, ConcertReservationCreateRequest concertReservationCreateRequest) {
+    public List<ReservationResult> reserve(ReservationCriteria criteria) {
         LocalDateTime now = LocalDateTime.now();
-        long concertId = concertReservationCreateRequest.concertId();
-        long concertScheduleId = concertReservationCreateRequest.concertScheduleId();
-        List<Long> seatIds = concertReservationCreateRequest.seatIds();
 
         // 예약할 공연과 공연 일정을 가져온다.
-        ConcertInfo concert = concertService.getConcertById(concertId);
-        ConcertScheduleInfo concertSchedule = concertScheduleService.getConcertScheduleById(concertScheduleId);
-
-        // 예약할 좌석들을 가져온다.
-        List<ReservationCreateCommand.SeatCreateCommand> seatCreateCommands = seatIds.stream()
-                .map(seatId -> {
-                    SeatInfo seat = seatService.getSeatById(seatId);
-                    return new ReservationCreateCommand.SeatCreateCommand(
-                            seatId,
-                            seat.seatNum(),
-                            seat.seatGrade(),
-                            seat.seatPrice()
-                    );
-                })
-                .toList();
+        ConcertInfo concert = concertService.getConcertById(criteria.concertId());
+        ConcertScheduleInfo concertSchedule = concertScheduleService.getConcertScheduleById(criteria.concertScheduleId());
+        List<SeatInfo> seats = seatService.getSeatsById(criteria.seatIds());
 
         // 예약을 시도한다. 만약 이미 예약된 좌석이라면 실패한다.
-        ReservationCreateCommand reservationCreateCommand = ReservationCreateCommand.builder()
-                .userId(userId)
-                .concertId(concertId)
-                .concertTitle(concert.concertTitle())
-                .concertScheduleId(concertScheduleId)
-                .playDateTime(concertSchedule.playDateTime())
-                .now(now)
-                .seats(seatCreateCommands)
-                .build();
+        ReservationCreateCommand reservationCreateCommand = ReservationCreateCommand.of(
+                criteria.userId(), concert, concertSchedule, seats, now
+        );
         List<ReservationInfo> reservations = reservationService.createReservations(reservationCreateCommand);
         return reservations.stream()
                 .map(ReservationResult::fromInfo)

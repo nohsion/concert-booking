@@ -1,6 +1,7 @@
 package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.application.reservation.ConcertReservationFacade;
+import com.sion.concertbooking.application.reservation.ReservationCriteria;
 import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.aspect.TokenRequired;
@@ -45,7 +46,14 @@ public class ReservationController {
         TokenInfo tokenInfo = TokenUtils.getTokenInfo();
         long userId = tokenInfo.userId();
 
-        List<ReservationResult> reservationInfos = concertReservationFacade.reserve(userId, concertReservationCreateRequest);
+        ReservationCriteria reservationCriteria = new ReservationCriteria(
+                userId,
+                concertReservationCreateRequest.concertId(),
+                concertReservationCreateRequest.concertScheduleId(),
+                concertReservationCreateRequest.seatIds()
+        );
+
+        List<ReservationResult> reservationInfos = concertReservationFacade.reserve(reservationCriteria);
         List<ReservationResponse> reservationResponses = reservationInfos.stream()
                 .map(ReservationResponse::fromResult)
                 .toList();
