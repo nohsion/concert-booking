@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.aspect;
+package com.sion.concertbooking.intefaces.aspect;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;

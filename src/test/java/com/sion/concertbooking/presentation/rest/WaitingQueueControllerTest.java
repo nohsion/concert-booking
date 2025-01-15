@@ -5,7 +5,7 @@ import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
-import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
+import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.request.WaitingQueueRegisterRequest;
 import com.sion.concertbooking.intefaces.presentation.rest.WaitingQueueController;
 import org.junit.jupiter.api.DisplayName;

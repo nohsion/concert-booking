@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.aspect;
+package com.sion.concertbooking.intefaces.aspect;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.sion.concertbooking.infrastructure.aspect;
+package com.sion.concertbooking.intefaces.aspect;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
 import com.sion.concertbooking.domain.token.TokenProvider;
@@ -26,7 +26,7 @@ public class TokenAspect {
         this.waitingQueueService = waitingQueueService;
     }
 
-    @Before("@annotation(TokenRequired)")
+    @Before("@annotation(com.sion.concertbooking.intefaces.aspect.TokenRequired)")
     public void validateToken(JoinPoint joinPoint) throws AuthenticationException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String tokenId = tokenProvider.resolveToken(request);

@@ -7,7 +7,7 @@ import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
-import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
+import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.intefaces.presentation.rest.ReservationController;
 import org.junit.jupiter.api.DisplayName;

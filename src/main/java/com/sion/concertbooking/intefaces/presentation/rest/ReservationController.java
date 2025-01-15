@@ -2,9 +2,9 @@ package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.application.reservation.ConcertReservationFacade;
 import com.sion.concertbooking.application.reservation.ReservationResult;
-import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
-import com.sion.concertbooking.infrastructure.aspect.TokenRequired;
-import com.sion.concertbooking.infrastructure.aspect.TokenUtils;
+import com.sion.concertbooking.intefaces.aspect.TokenInfo;
+import com.sion.concertbooking.intefaces.aspect.TokenRequired;
+import com.sion.concertbooking.intefaces.aspect.TokenUtils;
 import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.intefaces.presentation.response.ReservationResponse;
 import io.swagger.v3.oas.annotations.Operation;
