@@ -1,5 +1,6 @@
 package com.sion.concertbooking.domain.entity;
 
+import com.sion.concertbooking.domain.point.Point;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

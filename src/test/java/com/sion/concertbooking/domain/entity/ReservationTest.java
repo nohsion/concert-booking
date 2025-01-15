@@ -1,7 +1,8 @@
 package com.sion.concertbooking.domain.entity;
 
-import com.sion.concertbooking.domain.enums.ReservationStatus;
-import com.sion.concertbooking.domain.enums.SeatGrade;
+import com.sion.concertbooking.domain.reservation.ReservationStatus;
+import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.reservation.Reservation;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

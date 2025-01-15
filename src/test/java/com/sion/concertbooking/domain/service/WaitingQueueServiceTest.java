@@ -1,10 +1,12 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.info.WaitingQueueInfo;
-import com.sion.concertbooking.domain.info.WaitingQueueDetailInfo;
-import com.sion.concertbooking.domain.entity.WaitingQueue;
-import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
-import com.sion.concertbooking.domain.repository.WaitingQueueRepository;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
+import com.sion.concertbooking.domain.token.TokenProvider;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueRepository;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

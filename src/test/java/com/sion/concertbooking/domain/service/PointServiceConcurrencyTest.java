@@ -1,9 +1,11 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.info.PointInfo;
+import com.sion.concertbooking.domain.point.PointInfo;
+import com.sion.concertbooking.domain.point.PointService;
 import com.sion.concertbooking.test.TestDataCleaner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -107,7 +109,7 @@ class PointServiceConcurrencyTest {
     }
 
     @DisplayName("현재 포인트가 1000원이고 (+1000원 충전) -> (-2000원 사용) 요청이 차례로 들어오면, 0원이 되어야 한다.")
-    @Test
+    @RepeatedTest(10)
     void chargeAndUsePointConcurrently() throws Exception {
         // given
         long userId = 1L;
@@ -130,7 +132,7 @@ class PointServiceConcurrencyTest {
                 latch.countDown();
             }
         });
-
+        Thread.sleep(10);
         executorService.submit(() -> {
             try {
                 pointService.usePoint(userId, 2000);
@@ -153,7 +155,7 @@ class PointServiceConcurrencyTest {
     }
 
     @DisplayName("현재 포인트가 1000원이고 (-2000원 사용) -> (+1000원 충전) 요청이 차례로 들어오면, 2000원이 되어야 한다.")
-    @Test
+    @RepeatedTest(10)
     void useAndChargePointConcurrently() throws Exception {
         // given
         long userId = 1L;
@@ -176,7 +178,7 @@ class PointServiceConcurrencyTest {
                 latch.countDown();
             }
         });
-
+        Thread.sleep(10);
         executorService.submit(() -> {
             try {
                 pointService.chargePoint(userId, 1000);

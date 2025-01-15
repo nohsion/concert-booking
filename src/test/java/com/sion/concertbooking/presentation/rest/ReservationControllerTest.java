@@ -2,13 +2,15 @@ package com.sion.concertbooking.presentation.rest;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.application.ConcertReservationFacade;
-import com.sion.concertbooking.application.result.ReservationResult;
-import com.sion.concertbooking.domain.enums.ReservationStatus;
-import com.sion.concertbooking.domain.enums.SeatGrade;
-import com.sion.concertbooking.domain.enums.WaitingQueueStatus;
-import com.sion.concertbooking.infrastructure.aspect.TokenInfo;
-import com.sion.concertbooking.presentation.request.ConcertReservationCreateRequest;
+import com.sion.concertbooking.application.reservation.ConcertReservationFacade;
+import com.sion.concertbooking.application.reservation.ReservationCriteria;
+import com.sion.concertbooking.application.reservation.ReservationResult;
+import com.sion.concertbooking.domain.reservation.ReservationStatus;
+import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
+import com.sion.concertbooking.intefaces.aspect.TokenInfo;
+import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
+import com.sion.concertbooking.intefaces.presentation.rest.ReservationController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -52,6 +53,7 @@ class ReservationControllerTest {
 
         ConcertReservationCreateRequest concertReservationCreateRequest = new ConcertReservationCreateRequest(concertId, concertScheduleId, seatIds);
         String requestJson = mapper.writeValueAsString(concertReservationCreateRequest);
+        ReservationCriteria reservationCriteria = new ReservationCriteria(userId, concertId, concertScheduleId, seatIds);
 
         List<ReservationResult> reservationResults = List.of(
                 new ReservationResult(1L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
@@ -59,7 +61,7 @@ class ReservationControllerTest {
                 new ReservationResult(2L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
                         11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS)
         );
-        when(concertReservationFacade.reserve(eq(userId), eq(concertReservationCreateRequest)))
+        when(concertReservationFacade.reserve(reservationCriteria))
                 .thenReturn(reservationResults);
 
         TokenInfo tokenInfo = new TokenInfo("token-id", 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());

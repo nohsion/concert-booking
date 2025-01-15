@@ -1,10 +1,11 @@
 package com.sion.concertbooking.domain.service;
 
-import com.sion.concertbooking.domain.command.ReservationCreateCommand;
-import com.sion.concertbooking.domain.entity.Reservation;
-import com.sion.concertbooking.domain.enums.ReservationStatus;
-import com.sion.concertbooking.domain.info.ReservationInfo;
-import com.sion.concertbooking.domain.repository.ReservationRepository;
+import com.sion.concertbooking.domain.reservation.ReservationCreateCommand;
+import com.sion.concertbooking.domain.reservation.Reservation;
+import com.sion.concertbooking.domain.reservation.ReservationStatus;
+import com.sion.concertbooking.domain.reservation.ReservationInfo;
+import com.sion.concertbooking.domain.reservation.ReservationRepository;
+import com.sion.concertbooking.domain.reservation.ReservationService;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
