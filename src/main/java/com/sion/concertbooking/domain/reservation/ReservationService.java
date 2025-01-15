@@ -43,10 +43,11 @@ public class ReservationService {
                 .forEach(Reservation::markSuccess);
     }
 
-    public ReservationInfo getReservationById(long reservationId) {
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
-        return ReservationInfo.ofEntity(reservation);
+    public List<ReservationInfo> getReservationsById(List<Long> reservationIds) {
+        List<Reservation> reservations = reservationRepository.findAllById(reservationIds);
+        return reservations.stream()
+                .map(ReservationInfo::ofEntity)
+                .toList();
     }
 
     @Transactional
@@ -66,29 +67,30 @@ public class ReservationService {
         }
 
         // 2. 모든 좌석에 대해 예약을 생성한다.
-        List<Reservation> reservations = seats.stream()
-                .map(seat -> Reservation.createReservation(
-                        command.getUserId(),
-                        command.getConcertId(),
-                        command.getConcertTitle(),
-                        command.getConcertScheduleId(),
-                        command.getPlayDateTime(),
-                        command.getNow(),
-                        seat.getSeatId(),
-                        seat.getSeatNum(),
-                        seat.getSeatGrade(),
-                        seat.getSeatPrice()
-                ))
-                .toList();
+        List<Reservation> reservations = createReservations(command, seats);
         List<Reservation> savedReservations = reservationRepository.saveAll(reservations);
         return savedReservations.stream()
                 .map(ReservationInfo::ofEntity)
                 .toList();
     }
 
-    public int getTotalPrice(List<ReservationInfo> reservations) {
-        return reservations.stream()
-                .mapToInt(ReservationInfo::seatPrice)
-                .sum();
+    private static List<Reservation> createReservations(
+            ReservationCreateCommand createCommand,
+            List<ReservationCreateCommand.SeatCreateCommand> seatCreateCommands
+    ) {
+        return seatCreateCommands.stream()
+                .map(seat -> Reservation.createReservation(
+                        createCommand.getUserId(),
+                        createCommand.getConcertId(),
+                        createCommand.getConcertTitle(),
+                        createCommand.getConcertScheduleId(),
+                        createCommand.getPlayDateTime(),
+                        createCommand.getNow(),
+                        seat.getSeatId(),
+                        seat.getSeatNum(),
+                        seat.getSeatGrade(),
+                        seat.getSeatPrice()
+                ))
+                .toList();
     }
 }

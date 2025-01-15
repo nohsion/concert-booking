@@ -39,9 +39,7 @@ public class PaymentFacade {
             throw new IllegalArgumentException("좌석 선점 시간이 만료되었습니다. 다시 시도해주세요.");
         }
 
-        List<ReservationInfo> reservations = reservationIds.stream()
-                .map(reservationService::getReservationById)
-                .toList();
+        List<ReservationInfo> reservations = reservationService.getReservationsById(reservationIds);
         int totalPrice = reservations.stream()
                 .mapToInt(ReservationInfo::seatPrice)
                 .sum();
@@ -54,8 +52,7 @@ public class PaymentFacade {
         reservationService.completeReservations(reservationIds);
 
         // 사용자의 대기열 토큰을 만료 시킨다.
-        String tokenId = criteria.tokenId();
-        waitingQueueService.expireToken(tokenId);
+        waitingQueueService.expireToken(criteria.tokenId());
 
         return new PaymentResult(userId, totalPrice, currentPoint.amount(), reservations);
     }

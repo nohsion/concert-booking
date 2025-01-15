@@ -39,4 +39,9 @@ public class ReservationRepositoryIml implements ReservationRepository {
     public Optional<Reservation> findById(final long reservationId) {
         return reservationJpaRepository.findById(reservationId);
     }
+
+    @Override
+    public List<Reservation> findAllById(final List<Long> reservationIds) {
+        return reservationJpaRepository.findAllById(reservationIds);
+    }
 }
