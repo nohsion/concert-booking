@@ -1,10 +1,8 @@
 package com.sion.concertbooking.presentation.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
+import com.sion.concertbooking.application.waitingqueue.*;
+import com.sion.concertbooking.domain.watingqueue.*;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.request.WaitingQueueRegisterRequest;
 import com.sion.concertbooking.intefaces.presentation.rest.WaitingQueueController;
@@ -21,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,7 +31,7 @@ class WaitingQueueControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private WaitingQueueService waitingQueueService;
+    private WaitingQueueFacade waitingQueueFacade;
 
     private ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
 
@@ -42,19 +39,20 @@ class WaitingQueueControllerTest {
     @Test
     void waitQueueAndIssueToken() throws Exception {
         // given
+        String tokenId = "token-id";
         long userId = 1L;
         long concertId = 1L;
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
-        WaitingQueueInfo waitingQueueInfo = new WaitingQueueInfo(
-                1L, "token-id", userId, concertId, WaitingQueueStatus.WAITING, now, now.plusMinutes(10)
+        WaitingQueueResult waitingQueueResult = new WaitingQueueResult(
+                1L, tokenId, userId, concertId, WaitingQueueStatus.WAITING, now, now.plusMinutes(10)
         );
 
         WaitingQueueRegisterRequest waitingQueueRegisterRequest = new WaitingQueueRegisterRequest(userId, concertId);
         String requestJson = mapper.writeValueAsString(waitingQueueRegisterRequest);
 
         // when
-        when(waitingQueueService.waitQueueAndIssueToken(eq(userId), eq(concertId), any(LocalDateTime.class)))
-                .thenReturn(waitingQueueInfo);
+        when(waitingQueueFacade.waitQueueAndIssueToken(any(WaitingQueueIssueCriteria.class)))
+                .thenReturn(waitingQueueResult);
 
         // then
         mockMvc.perform(post("/api/v1/waiting")
@@ -64,7 +62,7 @@ class WaitingQueueControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.userId").value(userId))
                 .andExpect(jsonPath("$.concertId").value(concertId))
-                .andExpect(jsonPath("$.tokenId").value("token-id"))
+                .andExpect(jsonPath("$.tokenId").value(tokenId))
                 .andExpect(jsonPath("$.createdAt").value(
                         now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
                 .andExpect(jsonPath("$.expiredAt").value(
@@ -73,17 +71,18 @@ class WaitingQueueControllerTest {
 
     @DisplayName("대기열 정보 조회시 남은 순서와 예상 대기 시간을 반환한다.")
     @Test
-    void getQueueByToken() throws Exception {
+    void getQueueDetail() throws Exception {
         // given
         int remainingWaitingOrder = 10;
         int remainingWaitingSec = 50;
         String tokenId = "token-id";
 
         TokenInfo tokenInfo = new TokenInfo(tokenId, 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());
+        WaitingQueueDetailResult detailResult = new WaitingQueueDetailResult(tokenId, remainingWaitingOrder, remainingWaitingSec);
 
         // when
-        when(waitingQueueService.getQueueDetailByTokenId(eq(tokenId), any(LocalDateTime.class)))
-                .thenReturn(new WaitingQueueDetailInfo(tokenId, remainingWaitingOrder, remainingWaitingSec));
+        when(waitingQueueFacade.getWaitingQueueDetail(any(WaitingQueueDetailCriteria.class)))
+                .thenReturn(detailResult);
 
         // then
         mockMvc.perform(get("/api/v1/waiting")

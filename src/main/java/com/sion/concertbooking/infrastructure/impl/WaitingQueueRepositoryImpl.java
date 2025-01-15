@@ -29,8 +29,13 @@ public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
     }
 
     @Override
-    public List<WaitingQueue> getWaitingStatusTokens() {
+    public List<WaitingQueue> findByWaitingStatus() {
         return waitingQueueJpaRepository.findByStatusOrderById(WaitingQueueStatus.WAITING);
+    }
+
+    @Override
+    public List<WaitingQueue> findByEnteredStatus() {
+        return waitingQueueJpaRepository.findByStatusOrderById(WaitingQueueStatus.ENTERED);
     }
 
     @Transactional

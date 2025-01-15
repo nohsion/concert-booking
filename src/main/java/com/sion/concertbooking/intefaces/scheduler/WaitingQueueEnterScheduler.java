@@ -32,7 +32,7 @@ public class WaitingQueueEnterScheduler {
     public void enterWaitingTokens() {
         LocalDateTime now = LocalDateTime.now();
 
-        List<WaitingQueueInfo> enteredTokens = waitingQueueService.getEnteredTokens(now);
+        List<WaitingQueueInfo> enteredTokens = waitingQueueService.getProcessingTokens(now);
         reservationEnterPolicy.validateIsAvailableForEntry(enteredTokens.size());
 
         List<WaitingQueueInfo> waitingTokens = waitingQueueService.getWaitingTokens(now);

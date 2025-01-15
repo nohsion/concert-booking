@@ -8,7 +8,9 @@ public interface WaitingQueueRepository {
 
     WaitingQueue findByTokenId(String tokenId);
 
-    List<WaitingQueue> getWaitingStatusTokens();
+    List<WaitingQueue> findByWaitingStatus();
+
+    List<WaitingQueue> findByEnteredStatus();
 
     int updateStatusInBatch(List<String> tokens, WaitingQueueStatus status);
 }

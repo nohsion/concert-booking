@@ -63,7 +63,7 @@ public class WaitingQueue extends BaseEntity {
         return !isExpiredTime(now) && VALID_STATUSES.contains(this.status);
     }
 
-    public boolean isEntered(LocalDateTime now) {
+    public boolean isProcessing(LocalDateTime now) {
         return !isExpiredTime(now) && this.status == WaitingQueueStatus.ENTERED;
     }
 }

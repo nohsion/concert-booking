@@ -1,16 +1,16 @@
 package com.sion.concertbooking.intefaces.presentation.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
+import com.sion.concertbooking.application.waitingqueue.WaitingQueueDetailResult;
 
 public record WaitingQueueInfoResponse(
         @JsonProperty(value = "tokenId") String tokenId,
         @JsonProperty(value = "remainingWaitingOrder") int remainingWaitingOrder,
         @JsonProperty(value = "remainingWaitingSec") int remainingWaitingSec
 ) {
-    public static WaitingQueueInfoResponse fromInfo(WaitingQueueDetailInfo dto) {
+    public static WaitingQueueInfoResponse fromResult(WaitingQueueDetailResult result) {
         return new WaitingQueueInfoResponse(
-                dto.tokenId(), dto.remainingWaitingOrder(), dto.remainingWaitingSec()
+                result.tokenId(), result.remainingWaitingOrder(), result.remainingWaitingSec()
         );
     }
 }

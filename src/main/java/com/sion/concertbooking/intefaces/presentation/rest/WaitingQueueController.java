@@ -1,8 +1,6 @@
 package com.sion.concertbooking.intefaces.presentation.rest;
 
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueDetailInfo;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
+import com.sion.concertbooking.application.waitingqueue.*;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.aspect.TokenRequired;
 import com.sion.concertbooking.intefaces.aspect.TokenUtils;
@@ -26,12 +24,12 @@ import static com.sion.concertbooking.domain.token.TokenProvider.CONCERT_TOKEN_H
 @RequestMapping(value = "/api/v1/waiting")
 public class WaitingQueueController {
 
-    private final WaitingQueueService waitingQueueService;
+    private final WaitingQueueFacade waitingQueueFacade;
 
     public WaitingQueueController(
-            WaitingQueueService waitingQueueService
+            WaitingQueueFacade waitingQueueFacade
     ) {
-        this.waitingQueueService = waitingQueueService;
+        this.waitingQueueFacade = waitingQueueFacade;
     }
 
     private static final String TAG_NAME = "waiting";
@@ -45,12 +43,14 @@ public class WaitingQueueController {
     public ResponseEntity<WaitingQueueRegisterResponse> waitQueueAndIssueToken(
             @RequestBody WaitingQueueRegisterRequest waitingQueueRegisterRequest
     ) {
-        WaitingQueueInfo waitingQueueInfo = waitingQueueService.waitQueueAndIssueToken(
+        WaitingQueueIssueCriteria waitingQueueIssueCriteria = new WaitingQueueIssueCriteria(
                 waitingQueueRegisterRequest.userId(),
                 waitingQueueRegisterRequest.concertId(),
                 LocalDateTime.now()
         );
-        return ResponseEntity.ok(WaitingQueueRegisterResponse.fromDto(waitingQueueInfo));
+        WaitingQueueResult result = waitingQueueFacade.waitQueueAndIssueToken(waitingQueueIssueCriteria);
+
+        return ResponseEntity.ok(WaitingQueueRegisterResponse.fromResult(result));
     }
 
     @Operation(summary = "대기열 정보 조회", description = "토큰을 통해 대기열 정보를 조회한다.",
@@ -61,11 +61,15 @@ public class WaitingQueueController {
     })
     @TokenRequired
     @GetMapping
-    public ResponseEntity<WaitingQueueInfoResponse> getQueueByToken() throws AuthenticationException {
+    public ResponseEntity<WaitingQueueInfoResponse> getQueueDetail() throws AuthenticationException {
         TokenInfo tokenInfo = TokenUtils.getTokenInfo();
         String tokenId = tokenInfo.tokenId();
-        WaitingQueueDetailInfo waitingQueueDetailInfo =
-                waitingQueueService.getQueueDetailByTokenId(tokenId, LocalDateTime.now());
-        return ResponseEntity.ok(WaitingQueueInfoResponse.fromInfo(waitingQueueDetailInfo));
+
+        WaitingQueueDetailCriteria waitingQueueDetailCriteria = new WaitingQueueDetailCriteria(
+                tokenId, LocalDateTime.now()
+        );
+        WaitingQueueDetailResult result = waitingQueueFacade.getWaitingQueueDetail(waitingQueueDetailCriteria);
+
+        return ResponseEntity.ok(WaitingQueueInfoResponse.fromResult(result));
     }
 }
