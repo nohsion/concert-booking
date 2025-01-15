@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class PointHistoryService {
 
@@ -30,7 +32,7 @@ public class PointHistoryService {
 
     public PointHistoryInfo getPointHistoryById(long pointHistoryId) {
         PointHistory pointHistory = pointHistoryRepository.findById(pointHistoryId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포인트 이력입니다."));
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 포인트 이력입니다. pointHistoryId=" + pointHistoryId));
         return PointHistoryInfo.fromEntity(pointHistory);
     }
 

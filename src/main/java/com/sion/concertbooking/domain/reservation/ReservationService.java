@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ReservationService {
@@ -29,7 +30,7 @@ public class ReservationService {
         return reservationIds.stream()
                 .anyMatch(reservationId -> {
                     Reservation reservation = reservationRepository.findById(reservationId)
-                            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다."));
+                            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약입니다. reservationId=" + reservationId));
                     return reservation.isExpired(now);
                 });
 
@@ -39,14 +40,14 @@ public class ReservationService {
     public void completeReservations(List<Long> reservationIds) {
         reservationIds.stream()
                 .map(reservationId -> reservationRepository.findById(reservationId)
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다.")))
+                        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약입니다. reservationId=" + reservationId)))
                 .forEach(Reservation::markSuccess);
     }
 
     public List<ReservationInfo> getReservationsById(List<Long> reservationIds) {
         List<Reservation> reservations = reservationIds.stream()
                 .map(reservationId -> reservationRepository.findById(reservationId)
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다.")))
+                        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 예약입니다. reservationId=" + reservationId)))
                 .toList();
         return reservations.stream()
                 .map(ReservationInfo::ofEntity)

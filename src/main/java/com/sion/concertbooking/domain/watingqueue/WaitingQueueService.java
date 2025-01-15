@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class WaitingQueueService {
@@ -34,7 +35,7 @@ public class WaitingQueueService {
     public WaitingQueueInfo getQueueByTokenId(String tokenId) {
         WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
         if (waitingQueue == null) {
-            throw new IllegalArgumentException("Invalid token");
+            throw new NoSuchElementException("해당 토큰은 대기열에 존재하지 않습니다. tokenId=" + tokenId);
         }
         return WaitingQueueInfo.fromEntity(waitingQueue);
     }
@@ -71,7 +72,7 @@ public class WaitingQueueService {
     public void expireToken(String tokenId) {
         WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
         if (waitingQueue == null) {
-            throw new IllegalArgumentException("Invalid token");
+            throw new NoSuchElementException("해당 토큰은 대기열에 존재하지 않습니다. tokenId=" + tokenId);
         }
         waitingQueue.updateStatusExpired();
     }

@@ -3,6 +3,7 @@ package com.sion.concertbooking.domain.seat;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class SeatService {
@@ -16,7 +17,7 @@ public class SeatService {
     public List<SeatInfo> getSeatsById(List<Long> seatIds) {
         List<Seat> seats = seatIds.stream()
                 .map(seatId -> seatRepository.findById(seatId)
-                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다.")))
+                        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 좌석입니다. seatId=" + seatId)))
                 .toList();
         return seats.stream()
                 .map(SeatInfo::fromEntity)

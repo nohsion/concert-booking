@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,7 +24,7 @@ class ConcertScheduleServiceTest {
         sut = new ConcertScheduleService(concertScheduleRepository);
     }
 
-    @DisplayName("존재하지 않는 공연 일정 ID로 조회하면 IllegalArgumentException이 발생한다.")
+    @DisplayName("존재하지 않는 공연 일정 ID로 조회하면 NoSuchElementException이 발생한다.")
     @Test
     void getConcertScheduleByIdFail() {
         // given
@@ -35,7 +36,7 @@ class ConcertScheduleServiceTest {
         // when
         // then
         assertThatThrownBy(() -> sut.getConcertScheduleById(concertScheduleId))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 공연 일정입니다.");
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("존재하지 않는 공연 일정입니다. concertScheduleId=" + concertScheduleId);
     }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -22,7 +23,7 @@ class SeatServiceTest {
         sut = new SeatService(seatRepository);
     }
 
-    @DisplayName("존재하지 않는 좌석 ID로 조회하면 IllegalArgumentException이 발생한다.")
+    @DisplayName("존재하지 않는 좌석 ID로 조회하면 NoSuchElementException이 발생한다.")
     @Test
     void getSeatsByIdFail() {
         // given
@@ -31,8 +32,8 @@ class SeatServiceTest {
         // when
         // then
         assertThatThrownBy(() -> sut.getSeatsById(seatId))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 좌석입니다.");
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("존재하지 않는 좌석입니다. seatId=1");
     }
 
 }
