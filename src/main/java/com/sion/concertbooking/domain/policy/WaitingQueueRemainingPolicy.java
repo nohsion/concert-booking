@@ -18,7 +18,11 @@ public class WaitingQueueRemainingPolicy {
      * @return 타겟 대기자의 남은 대기 순서
      */
     public int calculateRemainingWaitingOrder(WaitingQueueInfo target, List<WaitingQueueInfo> waitingQueues) {
-        return waitingQueues.indexOf(target) + 1;
+        int targetIndex = waitingQueues.indexOf(target);
+        if (targetIndex == -1) {
+            throw new IllegalArgumentException("대기열에 존재하지 않는 대기자입니다. tokenId=" + target.tokenId());
+        }
+        return targetIndex + 1;
     }
 
     /**
@@ -35,7 +39,12 @@ public class WaitingQueueRemainingPolicy {
             List<WaitingQueueInfo> processingQueues,
             int processingCapacity
     ) {
-        // 현재 입장한 사람의 비율
+        int targetIndex = waitingQueues.indexOf(target);
+        if (targetIndex == -1) {
+            throw new IllegalArgumentException("대기열에 존재하지 않는 대기자입니다. tokenId=" + target.tokenId());
+        }
+
+        // 수용 가능한 최대 인원 중, 입장해서 처리중인 사람의 비율
         double processingRatio = (double) processingQueues.size() / processingCapacity;
 
         // 한 사람당 추정 대기 시간 (입장한 사람 비율에 따라 조정)
@@ -44,9 +53,9 @@ public class WaitingQueueRemainingPolicy {
         // 대기 시간이 너무 짧아지지 않도록 최소 대기 시간을 설정
         double waitTimePerPersonSec = Math.max(estimatedWaitTimePerPersonSec, MIN_WAIT_TIME_SEC);
 
-        // 타겟 앞에 대기 중인 사람 수
-        int peopleInFrontOfTarget = waitingQueues.indexOf(target);
+        // 대기 순서
+        int waitingOrder = targetIndex + 1;
 
-        return (int) (peopleInFrontOfTarget * waitTimePerPersonSec);
+        return (int) (waitingOrder * waitTimePerPersonSec);
     }
 }
