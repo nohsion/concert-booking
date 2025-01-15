@@ -1,5 +1,6 @@
 package com.sion.concertbooking.intefaces.scheduler;
 
+import com.sion.concertbooking.domain.policy.ReservationEnterPolicy;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,14 @@ import java.util.List;
 @Component
 public class WaitingQueueEnterScheduler {
 
-    private static final int MAX_TOKENS_PER_ADMISSION = 100; // 한 번에 입장 가능한 인원 제한
-    private static final int MAX_TOKENS_ENTERED = 10_000; // 최대 입장 가능한 인원 제한
-
+    private final ReservationEnterPolicy reservationEnterPolicy;
     private final WaitingQueueService waitingQueueService;
 
-    public WaitingQueueEnterScheduler(WaitingQueueService waitingQueueService) {
+    public WaitingQueueEnterScheduler(
+            final ReservationEnterPolicy reservationEnterPolicy,
+            final WaitingQueueService waitingQueueService
+    ) {
+        this.reservationEnterPolicy = reservationEnterPolicy;
         this.waitingQueueService = waitingQueueService;
     }
 
@@ -30,10 +33,7 @@ public class WaitingQueueEnterScheduler {
         LocalDateTime now = LocalDateTime.now();
 
         List<WaitingQueueInfo> enteredTokens = waitingQueueService.getEnteredTokens(now);
-        if (enteredTokens.size() >= MAX_TOKENS_ENTERED) {
-            log.info("현재 인원이 꽉차서 추가로 입장할 수 없습니다.");
-            return;
-        }
+        reservationEnterPolicy.validateIsAvailableForEntry(enteredTokens.size());
 
         List<WaitingQueueInfo> waitingTokens = waitingQueueService.getWaitingTokens(now);
         if (waitingTokens.isEmpty()) {
@@ -41,10 +41,7 @@ public class WaitingQueueEnterScheduler {
             return;
         }
 
-        // 대기중인 인원 중에서 한 번에 입장 가능한 인원수 만큼 차례로 입장시킨다.
-        // 단, 최대 입장 가능한 인원 제한을 넘지 않도록 한다.
-        int maxLimit = Math.min(MAX_TOKENS_ENTERED - enteredTokens.size(), MAX_TOKENS_PER_ADMISSION);
-        int limit = Math.min(waitingTokens.size(), maxLimit);
+        int limit = reservationEnterPolicy.getMaxLimitToEnter(enteredTokens.size(), waitingTokens.size());
         List<String> tokensToEnter = waitingTokens.subList(0, limit).stream()
                 .map(WaitingQueueInfo::tokenId)
                 .toList();
