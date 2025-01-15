@@ -5,7 +5,6 @@ import com.sion.concertbooking.domain.seat.SeatRepository;
 import com.sion.concertbooking.infrastructure.jpa.SeatJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,8 +26,4 @@ public class SeatRepositoryImpl implements SeatRepository {
         return seatJpaRepository.save(seat);
     }
 
-    @Override
-    public List<Seat> findAllById(final List<Long> seatIds) {
-        return seatJpaRepository.findAllById(seatIds);
-    }
 }

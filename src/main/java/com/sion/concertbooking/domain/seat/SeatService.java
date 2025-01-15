@@ -13,14 +13,11 @@ public class SeatService {
         this.seatRepository = seatRepository;
     }
 
-    public SeatInfo getSeatById(long seatId) {
-        Seat seat = seatRepository.findById(seatId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다."));
-        return SeatInfo.fromEntity(seat);
-    }
-
     public List<SeatInfo> getSeatsById(List<Long> seatIds) {
-        List<Seat> seats = seatRepository.findAllById(seatIds);
+        List<Seat> seats = seatIds.stream()
+                .map(seatId -> seatRepository.findById(seatId)
+                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 좌석입니다.")))
+                .toList();
         return seats.stream()
                 .map(SeatInfo::fromEntity)
                 .toList();

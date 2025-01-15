@@ -44,7 +44,10 @@ public class ReservationService {
     }
 
     public List<ReservationInfo> getReservationsById(List<Long> reservationIds) {
-        List<Reservation> reservations = reservationRepository.findAllById(reservationIds);
+        List<Reservation> reservations = reservationIds.stream()
+                .map(reservationId -> reservationRepository.findById(reservationId)
+                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 예약입니다.")))
+                .toList();
         return reservations.stream()
                 .map(ReservationInfo::ofEntity)
                 .toList();
