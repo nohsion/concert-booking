@@ -24,7 +24,7 @@ class ReservationEnterPolicyTest {
                 .hasMessage("현재 인원이 꽉차서 추가로 입장할 수 없습니다.");
     }
 
-    @DisplayName("최대 인원 10_000명 중 8_000명이 입장해있고, 대기 인원이 5_000명이면 2_000명이 입장 가능하다.")
+    @DisplayName("최대 인원 10_000명 중 8_000명이 입장해있고, 대기 인원이 5_000명이어도 한번에는 100명만 입장 가능하다.")
     @Test
     void getMaxLimitToEnter() {
         // given
@@ -34,20 +34,20 @@ class ReservationEnterPolicyTest {
         int actual = sut.getMaxLimitToEnter(8_000, 5_000);
 
         // then
-        assertThat(actual).isEqualTo(2_000);
+        assertThat(actual).isEqualTo(100);
     }
 
-    @DisplayName("최대 인원 10_000명 중 8_000명이 입장해있고, 대기 인원이 100명이면 100명이 입장 가능하다.")
+    @DisplayName("최대 인원 10_000명 중 8_000명이 입장해있고, 대기 인원이 50명이면 한번에 100명이 입장 가능해도 50명만 입장 가능하다.")
     @Test
     void getMaxLimitToEnterWhenWaitingIsLessThanMaxAdmission() {
         // given
         ReservationEnterPolicy sut = new ReservationEnterPolicy();
 
         // when
-        int actual = sut.getMaxLimitToEnter(8_000, 100);
+        int actual = sut.getMaxLimitToEnter(8_000, 50);
 
         // then
-        assertThat(actual).isEqualTo(100);
+        assertThat(actual).isEqualTo(50);
     }
 
 
