@@ -34,7 +34,7 @@ public class Reservation extends BaseEntity {
     private String concertTitle;
 
     @Column(name = "concert_schedule_id")
-    private long concertScheduleId;
+    private Long concertScheduleId;
 
     @Column(name = "play_date")
     private LocalDateTime playDateTime;
@@ -46,14 +46,14 @@ public class Reservation extends BaseEntity {
     private long seatId;
 
     @Column(name = "seat_num")
-    private int seatNum;
+    private Integer seatNum;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "seat_grade")
     private SeatGrade seatGrade;
 
     @Column(name = "seat_price")
-    private int seatPrice;
+    private Integer seatPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -66,13 +66,13 @@ public class Reservation extends BaseEntity {
             long userId,
             long concertId,
             String concertTitle,
-            long concertScheduleId,
+            Long concertScheduleId,
             LocalDateTime playDateTime,
             LocalDateTime now,
-            long seatId,
-            int seatNum,
+            Long seatId,
+            Integer seatNum,
             SeatGrade seatGrade,
-            int seatPrice
+            Integer seatPrice
     ) {
         Reservation reservation = new Reservation();
         reservation.userId = userId;

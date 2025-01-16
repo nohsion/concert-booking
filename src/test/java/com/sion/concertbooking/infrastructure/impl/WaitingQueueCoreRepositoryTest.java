@@ -58,7 +58,7 @@ class WaitingQueueCoreRepositoryTest {
         waitingQueueJpaRepository.saveAll(expiredQueues);
 
         // when
-        List<WaitingQueue> result = waitingQueueRepository.getWaitingStatusTokens();
+        List<WaitingQueue> result = waitingQueueRepository.findByWaitingStatus();
 
         // then
         assertThat(result).hasSize(3);
@@ -87,7 +87,7 @@ class WaitingQueueCoreRepositoryTest {
         waitingQueueJpaRepository.saveAll(expiredQueues);
 
         // when
-        List<WaitingQueue> result = waitingQueueRepository.getWaitingStatusTokens();
+        List<WaitingQueue> result = waitingQueueRepository.findByWaitingStatus();
 
         // then
         assertThat(result).hasSize(3);

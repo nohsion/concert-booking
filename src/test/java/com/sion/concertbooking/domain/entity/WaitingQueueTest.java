@@ -128,7 +128,7 @@ class WaitingQueueTest {
 
     @DisplayName("EXPIRED 상태는 항상 isTokenValid()은 false를 반환한다.")
     @Test
-    void isTokenValidWhenStatusIsEntered() {
+    void isTokenValidWhenStatusIsProcessing() {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue expiredStatusButNotExpiredTimeQueue = Instancio.of(WaitingQueue.class)
@@ -151,7 +151,7 @@ class WaitingQueueTest {
 
     @DisplayName("ENTERED 상태이고 만료시간이 지나지 않았다면 isEntered()은 true를 반환한다.")
     @Test
-    void isEnteredWhenStatusIsEnteredAndNotExpiredTime() {
+    void isEnteredWhenStatusIsProcessingAndNotExpiredTime() {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
@@ -160,7 +160,7 @@ class WaitingQueueTest {
                 .create();
 
         // when
-        boolean result = waitingQueue.isEntered(now);
+        boolean result = waitingQueue.isProcessing(now);
 
         // then
         assertThat(result).isTrue();
@@ -177,7 +177,7 @@ class WaitingQueueTest {
                 .create();
 
         // when
-        boolean result = waitingQueue.isEntered(now);
+        boolean result = waitingQueue.isProcessing(now);
 
         // then
         assertThat(result).isFalse();

@@ -38,3 +38,5 @@ out/
 
 ### Docker DB ###
 db/
+
+logs/

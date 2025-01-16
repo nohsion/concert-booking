@@ -27,4 +27,8 @@ public class ReservationEnterPolicy {
         int maxAdmissionCount = Math.min(MAX_TOKENS_ENTERED - enteredCount, MAX_TOKENS_PER_ADMISSION);
         return Math.min(waitingCount, maxAdmissionCount);
     }
+
+    public int getMaxTokensEntered() {
+        return MAX_TOKENS_ENTERED;
+    }
 }

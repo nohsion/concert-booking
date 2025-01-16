@@ -6,6 +6,8 @@ import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.aspect.TokenRequired;
 import com.sion.concertbooking.intefaces.aspect.TokenUtils;
+import com.sion.concertbooking.intefaces.presentation.accesslog.LogGroup;
+import com.sion.concertbooking.intefaces.presentation.accesslog.LogMapping;
 import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.intefaces.presentation.response.ReservationResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +41,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰"),
     })
     @TokenRequired
+    @LogMapping(logGroup = LogGroup.RESERVATION)
     @PostMapping
     public ResponseEntity<List<ReservationResponse>> createReservations(
             @RequestBody ConcertReservationCreateRequest concertReservationCreateRequest

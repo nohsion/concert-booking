@@ -6,6 +6,8 @@ import com.sion.concertbooking.application.payment.PaymentResult;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.aspect.TokenRequired;
 import com.sion.concertbooking.intefaces.aspect.TokenUtils;
+import com.sion.concertbooking.intefaces.presentation.accesslog.LogGroup;
+import com.sion.concertbooking.intefaces.presentation.accesslog.LogMapping;
 import com.sion.concertbooking.intefaces.presentation.request.PaymentRequest;
 import com.sion.concertbooking.intefaces.presentation.response.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,6 +40,7 @@ public class PaymentController {
             @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰"),
     })
     @TokenRequired
+    @LogMapping(logGroup = LogGroup.PAYMENT)
     @PostMapping
     public ResponseEntity<PaymentResponse> processPayment(
             @RequestBody PaymentRequest paymentRequest
