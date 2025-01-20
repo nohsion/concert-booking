@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sion.concertbooking.application.payment.PaymentFacade;
 import com.sion.concertbooking.application.payment.PaymentCriteria;
 import com.sion.concertbooking.application.payment.PaymentResult;
+import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.rest.PaymentController;
@@ -55,9 +55,9 @@ class PaymentControllerTest {
 
         List<ReservationInfo> reservations = List.of(
                 new ReservationInfo(1L, userId, concertId, "지킬앤하이드", 1L, dateTime,
-                        10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS, dateTime),
+                        10L, 10, SeatGrade.VIP, 100_000, Reservation.Status.SUCCESS, dateTime),
                 new ReservationInfo(2L, userId, concertId, "지킬앤하이드", 1L, dateTime,
-                        11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS, dateTime)
+                        11L, 11, SeatGrade.VIP, 100_000, Reservation.Status.SUCCESS, dateTime)
         );
         PaymentResult paymentResult = new PaymentResult(userId, amountToUse, balance, reservations);
 

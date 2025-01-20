@@ -15,7 +15,7 @@ public record ReservationInfo(
         int seatNum,
         SeatGrade seatGrade,
         int seatPrice,
-        ReservationStatus reservationStatus,
+        Reservation.Status reservationStatus,
         LocalDateTime expiredAt
 ) {
 

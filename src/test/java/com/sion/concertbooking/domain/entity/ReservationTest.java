@@ -1,6 +1,5 @@
 package com.sion.concertbooking.domain.entity;
 
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.domain.reservation.Reservation;
 import org.instancio.Instancio;
@@ -56,7 +55,7 @@ class ReservationTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         Reservation reservation = Instancio.of(Reservation.class)
-                .set(field(Reservation::getStatus), ReservationStatus.SUSPEND)
+                .set(field(Reservation::getStatus), Reservation.Status.SUSPEND)
                 .set(field(Reservation::getExpiredAt), now.minusMinutes(1))
                 .create();
 
@@ -73,7 +72,7 @@ class ReservationTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         Reservation reservation = Instancio.of(Reservation.class)
-                .set(field(Reservation::getStatus), ReservationStatus.SUSPEND)
+                .set(field(Reservation::getStatus), Reservation.Status.SUSPEND)
                 .set(field(Reservation::getExpiredAt), now.plusMinutes(1))
                 .create();
 

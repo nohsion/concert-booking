@@ -1,6 +1,6 @@
 package com.sion.concertbooking.application.reservation;
 
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
+import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
 
@@ -17,7 +17,7 @@ public record ReservationResult(
         int seatNum,
         SeatGrade seatGrade,
         int seatPrice,
-        ReservationStatus reservationStatus
+        Reservation.Status reservationStatus
 ) {
     public static ReservationResult fromInfo(ReservationInfo info) {
         return new ReservationResult(

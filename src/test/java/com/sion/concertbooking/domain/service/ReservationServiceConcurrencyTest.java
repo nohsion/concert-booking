@@ -7,7 +7,6 @@ import com.sion.concertbooking.domain.concertschedule.ConcertScheduleRepository;
 import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.reservation.ReservationCreateCommand;
 import com.sion.concertbooking.domain.reservation.ReservationService;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.seat.Seat;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.domain.seat.SeatRepository;
@@ -131,7 +130,7 @@ class ReservationServiceConcurrencyTest {
         assertThat(allReservations.get(0).getUserId())
                 .isEqualTo(allReservations.get(1).getUserId());
         allReservations.forEach(reservation -> {
-            assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.SUSPEND);
+            assertThat(reservation.getStatus()).isEqualTo(Reservation.Status.SUSPEND);
         });
     }
 

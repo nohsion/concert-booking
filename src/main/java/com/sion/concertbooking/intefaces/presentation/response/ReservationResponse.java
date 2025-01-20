@@ -3,7 +3,7 @@ package com.sion.concertbooking.intefaces.presentation.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sion.concertbooking.application.reservation.ReservationResult;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
+import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.seat.SeatGrade;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public record ReservationResponse(
         @JsonProperty(value = "seatNum") int seatNum,
         @JsonProperty(value = "seatGrade") SeatGrade seatGrade,
         @JsonProperty(value = "seatPrice") int seatPrice,
-        @JsonProperty(value = "reservationStatus") ReservationStatus reservationStatus
+        @JsonProperty(value = "reservationStatus") Reservation.Status reservationStatus
 ) {
 
     public static ReservationResponse fromResult(ReservationResult result) {
