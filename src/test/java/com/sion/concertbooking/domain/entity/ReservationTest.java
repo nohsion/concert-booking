@@ -1,6 +1,6 @@
 package com.sion.concertbooking.domain.entity;
 
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.seat.Seat;
 import com.sion.concertbooking.domain.reservation.Reservation;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ class ReservationTest {
         Reservation reservation = Reservation.createReservation(
                 1L, 1L, "콘서트 타이틀",
                 1L, playDateTime, now,
-                1L, 1, SeatGrade.VIP, 100_000
+                1L, 1, Seat.Grade.VIP, 100_000
         );
 
         // then
@@ -42,7 +42,7 @@ class ReservationTest {
         Reservation reservation = Reservation.createReservation(
                 1L, 1L, "콘서트 타이틀",
                 1L, playDateTime, now,
-                1L, 1, SeatGrade.VIP, 100_000
+                1L, 1, Seat.Grade.VIP, 100_000
         );
 
         // then

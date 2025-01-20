@@ -8,7 +8,6 @@ import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.reservation.ReservationCreateCommand;
 import com.sion.concertbooking.domain.reservation.ReservationService;
 import com.sion.concertbooking.domain.seat.Seat;
-import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.domain.seat.SeatRepository;
 import com.sion.concertbooking.infrastructure.jpa.ReservationJpaRepository;
 import com.sion.concertbooking.test.TestDataCleaner;
@@ -65,8 +64,8 @@ class ReservationServiceConcurrencyTest {
         // given
         Concert concert = concertRepository.save(createConcert());
         ConcertSchedule concertSchedule = concertScheduleRepository.save(createConcertSchedule(concert.getId()));
-        Seat seat1 = seatRepository.save(createSeat(1, SeatGrade.VIP, 170_000));
-        Seat seat2 = seatRepository.save(createSeat(2, SeatGrade.VIP, 170_000));
+        Seat seat1 = seatRepository.save(createSeat(1, Seat.Grade.VIP, 170_000));
+        Seat seat2 = seatRepository.save(createSeat(2, Seat.Grade.VIP, 170_000));
 
         // 초기 Reservation 데이터 수가 0이면 데드락이 발생하므로 초기 데이터를 넣어준다. (그런데 왜..??)
         reservationJpaRepository.save(Instancio.of(Reservation.class)
@@ -147,7 +146,7 @@ class ReservationServiceConcurrencyTest {
                 .create();
     }
 
-    private Seat createSeat(int seatNum, SeatGrade seatGrade, int seatPrice) {
+    private Seat createSeat(int seatNum, Seat.Grade seatGrade, int seatPrice) {
         return Instancio.of(Seat.class)
                 .set(field(Seat::getId), null)
                 .set(field(Seat::getTheatreId), 1L)

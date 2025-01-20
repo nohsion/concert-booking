@@ -1,7 +1,7 @@
 package com.sion.concertbooking.domain.reservation;
 
 import com.sion.concertbooking.domain.BaseEntity;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.seat.Seat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,7 +50,7 @@ public class Reservation extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "seat_grade")
-    private SeatGrade seatGrade;
+    private Seat.Grade seatGrade;
 
     @Column(name = "seat_price")
     private Integer seatPrice;
@@ -77,7 +77,7 @@ public class Reservation extends BaseEntity {
             LocalDateTime now,
             Long seatId,
             Integer seatNum,
-            SeatGrade seatGrade,
+            Seat.Grade seatGrade,
             Integer seatPrice
     ) {
         Reservation reservation = new Reservation();

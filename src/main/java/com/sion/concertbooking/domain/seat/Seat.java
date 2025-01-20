@@ -25,9 +25,12 @@ public class Seat extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "seat_grade")
-    private SeatGrade seatGrade;
+    private Grade seatGrade;
 
     @Column(name = "seat_price")
     private int seatPrice;
 
+    public enum Grade {
+        VIP, R, S, A
+    }
 }

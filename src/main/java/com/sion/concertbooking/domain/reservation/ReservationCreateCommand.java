@@ -2,7 +2,7 @@ package com.sion.concertbooking.domain.reservation;
 
 import com.sion.concertbooking.domain.concert.ConcertInfo;
 import com.sion.concertbooking.domain.concertschedule.ConcertScheduleInfo;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.seat.Seat;
 import com.sion.concertbooking.domain.seat.SeatInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,10 +52,10 @@ public class ReservationCreateCommand {
     public static class SeatCreateCommand {
         long seatId;
         int seatNum;
-        SeatGrade seatGrade;
+        Seat.Grade seatGrade;
         int seatPrice;
 
-        public SeatCreateCommand(long seatId, int seatNum, SeatGrade seatGrade, int seatPrice) {
+        public SeatCreateCommand(long seatId, int seatNum, Seat.Grade seatGrade, int seatPrice) {
             this.seatId = seatId;
             this.seatNum = seatNum;
             this.seatGrade = seatGrade;

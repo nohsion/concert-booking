@@ -4,7 +4,7 @@ public record SeatInfo(
         long seatId,
         long theaterId,
         int seatNum,
-        SeatGrade seatGrade,
+        Seat.Grade seatGrade,
         int seatPrice
 ) {
     public static SeatInfo fromEntity(Seat seat) {

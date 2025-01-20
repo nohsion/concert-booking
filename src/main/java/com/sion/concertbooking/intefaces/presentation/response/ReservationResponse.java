@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.domain.reservation.Reservation;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.seat.Seat;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +17,7 @@ public record ReservationResponse(
         @JsonProperty(value = "playDateTime") LocalDateTime playDateTime,
         @JsonProperty(value = "seatId") long seatId,
         @JsonProperty(value = "seatNum") int seatNum,
-        @JsonProperty(value = "seatGrade") SeatGrade seatGrade,
+        @JsonProperty(value = "seatGrade") Seat.Grade seatGrade,
         @JsonProperty(value = "seatPrice") int seatPrice,
         @JsonProperty(value = "reservationStatus") Reservation.Status reservationStatus
 ) {

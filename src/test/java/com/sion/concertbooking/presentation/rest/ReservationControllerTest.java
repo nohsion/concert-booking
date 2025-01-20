@@ -6,7 +6,7 @@ import com.sion.concertbooking.application.reservation.ConcertReservationFacade;
 import com.sion.concertbooking.application.reservation.ReservationCriteria;
 import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.domain.reservation.Reservation;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.seat.Seat;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
@@ -57,9 +57,9 @@ class ReservationControllerTest {
 
         List<ReservationResult> reservationResults = List.of(
                 new ReservationResult(1L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
-                        10L, 10, SeatGrade.VIP, 100_000, Reservation.Status.SUCCESS),
+                        10L, 10, Seat.Grade.VIP, 100_000, Reservation.Status.SUCCESS),
                 new ReservationResult(2L, userId, concertId, concertTitle, concertScheduleId, playDateTime,
-                        11L, 11, SeatGrade.VIP, 100_000, Reservation.Status.SUCCESS)
+                        11L, 11, Seat.Grade.VIP, 100_000, Reservation.Status.SUCCESS)
         );
         when(concertReservationFacade.reserve(reservationCriteria))
                 .thenReturn(reservationResults);
@@ -80,7 +80,7 @@ class ReservationControllerTest {
                         playDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
                 .andExpect(jsonPath("$[0].seatId").value(10L))
                 .andExpect(jsonPath("$[0].seatNum").value(10))
-                .andExpect(jsonPath("$[0].seatGrade").value(SeatGrade.VIP.name()))
+                .andExpect(jsonPath("$[0].seatGrade").value(Seat.Grade.VIP.name()))
                 .andExpect(jsonPath("$[0].seatPrice").value(100_000))
                 .andExpect(jsonPath("$[0].reservationStatus").value(Reservation.Status.SUCCESS.name()))
                 .andExpect(jsonPath("$[1].reservationId").value(2L))
@@ -89,7 +89,7 @@ class ReservationControllerTest {
                         playDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
                 .andExpect(jsonPath("$[1].seatId").value(11L))
                 .andExpect(jsonPath("$[1].seatNum").value(11))
-                .andExpect(jsonPath("$[1].seatGrade").value(SeatGrade.VIP.name()))
+                .andExpect(jsonPath("$[1].seatGrade").value(Seat.Grade.VIP.name()))
                 .andExpect(jsonPath("$[1].seatPrice").value(100_000))
                 .andExpect(jsonPath("$[1].reservationStatus").value(Reservation.Status.SUCCESS.name()));
 
