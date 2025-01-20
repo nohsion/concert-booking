@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface PointHistoryRepository {
     Optional<PointHistory> findById(long pointHistoryId);
     PointHistory save(PointHistory pointHistory);
-    Page<PointHistory> findByPointIdAndType(long pointId, TransactionType type, Pageable pageable);
+    Page<PointHistory> findByPointIdAndType(long pointId, PointHistory.TransactionType type, Pageable pageable);
     Page<PointHistory> findByPointId(long pointId, Pageable pageable);
 }

@@ -1,7 +1,6 @@
 package com.sion.concertbooking.domain.service;
 
 import com.sion.concertbooking.domain.pointhistory.PointHistory;
-import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryService;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryRepository;
@@ -36,7 +35,7 @@ class PointHistoryServiceTest {
     void getChargedPointHistories() {
         // given
         long pointId = 1L;
-        TransactionType transactionType = TransactionType.CHARGE;
+        PointHistory.TransactionType transactionType = PointHistory.TransactionType.CHARGE;
         int pageSize = 10;
         long totalCount = 135L;
         Pageable pageable = PageRequest.of(0, pageSize);
@@ -66,7 +65,7 @@ class PointHistoryServiceTest {
     void getUsedPointHistories() {
         // given
         long pointId = 1L;
-        TransactionType transactionType = TransactionType.USE;
+        PointHistory.TransactionType transactionType = PointHistory.TransactionType.USE;
         int pageSize = 10;
         long totalCount = 135L;
         Pageable pageable = PageRequest.of(0, pageSize);

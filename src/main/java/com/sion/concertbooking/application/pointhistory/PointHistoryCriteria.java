@@ -1,10 +1,10 @@
 package com.sion.concertbooking.application.pointhistory;
 
-import com.sion.concertbooking.domain.pointhistory.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistory;
 import jakarta.annotation.Nullable;
 
 public record PointHistoryCriteria(
         long userId,
-        @Nullable TransactionType transactionType
+        @Nullable PointHistory.TransactionType transactionType
 ) {
 }

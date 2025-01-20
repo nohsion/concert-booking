@@ -6,7 +6,7 @@ public record PointHistoryInfo(
         long pointHistoryId,
         long pointId,
         int amount,
-        TransactionType transactionType,
+        PointHistory.TransactionType transactionType,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

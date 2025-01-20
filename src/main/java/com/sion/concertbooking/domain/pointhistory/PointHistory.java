@@ -27,6 +27,11 @@ public class PointHistory extends BaseEntity {
     @Column(name = "type", nullable = false)
     private TransactionType type;
 
+    public enum TransactionType {
+        CHARGE,
+        USE
+    }
+
     public static PointHistory ofCharge(long pointId, int amount) {
         PointHistory pointHistory = new PointHistory();
         pointHistory.pointId = pointId;

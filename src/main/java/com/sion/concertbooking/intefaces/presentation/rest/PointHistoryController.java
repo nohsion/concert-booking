@@ -3,7 +3,7 @@ package com.sion.concertbooking.intefaces.presentation.rest;
 import com.sion.concertbooking.application.pointhistory.PointHistoryFacade;
 import com.sion.concertbooking.application.pointhistory.PointHistoryCriteria;
 import com.sion.concertbooking.application.pointhistory.PointHistoryResult;
-import com.sion.concertbooking.domain.pointhistory.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistory;
 import com.sion.concertbooking.intefaces.presentation.response.PointHistoryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,9 +46,9 @@ public class PointHistoryController {
             @RequestParam(value = "transactionType", required = false) String transactionTypeStr,
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        TransactionType transactionType;
+        PointHistory.TransactionType transactionType;
         try {
-            transactionType = TransactionType.valueOf(transactionTypeStr);
+            transactionType = PointHistory.TransactionType.valueOf(transactionTypeStr);
         } catch (NullPointerException e) {
             transactionType = null;
         }
