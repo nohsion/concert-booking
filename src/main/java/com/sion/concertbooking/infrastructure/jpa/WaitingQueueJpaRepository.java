@@ -1,7 +1,6 @@
 package com.sion.concertbooking.infrastructure.jpa;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,12 +14,12 @@ public interface WaitingQueueJpaRepository extends JpaRepository<WaitingQueue, L
 
     WaitingQueue findByTokenId(String tokenId);
 
-    List<WaitingQueue> findByStatusOrderById(WaitingQueueStatus status);
+    List<WaitingQueue> findByStatusOrderById(WaitingQueue.Status status);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE WaitingQueue w SET w.status = :status WHERE w.tokenId IN :tokens")
     int updateStatusInBatch(
             @Param("tokens") List<String> tokens,
-            @Param("status") WaitingQueueStatus status
+            @Param("status") WaitingQueue.Status status
     );
 }

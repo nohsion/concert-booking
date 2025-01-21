@@ -38,7 +38,7 @@ class WaitingQueueServiceTest {
                 .set(field(WaitingQueue::getTokenId), tokenId)
                 .set(field(WaitingQueue::getUserId), userId)
                 .set(field(WaitingQueue::getConcertId), concertId)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .set(field(WaitingQueue::getCreatedAt), now)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(10))
                 .create();
@@ -56,7 +56,7 @@ class WaitingQueueServiceTest {
         assertThat(result.userId()).isEqualTo(userId);
         assertThat(result.concertId()).isEqualTo(concertId);
         assertThat(result.createdAt()).isEqualTo(now);
-        assertThat(result.status()).isEqualTo(WaitingQueueStatus.WAITING);
+        assertThat(result.status()).isEqualTo(WaitingQueue.Status.WAITING);
         assertThat(result.createdAt()).isEqualTo(now);
         assertThat(result.expiredAt()).isEqualTo(now.plusMinutes(10));
     }

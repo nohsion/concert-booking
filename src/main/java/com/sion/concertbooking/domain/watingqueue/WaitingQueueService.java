@@ -92,11 +92,11 @@ public class WaitingQueueService {
 
     @Transactional
     public int enterWaitingTokens(List<String> tokenIds) {
-        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueueStatus.ENTERED);
+        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueue.Status.ENTERED);
     }
 
     @Transactional
     public int expireWaitingTokens(List<String> tokenIds) {
-        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueueStatus.EXPIRED);
+        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueue.Status.EXPIRED);
     }
 }

@@ -16,8 +16,8 @@ import java.util.List;
 public class WaitingQueue extends BaseEntity {
 
     private static final int EXPIRED_MINUTES = 10;
-    private static final List<WaitingQueueStatus> VALID_STATUSES = List.of(
-            WaitingQueueStatus.WAITING, WaitingQueueStatus.ENTERED
+    private static final List<Status> VALID_STATUSES = List.of(
+            Status.WAITING, Status.ENTERED
     );
 
     @Id
@@ -36,23 +36,29 @@ public class WaitingQueue extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private WaitingQueueStatus status;
+    private Status status;
 
     @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
+
+    public enum Status {
+        WAITING,
+        ENTERED,
+        EXPIRED,
+    }
 
     public static WaitingQueue of(String tokenId, long userId, long concertId, LocalDateTime now) {
         WaitingQueue waitingQueue = new WaitingQueue();
         waitingQueue.tokenId = tokenId;
         waitingQueue.userId = userId;
         waitingQueue.concertId = concertId;
-        waitingQueue.status = WaitingQueueStatus.WAITING;
+        waitingQueue.status = Status.WAITING;
         waitingQueue.expiredAt = now.plusMinutes(EXPIRED_MINUTES);
         return waitingQueue;
     }
 
     public void updateStatusExpired() {
-        this.status = WaitingQueueStatus.EXPIRED;
+        this.status = Status.EXPIRED;
     }
 
     public boolean isExpiredTime(LocalDateTime now) {
@@ -64,6 +70,6 @@ public class WaitingQueue extends BaseEntity {
     }
 
     public boolean isProcessing(LocalDateTime now) {
-        return !isExpiredTime(now) && this.status == WaitingQueueStatus.ENTERED;
+        return !isExpiredTime(now) && this.status == Status.ENTERED;
     }
 }

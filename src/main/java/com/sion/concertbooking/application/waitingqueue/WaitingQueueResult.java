@@ -1,7 +1,7 @@
 package com.sion.concertbooking.application.waitingqueue;
 
+import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ public record WaitingQueueResult(
         String tokenId,
         long userId,
         long concertId,
-        WaitingQueueStatus status,
+        WaitingQueue.Status status,
         LocalDateTime createdAt,
         LocalDateTime expiredAt
 ) {

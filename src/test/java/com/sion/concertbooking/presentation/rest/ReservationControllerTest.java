@@ -7,7 +7,7 @@ import com.sion.concertbooking.application.reservation.ReservationCriteria;
 import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.seat.Seat;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.intefaces.presentation.rest.ReservationController;
@@ -64,7 +64,7 @@ class ReservationControllerTest {
         when(concertReservationFacade.reserve(reservationCriteria))
                 .thenReturn(reservationResults);
 
-        TokenInfo tokenInfo = new TokenInfo("token-id", 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());
+        TokenInfo tokenInfo = new TokenInfo("token-id", 1L, 1L, WaitingQueue.Status.WAITING, LocalDateTime.now());
 
         // when
         // then

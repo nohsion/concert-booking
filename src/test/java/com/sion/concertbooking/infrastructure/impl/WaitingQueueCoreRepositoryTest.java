@@ -1,7 +1,6 @@
 package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueRepository;
 import com.sion.concertbooking.infrastructure.jpa.WaitingQueueJpaRepository;
 import com.sion.concertbooking.test.TestDataCleaner;
@@ -42,16 +41,16 @@ class WaitingQueueCoreRepositoryTest {
         LocalDateTime now = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
         List<WaitingQueue> waitingQueues = Instancio.ofList(WaitingQueue.class).size(3)
                 .set(field(WaitingQueue::getId), null)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(5)) // 만료시간이 지나지 않음
                 .create();
         List<WaitingQueue> enteredQueues = Instancio.ofList(WaitingQueue.class).size(2)
                 .set(field(WaitingQueue::getId), null)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.ENTERED)
                 .create();
         List<WaitingQueue> expiredQueues = Instancio.ofList(WaitingQueue.class).size(2)
                 .set(field(WaitingQueue::getId), null)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.EXPIRED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.EXPIRED)
                 .create();
         waitingQueueJpaRepository.saveAll(waitingQueues);
         waitingQueueJpaRepository.saveAll(enteredQueues);
@@ -71,16 +70,16 @@ class WaitingQueueCoreRepositoryTest {
         LocalDateTime now = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
         List<WaitingQueue> waitingQueues = Instancio.ofList(WaitingQueue.class).size(3)
                 .set(field(WaitingQueue::getId), null)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(5)) // 만료시간이 지남
                 .create();
         List<WaitingQueue> enteredQueues = Instancio.ofList(WaitingQueue.class).size(2)
                 .set(field(WaitingQueue::getId), null)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.ENTERED)
                 .create();
         List<WaitingQueue> expiredQueues = Instancio.ofList(WaitingQueue.class).size(2)
                 .set(field(WaitingQueue::getId), null)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.EXPIRED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.EXPIRED)
                 .create();
         waitingQueueJpaRepository.saveAll(waitingQueues);
         waitingQueueJpaRepository.saveAll(enteredQueues);
@@ -100,7 +99,7 @@ class WaitingQueueCoreRepositoryTest {
         LocalDateTime now = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
         List<WaitingQueue> waitingQueues = Instancio.ofList(WaitingQueue.class).size(100)
                 .set(field(WaitingQueue::getId), null)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(5)) // 만료시간이 지나지 않음
                 .create();
 
@@ -109,14 +108,14 @@ class WaitingQueueCoreRepositoryTest {
         waitingQueueJpaRepository.saveAll(waitingQueues);
 
         // when
-        int successCount = waitingQueueRepository.updateStatusInBatch(tokens, WaitingQueueStatus.ENTERED);
+        int successCount = waitingQueueRepository.updateStatusInBatch(tokens, WaitingQueue.Status.ENTERED);
 
         // then
         assertThat(successCount).isEqualTo(100);
 
         List<WaitingQueue> savedResult = waitingQueueJpaRepository.findAll();
         assertThat(savedResult).hasSize(100)
-                .allMatch(waitingQueue -> waitingQueue.getStatus() == WaitingQueueStatus.ENTERED);
+                .allMatch(waitingQueue -> waitingQueue.getStatus() == WaitingQueue.Status.ENTERED);
     }
 
 }
