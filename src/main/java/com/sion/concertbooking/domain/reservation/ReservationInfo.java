@@ -1,6 +1,6 @@
 package com.sion.concertbooking.domain.reservation;
 
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.seat.Seat;
 
 import java.time.LocalDateTime;
 
@@ -13,9 +13,9 @@ public record ReservationInfo(
         LocalDateTime playDateTime,
         long seatId,
         int seatNum,
-        SeatGrade seatGrade,
+        Seat.Grade seatGrade,
         int seatPrice,
-        ReservationStatus reservationStatus,
+        Reservation.Status reservationStatus,
         LocalDateTime expiredAt
 ) {
 

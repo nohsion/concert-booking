@@ -44,7 +44,7 @@ class WaitingQueueControllerTest {
         long concertId = 1L;
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueueResult waitingQueueResult = new WaitingQueueResult(
-                1L, tokenId, userId, concertId, WaitingQueueStatus.WAITING, now, now.plusMinutes(10)
+                1L, tokenId, userId, concertId, WaitingQueue.Status.WAITING, now, now.plusMinutes(10)
         );
 
         WaitingQueueRegisterRequest waitingQueueRegisterRequest = new WaitingQueueRegisterRequest(userId, concertId);
@@ -77,7 +77,7 @@ class WaitingQueueControllerTest {
         int remainingWaitingSec = 50;
         String tokenId = "token-id";
 
-        TokenInfo tokenInfo = new TokenInfo(tokenId, 1L, 1L, WaitingQueueStatus.WAITING, LocalDateTime.now());
+        TokenInfo tokenInfo = new TokenInfo(tokenId, 1L, 1L, WaitingQueue.Status.WAITING, LocalDateTime.now());
         WaitingQueueDetailResult detailResult = new WaitingQueueDetailResult(tokenId, remainingWaitingOrder, remainingWaitingSec);
 
         // when

@@ -1,7 +1,6 @@
 package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.pointhistory.PointHistory;
-import com.sion.concertbooking.domain.pointhistory.TransactionType;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryRepository;
 import com.sion.concertbooking.infrastructure.jpa.PointHistoryJpaRepository;
 import org.springframework.data.domain.Page;
@@ -30,7 +29,7 @@ public class PointHistoryRepositoryImpl implements PointHistoryRepository {
     }
 
     @Override
-    public Page<PointHistory> findByPointIdAndType(final long pointId, final TransactionType type, final Pageable pageable) {
+    public Page<PointHistory> findByPointIdAndType(final long pointId, final PointHistory.TransactionType type, final Pageable pageable) {
         return pointHistoryJpaRepository.findByPointIdAndType(pointId, type, pageable);
     }
 

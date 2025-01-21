@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sion.concertbooking.application.payment.PaymentFacade;
 import com.sion.concertbooking.application.payment.PaymentCriteria;
 import com.sion.concertbooking.application.payment.PaymentResult;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
+import com.sion.concertbooking.domain.reservation.Reservation;
+import com.sion.concertbooking.domain.seat.Seat;
+import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
-import com.sion.concertbooking.domain.seat.SeatGrade;
 import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.rest.PaymentController;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -55,16 +55,16 @@ class PaymentControllerTest {
 
         List<ReservationInfo> reservations = List.of(
                 new ReservationInfo(1L, userId, concertId, "지킬앤하이드", 1L, dateTime,
-                        10L, 10, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS, dateTime),
+                        10L, 10, Seat.Grade.VIP, 100_000, Reservation.Status.SUCCESS, dateTime),
                 new ReservationInfo(2L, userId, concertId, "지킬앤하이드", 1L, dateTime,
-                        11L, 11, SeatGrade.VIP, 100_000, ReservationStatus.SUCCESS, dateTime)
+                        11L, 11, Seat.Grade.VIP, 100_000, Reservation.Status.SUCCESS, dateTime)
         );
         PaymentResult paymentResult = new PaymentResult(userId, amountToUse, balance, reservations);
 
-        when(paymentFacade.processPayment(eq(paymentCriteria)))
+        when(paymentFacade.processPayment(any(PaymentCriteria.class)))
                 .thenReturn(paymentResult);
 
-        TokenInfo tokenInfo = new TokenInfo(tokenId, userId, concertId, WaitingQueueStatus.ENTERED, LocalDateTime.now());
+        TokenInfo tokenInfo = new TokenInfo(tokenId, userId, concertId, WaitingQueue.Status.ENTERED, LocalDateTime.now());
 
         // when
         // then

@@ -1,7 +1,7 @@
 package com.sion.concertbooking.application.point;
 
 import com.sion.concertbooking.application.payment.PaymentType;
-import com.sion.concertbooking.domain.pointhistory.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistory;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;
 import com.sion.concertbooking.domain.point.PointInfo;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ public class PointResult {
         private final long userId;
         private final int amount;
         private final int balance;
-        private final TransactionType transactionType = TransactionType.CHARGE;
+        private final PointHistory.TransactionType transactionType = PointHistory.TransactionType.CHARGE;
         private final PaymentType paymentType;
         private final LocalDateTime updatedAt;
 
@@ -43,7 +43,7 @@ public class PointResult {
         private final long userId;
         private final int amount;
         private final int balance;
-        private final TransactionType transactionType = TransactionType.USE;
+        private final PointHistory.TransactionType transactionType = PointHistory.TransactionType.USE;
         private final LocalDateTime updatedAt;
 
         public static Use of(

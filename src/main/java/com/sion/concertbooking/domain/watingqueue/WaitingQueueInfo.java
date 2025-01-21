@@ -7,7 +7,7 @@ public record WaitingQueueInfo(
         String tokenId,
         long userId,
         long concertId,
-        WaitingQueueStatus status,
+        WaitingQueue.Status status,
         LocalDateTime createdAt,
         LocalDateTime expiredAt
 ) {

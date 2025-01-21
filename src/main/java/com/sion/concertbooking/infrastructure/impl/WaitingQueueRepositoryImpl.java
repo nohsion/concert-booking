@@ -1,7 +1,6 @@
 package com.sion.concertbooking.infrastructure.impl;
 
 import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueRepository;
 import com.sion.concertbooking.infrastructure.jpa.WaitingQueueJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -30,19 +29,19 @@ public class WaitingQueueRepositoryImpl implements WaitingQueueRepository {
 
     @Override
     public List<WaitingQueue> findByWaitingStatus() {
-        return waitingQueueJpaRepository.findByStatusOrderById(WaitingQueueStatus.WAITING);
+        return waitingQueueJpaRepository.findByStatusOrderById(WaitingQueue.Status.WAITING);
     }
 
     @Override
     public List<WaitingQueue> findByEnteredStatus() {
-        return waitingQueueJpaRepository.findByStatusOrderById(WaitingQueueStatus.ENTERED);
+        return waitingQueueJpaRepository.findByStatusOrderById(WaitingQueue.Status.ENTERED);
     }
 
     @Transactional
     @Override
     public int updateStatusInBatch(
             final List<String> tokens,
-            final WaitingQueueStatus status
+            final WaitingQueue.Status status
     ) {
         return waitingQueueJpaRepository.updateStatusInBatch(tokens, status);
     }

@@ -1,7 +1,7 @@
 package com.sion.concertbooking.application.reservation;
 
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.reservation.Reservation;
+import com.sion.concertbooking.domain.seat.Seat;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
 
 import java.time.LocalDateTime;
@@ -15,9 +15,9 @@ public record ReservationResult(
         LocalDateTime playDateTime,
         long seatId,
         int seatNum,
-        SeatGrade seatGrade,
+        Seat.Grade seatGrade,
         int seatPrice,
-        ReservationStatus reservationStatus
+        Reservation.Status reservationStatus
 ) {
     public static ReservationResult fromInfo(ReservationInfo info) {
         return new ReservationResult(

@@ -2,7 +2,6 @@ package com.sion.concertbooking.domain.service;
 
 import com.sion.concertbooking.domain.reservation.ReservationCreateCommand;
 import com.sion.concertbooking.domain.reservation.Reservation;
-import com.sion.concertbooking.domain.reservation.ReservationStatus;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
 import com.sion.concertbooking.domain.reservation.ReservationRepository;
 import com.sion.concertbooking.domain.reservation.ReservationService;
@@ -58,7 +57,7 @@ class ReservationServiceTest {
         List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
-                .set(field(Reservation::getStatus), ReservationStatus.CANCEL)
+                .set(field(Reservation::getStatus), Reservation.Status.CANCEL)
                 .create();
 
         when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
@@ -79,7 +78,7 @@ class ReservationServiceTest {
         List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
-                .set(field(Reservation::getStatus), ReservationStatus.SUCCESS)
+                .set(field(Reservation::getStatus), Reservation.Status.SUCCESS)
                 .create();
 
         when(reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds))
@@ -100,7 +99,7 @@ class ReservationServiceTest {
         List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
-                .set(field(Reservation::getStatus), ReservationStatus.SUSPEND)
+                .set(field(Reservation::getStatus), Reservation.Status.SUSPEND)
                 .set(field(Reservation::getExpiredAt), now.plusMinutes(3)) // 아직 만료되지 않음
                 .create();
 
@@ -122,7 +121,7 @@ class ReservationServiceTest {
         List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> reservations = Instancio.ofList(Reservation.class).size(3)
-                .set(field(Reservation::getStatus), ReservationStatus.SUSPEND)
+                .set(field(Reservation::getStatus), Reservation.Status.SUSPEND)
                 .set(field(Reservation::getExpiredAt), now.minusMinutes(3)) // 만료됨
                 .create();
 
@@ -144,10 +143,10 @@ class ReservationServiceTest {
         List<Long> seatIds = List.of(1L, 2L, 3L);
         LocalDateTime now = LocalDateTime.of(2025, 1, 6, 23, 0, 0);
         List<Reservation> successReservations = Instancio.ofList(Reservation.class).size(3)
-                .set(field(Reservation::getStatus), ReservationStatus.SUCCESS)
+                .set(field(Reservation::getStatus), Reservation.Status.SUCCESS)
                 .create();
         List<Reservation> cancelReservations = Instancio.ofList(Reservation.class).size(2)
-                .set(field(Reservation::getStatus), ReservationStatus.CANCEL)
+                .set(field(Reservation::getStatus), Reservation.Status.CANCEL)
                 .create();
         List<Reservation> mixedReservations = new ArrayList<>();
         mixedReservations.addAll(successReservations);

@@ -1,6 +1,6 @@
 package com.sion.concertbooking.application.pointhistory;
 
-import com.sion.concertbooking.domain.pointhistory.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistory;
 import com.sion.concertbooking.domain.pointhistory.PointHistoryInfo;
 
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ public record PointHistoryResult(
         long pointHistoryId,
         long pointId,
         int amount,
-        TransactionType transactionType,
+        PointHistory.TransactionType transactionType,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

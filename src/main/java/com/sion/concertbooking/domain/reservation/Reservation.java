@@ -1,7 +1,7 @@
 package com.sion.concertbooking.domain.reservation;
 
 import com.sion.concertbooking.domain.BaseEntity;
-import com.sion.concertbooking.domain.seat.SeatGrade;
+import com.sion.concertbooking.domain.seat.Seat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,17 +50,23 @@ public class Reservation extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "seat_grade")
-    private SeatGrade seatGrade;
+    private Seat.Grade seatGrade;
 
     @Column(name = "seat_price")
     private Integer seatPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private ReservationStatus status;
+    private Status status;
 
     @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
+
+    public enum Status {
+        SUSPEND,
+        SUCCESS,
+        CANCEL
+    }
 
     public static Reservation createReservation(
             long userId,
@@ -71,7 +77,7 @@ public class Reservation extends BaseEntity {
             LocalDateTime now,
             Long seatId,
             Integer seatNum,
-            SeatGrade seatGrade,
+            Seat.Grade seatGrade,
             Integer seatPrice
     ) {
         Reservation reservation = new Reservation();
@@ -89,7 +95,7 @@ public class Reservation extends BaseEntity {
         reservation.seatNum = seatNum;
         reservation.seatGrade = seatGrade;
         reservation.seatPrice = seatPrice;
-        reservation.status = ReservationStatus.SUSPEND;
+        reservation.status = Status.SUSPEND;
         reservation.expiredAt = now.plusMinutes(TEMPORARY_EXPIRE_MINUTES);
 
         return reservation;
@@ -100,17 +106,17 @@ public class Reservation extends BaseEntity {
     }
 
     public boolean isReserved() {
-        return ReservationStatus.SUCCESS == status;
+        return Status.SUCCESS == status;
     }
 
     /**
      * 결제 대기 상태는 예약 만료 시간이 지나지 않았을 때만 가능하다.
      */
     public boolean isSuspend(LocalDateTime now) {
-        return ReservationStatus.SUSPEND == status && !isExpired(now);
+        return Status.SUSPEND == status && !isExpired(now);
     }
 
     public void markSuccess() {
-        this.status = ReservationStatus.SUCCESS;
+        this.status = Status.SUCCESS;
     }
 }

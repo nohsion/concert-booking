@@ -4,7 +4,7 @@ import com.sion.concertbooking.application.payment.PaymentType;
 import com.sion.concertbooking.application.point.PointCharger;
 import com.sion.concertbooking.application.point.PointDeductor;
 import com.sion.concertbooking.application.point.PointResult;
-import com.sion.concertbooking.domain.pointhistory.TransactionType;
+import com.sion.concertbooking.domain.pointhistory.PointHistory;
 import com.sion.concertbooking.intefaces.presentation.rest.PointController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class PointControllerTest {
                 .andExpect(jsonPath("$.userId").value(userId))
                 .andExpect(jsonPath("$.amount").value(amountToCharge))
                 .andExpect(jsonPath("$.balance").value(balance))
-                .andExpect(jsonPath("$.transactionType").value(TransactionType.CHARGE.name()))
+                .andExpect(jsonPath("$.transactionType").value(PointHistory.TransactionType.CHARGE.name()))
                 .andExpect(jsonPath("$.paymentType").value(PaymentType.FREE.name()))
                 .andExpect(jsonPath("$.updatedAt").value(
                         updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
@@ -86,7 +86,7 @@ class PointControllerTest {
                 .andExpect(jsonPath("$.userId").value(userId))
                 .andExpect(jsonPath("$.amount").value(amountToUse))
                 .andExpect(jsonPath("$.balance").value(balance))
-                .andExpect(jsonPath("$.transactionType").value(TransactionType.USE.name()))
+                .andExpect(jsonPath("$.transactionType").value(PointHistory.TransactionType.USE.name()))
                 .andExpect(jsonPath("$.updatedAt").value(
                         updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
     }

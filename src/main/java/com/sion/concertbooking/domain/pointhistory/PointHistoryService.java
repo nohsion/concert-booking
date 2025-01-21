@@ -38,13 +38,13 @@ public class PointHistoryService {
 
     public Page<PointHistoryInfo> getChargedPointHistories(long pointId, Pageable pageable) {
         Page<PointHistory> pagedPointHistories = pointHistoryRepository.findByPointIdAndType(
-                pointId, TransactionType.CHARGE, pageable);
+                pointId, PointHistory.TransactionType.CHARGE, pageable);
         return pagedPointHistories.map(PointHistoryInfo::fromEntity);
     }
 
     public Page<PointHistoryInfo> getUsedPointHistories(long pointId, Pageable pageable) {
         Page<PointHistory> pagedPointHistories = pointHistoryRepository.findByPointIdAndType(
-                pointId, TransactionType.USE, pageable);
+                pointId, PointHistory.TransactionType.USE, pageable);
         return pagedPointHistories.map(PointHistoryInfo::fromEntity);
     }
 

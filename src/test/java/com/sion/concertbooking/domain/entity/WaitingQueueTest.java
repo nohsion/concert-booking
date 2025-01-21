@@ -1,6 +1,5 @@
 package com.sion.concertbooking.domain.entity;
 
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueStatus;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +26,7 @@ class WaitingQueueTest {
         WaitingQueue waitingQueue = WaitingQueue.of(tokenId, userId, concertId, now);
 
         // then
-        assertThat(waitingQueue.getStatus()).isEqualTo(WaitingQueueStatus.WAITING);
+        assertThat(waitingQueue.getStatus()).isEqualTo(WaitingQueue.Status.WAITING);
         assertThat(waitingQueue.getExpiredAt()).isEqualTo(now.plusMinutes(10));
     }
 
@@ -36,14 +35,14 @@ class WaitingQueueTest {
     void updateStatusExpiredTest() {
         // given
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .create();
 
         // when
         waitingQueue.updateStatusExpired();
 
         // then
-        assertThat(waitingQueue.getStatus()).isEqualTo(WaitingQueueStatus.EXPIRED);
+        assertThat(waitingQueue.getStatus()).isEqualTo(WaitingQueue.Status.EXPIRED);
     }
 
     @DisplayName("WAITING 상태이지만 만료시간이 지났다면 isExpiredTime()은 true를 반환한다.")
@@ -52,7 +51,7 @@ class WaitingQueueTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(1))
                 .create();
 
@@ -69,7 +68,7 @@ class WaitingQueueTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.EXPIRED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.EXPIRED)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(1))
                 .create();
 
@@ -86,11 +85,11 @@ class WaitingQueueTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(1))
                 .create();
         WaitingQueue enteredQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.ENTERED)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(1))
                 .create();
 
@@ -109,11 +108,11 @@ class WaitingQueueTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.WAITING)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.WAITING)
                 .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(1))
                 .create();
         WaitingQueue enteredQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.ENTERED)
                 .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(1))
                 .create();
 
@@ -132,11 +131,11 @@ class WaitingQueueTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue expiredStatusButNotExpiredTimeQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.EXPIRED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.EXPIRED)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(1))
                 .create();
         WaitingQueue expiredStatusAndExpiredTimeQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.EXPIRED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.EXPIRED)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(1))
                 .create();
 
@@ -155,7 +154,7 @@ class WaitingQueueTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.ENTERED)
                 .set(field(WaitingQueue::getExpiredAt), now.plusMinutes(1))
                 .create();
 
@@ -172,7 +171,7 @@ class WaitingQueueTest {
         // given
         LocalDateTime now = LocalDateTime.of(2025, 1, 5, 18, 10, 0);
         WaitingQueue waitingQueue = Instancio.of(WaitingQueue.class)
-                .set(field(WaitingQueue::getStatus), WaitingQueueStatus.ENTERED)
+                .set(field(WaitingQueue::getStatus), WaitingQueue.Status.ENTERED)
                 .set(field(WaitingQueue::getExpiredAt), now.minusMinutes(1))
                 .create();
 

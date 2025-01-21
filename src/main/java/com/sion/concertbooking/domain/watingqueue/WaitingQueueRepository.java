@@ -12,5 +12,5 @@ public interface WaitingQueueRepository {
 
     List<WaitingQueue> findByEnteredStatus();
 
-    int updateStatusInBatch(List<String> tokens, WaitingQueueStatus status);
+    int updateStatusInBatch(List<String> tokens, WaitingQueue.Status status);
 }
