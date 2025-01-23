@@ -10,7 +10,6 @@ import com.sion.concertbooking.domain.concert.ConcertService;
 import com.sion.concertbooking.domain.reservation.ReservationService;
 import com.sion.concertbooking.domain.seat.SeatService;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +34,6 @@ public class ConcertReservationFacade {
         this.seatService = seatService;
     }
 
-    @Transactional
     public List<ReservationResult> reserve(ReservationCriteria criteria) {
         LocalDateTime now = LocalDateTime.now();
 

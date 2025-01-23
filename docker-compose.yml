@@ -18,6 +18,14 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
 
+  redis:
+    image: redis:7.4.2
+    container_name: hh-redis
+    ports:
+      - "56379:6379"
+    volumes:
+      - ./redis-db:/data
+
 networks:
   default:
     driver: bridge

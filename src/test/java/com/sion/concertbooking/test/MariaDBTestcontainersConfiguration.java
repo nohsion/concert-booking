@@ -6,7 +6,7 @@ import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @Configuration
-class TestcontainersConfiguration {
+class MariaDBTestcontainersConfiguration {
 
 	public static final MariaDBContainer<?> MARIADB_CONTAINER;
 

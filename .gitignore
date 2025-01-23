@@ -38,5 +38,6 @@ out/
 
 ### Docker DB ###
 db/
+redis-db/
 
 logs/

@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface ReservationJpaRepository extends JpaRepository<Reservation, Long> {
 
+    List<Reservation> findByConcertScheduleIdAndSeatIdIn(long concertScheduleId, List<Long> seatIds);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT r FROM Reservation r WHERE r.concertScheduleId = :concertScheduleId AND r.seatId IN :seatIds")
     List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(
