@@ -35,7 +35,7 @@ public class DistributedLockAspect {
 
         DistributedLock distributedLock = method.getAnnotation(DistributedLock.class);
 
-        String lockKey = LOCK_PREFIX + CustomSpringELParser.getDynamicValue(
+        String lockKey = LOCK_PREFIX + distributedLock.keyPrefix() + CustomSpringELParser.getDynamicValue(
                 signature.getParameterNames(),
                 joinPoint.getArgs(),
                 distributedLock.key()
