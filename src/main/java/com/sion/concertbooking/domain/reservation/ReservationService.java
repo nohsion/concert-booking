@@ -1,5 +1,6 @@
 package com.sion.concertbooking.domain.reservation;
 
+import com.sion.concertbooking.intefaces.aspect.DistributedMultiLock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +55,7 @@ public class ReservationService {
                 .toList();
     }
 
-    @Transactional
+    @DistributedMultiLock(keys = {"#command.seats.![ #command.concertScheduleId + ':' + seatId ]"}, keyPrefix = "reservation:")
     public List<ReservationInfo> createReservations(ReservationCreateCommand command) {
         LocalDateTime now = command.getNow();
         long concertScheduleId = command.getConcertScheduleId();
@@ -62,7 +63,7 @@ public class ReservationService {
         List<Long> seatIds = seats.stream().map(ReservationCreateCommand.SeatCreateCommand::getSeatId).toList();
 
         // 1. 예약된 좌석이 없는지 확인한다.
-        boolean isReserved = reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds)
+        boolean isReserved = reservationRepository.findByConcertScheduleIdAndSeatIds(concertScheduleId, seatIds)
                 .stream()
                 // 예약완료 혹은 결제대기 중인 예약이 하나라도 있는지 확인
                 .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));

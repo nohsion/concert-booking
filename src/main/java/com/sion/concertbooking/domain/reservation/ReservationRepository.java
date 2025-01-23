@@ -8,6 +8,8 @@ public interface ReservationRepository {
 
     List<Reservation> saveAll(List<Reservation> reservations);
 
+    List<Reservation> findByConcertScheduleIdAndSeatIds(long concertScheduleId, List<Long> seatIds);
+
     List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(long concertScheduleId, List<Long> seatIds);
 
     Optional<Reservation> findById(long reservationId);

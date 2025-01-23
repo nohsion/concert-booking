@@ -31,6 +31,11 @@ public class ReservationRepositoryIml implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> findByConcertScheduleIdAndSeatIds(final long concertScheduleId, final List<Long> seatIds) {
+        return reservationJpaRepository.findByConcertScheduleIdAndSeatIdIn(concertScheduleId, seatIds);
+    }
+
+    @Override
     public List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(final long concertScheduleId, final List<Long> seatIds) {
         return reservationJpaRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds);
     }
