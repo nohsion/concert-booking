@@ -22,7 +22,7 @@ public @interface DistributedMultiLock {
     /**
      * 락 획득을 위해 기다리는 시간
      */
-    long waitTime() default 5L;
+    long waitTime() default 1L;
 
     /**
      * 락 획득 이후, leaseTime 이 지나면 락을 해제한다

@@ -10,6 +10,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,7 +50,11 @@ public class DistributedLockAspect {
             }
             return aopForTransaction.proceed(joinPoint);
         } finally {
-            lock.unlock();
+            try {
+                lock.unlock();
+            } catch (IllegalMonitorStateException e) {
+                log.info("lock.unlock() failed. Already Unlocked. lockKey={}", lockKey);
+            }
         }
     }
 
@@ -70,20 +75,26 @@ public class DistributedLockAspect {
                 .map(key -> LOCK_PREFIX + distributedMultiLock.keyPrefix() + key)
                 .toList();
 
-        RLock multiLock = redissonClient.getMultiLock(
-                lockKeyNames.stream()
-                        .map(redissonClient::getLock)
-                        .toArray(RLock[]::new)
-        );
+        List<RLock> acquiredLocks = new ArrayList<>(lockKeyNames.size());
 
         try {
-            boolean acquired = multiLock.tryLock(distributedMultiLock.waitTime(), distributedMultiLock.leaseTime(), distributedMultiLock.timeUnit());
-            if (!acquired) {
-                return false;
+            for (String lockKey : lockKeyNames) {
+                RLock lock = redissonClient.getLock(lockKey);
+                boolean acquired = lock.tryLock(distributedMultiLock.waitTime(), distributedMultiLock.leaseTime(), distributedMultiLock.timeUnit());
+                if (!acquired) {
+                    throw new IllegalStateException("Failed to acquire lock. lockKeyNames=" + lockKeyNames);
+                }
+                acquiredLocks.add(lock);
             }
             return aopForTransaction.proceed(joinPoint);
         } finally {
-            multiLock.unlock();
+            for (RLock lock : acquiredLocks) {
+                try {
+                    lock.unlock();
+                } catch (IllegalMonitorStateException e) {
+                    log.info("multiLock.unlock() failed. Already Unlocked. lockKeyNames={}", lockKeyNames);
+                }
+            }
         }
     }
 }
