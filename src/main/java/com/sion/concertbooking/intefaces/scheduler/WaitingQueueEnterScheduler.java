@@ -1,53 +1,57 @@
 package com.sion.concertbooking.intefaces.scheduler;
 
-import com.sion.concertbooking.domain.policy.ReservationEnterPolicy;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
+import com.sion.concertbooking.domain.activequeue.ActiveQueueService;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 대기중인 토큰들을 주기적으로 입장시키는 스케줄러
+ * 대기열에서 활성열로 주기적으로 입장시키는 스케줄러
  */
 @Slf4j
 @Component
 public class WaitingQueueEnterScheduler {
 
-    private final ReservationEnterPolicy reservationEnterPolicy;
+    private static final int ENTER_COUNT = 50;
+
     private final WaitingQueueService waitingQueueService;
+    private final ActiveQueueService activeQueueService;
 
     public WaitingQueueEnterScheduler(
-            final ReservationEnterPolicy reservationEnterPolicy,
-            final WaitingQueueService waitingQueueService
+            final WaitingQueueService waitingQueueService,
+            final ActiveQueueService activeQueueService
     ) {
-        this.reservationEnterPolicy = reservationEnterPolicy;
         this.waitingQueueService = waitingQueueService;
+        this.activeQueueService = activeQueueService;
     }
 
     @Scheduled(cron = "* * * * * *")
     public void enterWaitingTokens() {
         LocalDateTime now = LocalDateTime.now();
 
-        List<WaitingQueueInfo> enteredTokens = waitingQueueService.getProcessingTokens(now);
-        reservationEnterPolicy.validateIsAvailableForEntry(enteredTokens.size());
+        List<Long> waitingConcertIds = waitingQueueService.getWaitingConcerts();
+        for (Long concertId : waitingConcertIds) {
+            List<String> waitingTokens = waitingQueueService.getWaitingTokens(concertId);
+            if (CollectionUtils.isEmpty(waitingTokens)) {
+                waitingQueueService.removeWaitingConcert(concertId);
+                continue;
+            }
 
-        List<WaitingQueueInfo> waitingTokens = waitingQueueService.getWaitingTokens(now);
-        if (waitingTokens.isEmpty()) {
-            log.debug("대기중인 토큰이 없습니다.");
-            return;
+            int enterCount = Math.min(ENTER_COUNT, waitingTokens.size());
+
+            List<String> tokensToEnter = waitingTokens.subList(0, enterCount);
+            // 대기열에서 삭제
+            waitingQueueService.popMinByConcertId(enterCount, concertId);
+            // 활성열에 추가
+            activeQueueService.addTokens(tokensToEnter, concertId, now);
+
+            log.info("concertId={}, {}명 입장!", concertId, enterCount);
         }
-
-        int limit = reservationEnterPolicy.getMaxLimitToEnter(enteredTokens.size(), waitingTokens.size());
-        List<String> tokensToEnter = waitingTokens.subList(0, limit).stream()
-                .map(WaitingQueueInfo::tokenId)
-                .toList();
-
-        int enteredCount = waitingQueueService.enterWaitingTokens(tokensToEnter);
-        log.info("{}명 입장!", enteredCount);
     }
 
 }

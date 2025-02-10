@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.token;
+package com.sion.concertbooking.domain.waitingtoken;
 
 import jakarta.servlet.http.HttpServletRequest;
 

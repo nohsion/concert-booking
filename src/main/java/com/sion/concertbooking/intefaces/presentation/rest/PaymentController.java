@@ -3,7 +3,7 @@ package com.sion.concertbooking.intefaces.presentation.rest;
 import com.sion.concertbooking.application.payment.PaymentFacade;
 import com.sion.concertbooking.application.payment.PaymentCriteria;
 import com.sion.concertbooking.application.payment.PaymentResult;
-import com.sion.concertbooking.intefaces.aspect.TokenInfo;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenInfo;
 import com.sion.concertbooking.intefaces.aspect.TokenRequired;
 import com.sion.concertbooking.intefaces.aspect.TokenUtils;
 import com.sion.concertbooking.intefaces.presentation.accesslog.LogGroup;
@@ -17,9 +17,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
-
-import static com.sion.concertbooking.domain.token.TokenProvider.CONCERT_TOKEN_HEADER;
+import static com.sion.concertbooking.domain.waitingtoken.TokenProvider.CONCERT_TOKEN_HEADER;
 
 @RestController
 @RequestMapping("/api/v1/payment")
@@ -44,11 +42,14 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<PaymentResponse> processPayment(
             @RequestBody PaymentRequest paymentRequest
-    ) throws AuthenticationException {
-        TokenInfo tokenInfo = TokenUtils.getTokenInfo();
+    ) {
+        WaitingTokenInfo tokenInfo = TokenUtils.getTokenInfo();
 
         PaymentCriteria paymentCriteria = new PaymentCriteria(
-                tokenInfo.userId(), tokenInfo.tokenId(), paymentRequest.reservationIds()
+                tokenInfo.userId(),
+                tokenInfo.tokenId(),
+                paymentRequest.reservationIds(),
+                paymentRequest.concertId()
         );
 
         PaymentResult paymentResult = paymentFacade.processPayment(paymentCriteria);

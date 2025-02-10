@@ -1,4 +1,4 @@
-package com.sion.concertbooking.domain.watingqueue;
+package com.sion.concertbooking.domain.waitingtoken;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class WaitingQueue {
+public class WaitingToken {
+
+    private static final int EXPIRED_MINUTES = 30;
 
     private String tokenId;
 
@@ -18,12 +20,16 @@ public class WaitingQueue {
 
     private LocalDateTime createdAt;
 
-    public static WaitingQueue of(String tokenId, long userId, long concertId, LocalDateTime now) {
-        WaitingQueue waitingQueue = new WaitingQueue();
+    public static WaitingToken of(String tokenId, long userId, long concertId, LocalDateTime now) {
+        WaitingToken waitingQueue = new WaitingToken();
         waitingQueue.tokenId = tokenId;
         waitingQueue.userId = userId;
         waitingQueue.concertId = concertId;
         waitingQueue.createdAt = now;
         return waitingQueue;
+    }
+
+    public int getExpiredMinutes() {
+        return EXPIRED_MINUTES;
     }
 }

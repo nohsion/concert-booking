@@ -3,7 +3,7 @@ package com.sion.concertbooking.intefaces.presentation.rest;
 import com.sion.concertbooking.application.reservation.ConcertReservationFacade;
 import com.sion.concertbooking.application.reservation.ReservationCriteria;
 import com.sion.concertbooking.application.reservation.ReservationResult;
-import com.sion.concertbooking.intefaces.aspect.TokenInfo;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenInfo;
 import com.sion.concertbooking.intefaces.aspect.TokenRequired;
 import com.sion.concertbooking.intefaces.aspect.TokenUtils;
 import com.sion.concertbooking.intefaces.presentation.accesslog.LogGroup;
@@ -17,10 +17,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import java.util.List;
 
-import static com.sion.concertbooking.domain.token.TokenProvider.CONCERT_TOKEN_HEADER;
+import static com.sion.concertbooking.domain.waitingtoken.TokenProvider.CONCERT_TOKEN_HEADER;
 
 @RestController
 @RequestMapping(value = "/api/v1/reservation")
@@ -45,8 +44,8 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<List<ReservationResponse>> createReservations(
             @RequestBody ConcertReservationCreateRequest concertReservationCreateRequest
-    ) throws AuthenticationException {
-        TokenInfo tokenInfo = TokenUtils.getTokenInfo();
+    ) {
+        WaitingTokenInfo tokenInfo = TokenUtils.getTokenInfo();
         long userId = tokenInfo.userId();
 
         ReservationCriteria reservationCriteria = new ReservationCriteria(

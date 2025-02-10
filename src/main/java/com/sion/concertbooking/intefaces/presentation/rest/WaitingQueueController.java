@@ -1,7 +1,7 @@
 package com.sion.concertbooking.intefaces.presentation.rest;
 
 import com.sion.concertbooking.application.waitingqueue.*;
-import com.sion.concertbooking.intefaces.aspect.TokenInfo;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenInfo;
 import com.sion.concertbooking.intefaces.aspect.TokenRequired;
 import com.sion.concertbooking.intefaces.aspect.TokenUtils;
 import com.sion.concertbooking.intefaces.presentation.request.WaitingQueueRegisterRequest;
@@ -15,10 +15,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 
-import static com.sion.concertbooking.domain.token.TokenProvider.CONCERT_TOKEN_HEADER;
+import static com.sion.concertbooking.domain.waitingtoken.TokenProvider.CONCERT_TOKEN_HEADER;
 
 @RestController
 @RequestMapping(value = "/api/v1/waiting")
@@ -61,12 +60,14 @@ public class WaitingQueueController {
     })
     @TokenRequired
     @GetMapping
-    public ResponseEntity<WaitingQueueInfoResponse> getQueueDetail() throws AuthenticationException {
-        TokenInfo tokenInfo = TokenUtils.getTokenInfo();
+    public ResponseEntity<WaitingQueueInfoResponse> getQueueDetail(
+            @RequestParam(value = "concertId") long concertId
+    ) {
+        WaitingTokenInfo tokenInfo = TokenUtils.getTokenInfo();
         String tokenId = tokenInfo.tokenId();
 
         WaitingQueueDetailCriteria waitingQueueDetailCriteria = new WaitingQueueDetailCriteria(
-                tokenId, LocalDateTime.now()
+                tokenId, LocalDateTime.now(), concertId
         );
         WaitingQueueDetailResult result = waitingQueueFacade.getWaitingQueueDetail(waitingQueueDetailCriteria);
 

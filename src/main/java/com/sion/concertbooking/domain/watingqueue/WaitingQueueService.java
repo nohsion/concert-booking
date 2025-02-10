@@ -1,102 +1,59 @@
 package com.sion.concertbooking.domain.watingqueue;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Service
 public class WaitingQueueService {
 
     private final WaitingQueueRepository waitingQueueRepository;
 
-    public WaitingQueueService(WaitingQueueRepository waitingQueueRepository) {
+    public WaitingQueueService(
+            WaitingQueueRepository waitingQueueRepository
+    ) {
         this.waitingQueueRepository = waitingQueueRepository;
     }
 
-    @Transactional
-    public WaitingQueueInfo waitQueueAndIssueToken(WaitingQueueIssueCommand command) {
+    public String waitQueue(WaitingQueueIssueCommand command) {
         WaitingQueue waitingQueue = WaitingQueue.of(
                 command.tokenId(), command.userId(), command.concertId(), command.now()
         );
-        WaitingQueue savedEntity = waitingQueueRepository.save(waitingQueue);
-
-        return WaitingQueueInfo.fromEntity(savedEntity);
+        // 대기열 저장
+        String savedTokenId = waitingQueueRepository.save(waitingQueue);
+        // 대기 콘서트 추가
+        waitingQueueRepository.addWaitingConcert(command.concertId());
+        return savedTokenId;
     }
 
-    @Transactional
-    public WaitingQueueInfo getQueueByTokenId(String tokenId) {
-        WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
-        if (waitingQueue == null) {
+    public long getRank(String tokenId, long concertId) {
+        Long rankOfQueue = waitingQueueRepository.findRank(tokenId, concertId);
+        if (rankOfQueue == null) {
             throw new NoSuchElementException("해당 토큰은 대기열에 존재하지 않습니다. tokenId=" + tokenId);
         }
-        return WaitingQueueInfo.fromEntity(waitingQueue);
+        return rankOfQueue;
     }
 
-    public boolean isProcessing(String tokenId, LocalDateTime now) {
-        WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
-        if (waitingQueue == null) {
-            return false;
-        }
-        return waitingQueue.isProcessing(now);
+    public void popMinByConcertId(int count, long concertId) {
+        waitingQueueRepository.popMin(count, concertId);
     }
 
-    public boolean isTokenValid(String tokenId, LocalDateTime now) {
-        WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
-        if (waitingQueue == null) {
-            return false;
-        }
-        return waitingQueue.isTokenValid(now);
+    public List<String> getWaitingTokens(long concertId) {
+        return waitingQueueRepository.getWaitingTokens(concertId);
     }
 
-    @Transactional
-    public void expireToken(String tokenId) {
-        WaitingQueue waitingQueue = waitingQueueRepository.findByTokenId(tokenId);
-        if (waitingQueue == null) {
-            throw new NoSuchElementException("해당 토큰은 대기열에 존재하지 않습니다. tokenId=" + tokenId);
-        }
-        waitingQueue.updateStatusExpired();
+    public void removeToken(String tokenId, long concertId) {
+        waitingQueueRepository.removeToken(tokenId, concertId);
     }
 
-    /**
-     * 현재 시간 기준으로 대기중인 토큰들을 반환한다.
-     */
-    public List<WaitingQueueInfo> getWaitingTokens(LocalDateTime now) {
-        return waitingQueueRepository.findByWaitingStatus().stream()
-                .filter(queue -> !queue.isExpiredTime(now))
-                .map(WaitingQueueInfo::fromEntity)
-                .toList();
+    public List<Long> getWaitingConcerts() {
+        return waitingQueueRepository.getWaitingConcerts();
     }
 
-    /**
-     * 현재 시간 기준으로 만료 처리시켜야 할 토큰들을 반환한다.
-     */
-    public List<WaitingQueueInfo> getWaitingTokensToExpire(LocalDateTime now) {
-        return waitingQueueRepository.findByWaitingStatus().stream()
-                .filter(queue -> queue.isExpiredTime(now))
-                .map(WaitingQueueInfo::fromEntity)
-                .toList();
-    }
-
-    /**
-     * 현재 시간 기준으로 입장하여 예약 진행중인 토큰들을 반환한다.
-     */
-    public List<WaitingQueueInfo> getProcessingTokens(LocalDateTime now) {
-        return waitingQueueRepository.findByWaitingStatus().stream()
-                .filter(queue -> queue.isProcessing(now))
-                .map(WaitingQueueInfo::fromEntity)
-                .toList();
-    }
-
-    @Transactional
-    public int enterWaitingTokens(List<String> tokenIds) {
-        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueue.Status.ENTERED);
-    }
-
-    @Transactional
-    public int expireWaitingTokens(List<String> tokenIds) {
-        return waitingQueueRepository.updateStatusInBatch(tokenIds, WaitingQueue.Status.EXPIRED);
+    public void removeWaitingConcert(long concertId) {
+        waitingQueueRepository.removeWaitingConcert(concertId);
     }
 }

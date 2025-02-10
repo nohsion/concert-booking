@@ -7,8 +7,7 @@ import com.sion.concertbooking.application.reservation.ReservationCriteria;
 import com.sion.concertbooking.application.reservation.ReservationResult;
 import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.seat.Seat;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
-import com.sion.concertbooking.intefaces.aspect.TokenInfo;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenInfo;
 import com.sion.concertbooking.intefaces.presentation.request.ConcertReservationCreateRequest;
 import com.sion.concertbooking.intefaces.presentation.rest.ReservationController;
 import org.junit.jupiter.api.DisplayName;
@@ -64,7 +63,7 @@ class ReservationControllerTest {
         when(concertReservationFacade.reserve(reservationCriteria))
                 .thenReturn(reservationResults);
 
-        TokenInfo tokenInfo = new TokenInfo("token-id", 1L, 1L, WaitingQueue.Status.WAITING, LocalDateTime.now());
+        WaitingTokenInfo tokenInfo = new WaitingTokenInfo("token-id", 1L, 1L, LocalDateTime.now());
 
         // when
         // then

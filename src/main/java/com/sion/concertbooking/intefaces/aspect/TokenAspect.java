@@ -1,8 +1,8 @@
 package com.sion.concertbooking.intefaces.aspect;
 
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
-import com.sion.concertbooking.domain.token.TokenProvider;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
+import com.sion.concertbooking.domain.waitingtoken.TokenProvider;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenInfo;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,38 +11,27 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.naming.AuthenticationException;
-import java.time.LocalDateTime;
-
 @Aspect
 @Component
 public class TokenAspect {
 
     private final TokenProvider tokenProvider;
-    private final WaitingQueueService waitingQueueService;
+    private final WaitingTokenService waitingTokenService;
 
-    public TokenAspect(TokenProvider tokenProvider, WaitingQueueService waitingQueueService) {
+    public TokenAspect(
+            TokenProvider tokenProvider,
+            WaitingTokenService waitingTokenService
+    ) {
         this.tokenProvider = tokenProvider;
-        this.waitingQueueService = waitingQueueService;
+        this.waitingTokenService = waitingTokenService;
     }
 
     @Before("@annotation(com.sion.concertbooking.intefaces.aspect.TokenRequired)")
-    public void validateToken(JoinPoint joinPoint) throws AuthenticationException {
+    public void validateToken(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String tokenId = tokenProvider.resolveToken(request);
-        boolean tokenValid = waitingQueueService.isTokenValid(tokenId, LocalDateTime.now());
-        if (!tokenValid) {
-            throw new AuthenticationException("Invalid token");
-        }
-        WaitingQueueInfo waitingQueueInfo = waitingQueueService.getQueueByTokenId(tokenId);
-        TokenInfo tokenInfo = new TokenInfo(
-                waitingQueueInfo.tokenId(),
-                waitingQueueInfo.userId(),
-                waitingQueueInfo.concertId(),
-                waitingQueueInfo.status(),
-                waitingQueueInfo.expiredAt()
-        );
+        WaitingTokenInfo waitingToken = waitingTokenService.getToken(tokenId);
 
-        request.setAttribute("tokenInfo", tokenInfo);
+        request.setAttribute("tokenInfo", waitingToken);
     }
 }
