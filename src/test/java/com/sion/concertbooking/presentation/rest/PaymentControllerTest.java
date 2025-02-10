@@ -6,9 +6,8 @@ import com.sion.concertbooking.application.payment.PaymentCriteria;
 import com.sion.concertbooking.application.payment.PaymentResult;
 import com.sion.concertbooking.domain.reservation.Reservation;
 import com.sion.concertbooking.domain.seat.Seat;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenInfo;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
-import com.sion.concertbooking.intefaces.aspect.TokenInfo;
 import com.sion.concertbooking.intefaces.presentation.rest.PaymentController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,7 +49,7 @@ class PaymentControllerTest {
 
         LocalDateTime dateTime = LocalDateTime.of(2025, 1, 3, 0, 0);
 
-        PaymentCriteria paymentCriteria = new PaymentCriteria(userId, tokenId, List.of(1L, 2L));
+        PaymentCriteria paymentCriteria = new PaymentCriteria(userId, tokenId, List.of(1L, 2L), concertId);
         String requestJson = mapper.writeValueAsString(paymentCriteria);
 
         List<ReservationInfo> reservations = List.of(
@@ -64,7 +63,7 @@ class PaymentControllerTest {
         when(paymentFacade.processPayment(any(PaymentCriteria.class)))
                 .thenReturn(paymentResult);
 
-        TokenInfo tokenInfo = new TokenInfo(tokenId, userId, concertId, WaitingQueue.Status.ENTERED, LocalDateTime.now());
+        WaitingTokenInfo tokenInfo = new WaitingTokenInfo(tokenId, userId, concertId, LocalDateTime.now());
 
         // when
         // then

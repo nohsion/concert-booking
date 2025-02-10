@@ -6,7 +6,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.sion.concertbooking.domain.token.TokenProvider.CONCERT_TOKEN_HEADER;
+import static com.sion.concertbooking.domain.waitingtoken.TokenProvider.CONCERT_TOKEN_HEADER;
 
 @Configuration
 public class SwaggerConfiguration {

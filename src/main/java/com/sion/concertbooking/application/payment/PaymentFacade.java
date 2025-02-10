@@ -52,7 +52,7 @@ public class PaymentFacade {
         reservationService.completeReservations(reservationIds);
 
         // 사용자의 대기열 토큰을 만료 시킨다.
-        waitingQueueService.expireToken(criteria.tokenId());
+        waitingQueueService.removeToken(criteria.tokenId(), criteria.concertId());
 
         return new PaymentResult(userId, totalPrice, currentPoint.amount(), reservations);
     }

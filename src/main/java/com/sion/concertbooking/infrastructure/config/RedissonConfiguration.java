@@ -25,3 +25,22 @@ public class RedissonConfiguration {
         return Redisson.create(config);
     }
 }
+/**
+ * @Value("${spring.data.redis.host}")
+ *     private String redisHost;
+ *
+ *     @Value("${spring.data.redis.port}")
+ *     private int redisPort;
+ *
+ *     @Value("${spring.data.redis.password}")
+ *     private String redisPassword;
+ *
+ *     @Bean
+ *     public RedisConnectionFactory redisConnectionFactoryForDev () {
+ *         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+ *         redisStandaloneConfiguration.setHostName(redisHost);
+ *         redisStandaloneConfiguration.setPort(redisPort);
+ *         redisStandaloneConfiguration.setPassword(redisPassword);
+ *         return new LettuceConnectionFactory(redisStandaloneConfiguration);
+ *     }
+ */

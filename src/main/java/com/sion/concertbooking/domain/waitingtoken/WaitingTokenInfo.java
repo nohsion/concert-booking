@@ -1,15 +1,15 @@
-package com.sion.concertbooking.domain.watingqueue;
+package com.sion.concertbooking.domain.waitingtoken;
 
 import java.time.LocalDateTime;
 
-public record WaitingQueueInfo(
+public record WaitingTokenInfo(
         String tokenId,
         long userId,
         long concertId,
         LocalDateTime createdAt
 ) {
-    public static WaitingQueueInfo fromEntity(WaitingQueue entity) {
-        return new WaitingQueueInfo(
+    public static WaitingTokenInfo fromEntity(WaitingToken entity) {
+        return new WaitingTokenInfo(
                 entity.getTokenId(),
                 entity.getUserId(),
                 entity.getConcertId(),

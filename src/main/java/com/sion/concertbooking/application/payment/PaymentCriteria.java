@@ -5,6 +5,7 @@ import java.util.List;
 public record PaymentCriteria(
         long userId,
         String tokenId,
-        List<Long> reservationIds
+        List<Long> reservationIds,
+        long concertId
 ) {
 }

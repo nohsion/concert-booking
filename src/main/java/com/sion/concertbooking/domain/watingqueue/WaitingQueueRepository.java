@@ -4,13 +4,21 @@ import java.util.List;
 
 public interface WaitingQueueRepository {
 
-    WaitingQueue save(WaitingQueue waitingQueue);
+    // waiting queue
+    String save(WaitingQueue waitingQueue);
 
-    WaitingQueue findByTokenId(String tokenId);
+    Long findRank(String tokenId, long concertId);
 
-    List<WaitingQueue> findByWaitingStatus();
+    void popMin(int count, long concertId);
 
-    List<WaitingQueue> findByEnteredStatus();
+    List<String> getWaitingTokens(long concertId);
 
-    int updateStatusInBatch(List<String> tokens, WaitingQueue.Status status);
+    void removeToken(String tokenId, long concertId);
+
+    // concert
+    List<Long> getWaitingConcerts();
+
+    void addWaitingConcert(long concertId);
+
+    void removeWaitingConcert(long concertId);
 }

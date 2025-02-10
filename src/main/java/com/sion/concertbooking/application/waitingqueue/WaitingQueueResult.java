@@ -1,28 +1,21 @@
 package com.sion.concertbooking.application.waitingqueue;
 
-import com.sion.concertbooking.domain.watingqueue.WaitingQueue;
-import com.sion.concertbooking.domain.watingqueue.WaitingQueueInfo;
+import com.sion.concertbooking.domain.waitingtoken.WaitingTokenInfo;
 
 import java.time.LocalDateTime;
 
 public record WaitingQueueResult(
-        long waitingQueueId,
         String tokenId,
         long userId,
         long concertId,
-        WaitingQueue.Status status,
-        LocalDateTime createdAt,
-        LocalDateTime expiredAt
+        LocalDateTime createdAt
 ) {
-    public static WaitingQueueResult fromInfo(WaitingQueueInfo info) {
+    public static WaitingQueueResult fromInfo(WaitingTokenInfo info) {
         return new WaitingQueueResult(
-                info.waitingQueueId(),
                 info.tokenId(),
                 info.userId(),
                 info.concertId(),
-                info.status(),
-                info.createdAt(),
-                info.expiredAt()
+                info.createdAt()
         );
     }
 }

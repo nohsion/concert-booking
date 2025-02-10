@@ -11,9 +11,7 @@ public record WaitingQueueRegisterResponse(
         @JsonProperty(value = "concertId") long concertId,
         @JsonProperty(value = "tokenId") String tokenId,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        @JsonProperty(value = "createdAt") LocalDateTime createdAt,
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        @JsonProperty(value = "expiredAt") LocalDateTime expiredAt
+        @JsonProperty(value = "createdAt") LocalDateTime createdAt
 ) {
 
         public static WaitingQueueRegisterResponse fromResult(WaitingQueueResult result) {
@@ -21,8 +19,7 @@ public record WaitingQueueRegisterResponse(
                         result.userId(),
                         result.concertId(),
                         result.tokenId(),
-                        result.createdAt(),
-                        result.expiredAt()
+                        result.createdAt()
                 );
         }
 }
