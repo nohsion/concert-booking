@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConcertScheduleJpaRepository extends JpaRepository<ConcertSchedule, Long> {
+    ConcertSchedule findByConcertId(long concertId);
 }

@@ -50,7 +50,7 @@ public class WaitingQueueEnterScheduler {
             // 활성열에 추가
             activeQueueService.addTokens(tokensToEnter, concertId, now);
 
-            log.info("concertId={}, {}명 입장!", concertId, enterCount);
+            log.debug("concertId={}, {}명 입장!", concertId, enterCount);
         }
     }
 

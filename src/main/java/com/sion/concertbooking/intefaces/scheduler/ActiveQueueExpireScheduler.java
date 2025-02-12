@@ -29,7 +29,7 @@ public class ActiveQueueExpireScheduler {
         activeConcertIds.forEach(
                 concertId -> {
                     Long expiredCount = activeQueueService.deleteExpiredTokens(concertId, now);
-                    log.info("concertId={}, {}명 만료!", concertId, expiredCount);
+                    log.debug("concertId={}, {}명 만료!", concertId, expiredCount);
                 }
         );
     }
