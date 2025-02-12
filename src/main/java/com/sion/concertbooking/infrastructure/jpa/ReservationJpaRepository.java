@@ -15,6 +15,8 @@ public interface ReservationJpaRepository extends JpaRepository<Reservation, Lon
 
     List<Reservation> findByConcertScheduleIdAndSeatIdIn(long concertScheduleId, List<Long> seatIds);
 
+    List<Reservation> findByUserId(long userId);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT r FROM Reservation r WHERE r.concertScheduleId = :concertScheduleId AND r.seatId IN :seatIds")
     List<Reservation> findByConcertScheduleIdAndSeatIdsWithLock(

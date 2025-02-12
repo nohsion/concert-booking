@@ -19,14 +19,6 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
-    @Transactional
-    public boolean isReservedSeats(long concertScheduleId, List<Long> seatIds, LocalDateTime now) {
-        return reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds)
-                .stream()
-                // 예약완료 혹은 결제대기 중인 예약이 하나라도 있는지 확인
-                .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));
-    }
-
     public boolean checkExpiredReservations(List<Long> reservationIds, LocalDateTime now) {
         return reservationIds.stream()
                 .anyMatch(reservationId -> {
@@ -63,7 +55,7 @@ public class ReservationService {
         List<Long> seatIds = seats.stream().map(ReservationCreateCommand.SeatCreateCommand::getSeatId).toList();
 
         // 1. 예약된 좌석이 없는지 확인한다.
-        boolean isReserved = reservationRepository.findByConcertScheduleIdAndSeatIds(concertScheduleId, seatIds)
+        boolean isReserved = reservationRepository.findByConcertScheduleIdAndSeatIdsWithLock(concertScheduleId, seatIds)
                 .stream()
                 // 예약완료 혹은 결제대기 중인 예약이 하나라도 있는지 확인
                 .anyMatch(reservation -> reservation.isReserved() || (reservation.isSuspend(now)));
