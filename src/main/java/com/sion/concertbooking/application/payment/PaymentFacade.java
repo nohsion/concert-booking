@@ -1,5 +1,6 @@
 package com.sion.concertbooking.application.payment;
 
+import com.sion.concertbooking.domain.dataplatform.DataPlatformClient;
 import com.sion.concertbooking.domain.point.PointInfo;
 import com.sion.concertbooking.domain.point.PointService;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
@@ -17,15 +18,18 @@ public class PaymentFacade {
     private final PointService pointService;
     private final ReservationService reservationService;
     private final WaitingQueueService waitingQueueService;
+    private final DataPlatformClient dataPlatformClient;
 
     public PaymentFacade(
             PointService pointService,
             ReservationService reservationService,
-            WaitingQueueService waitingQueueService
+            WaitingQueueService waitingQueueService,
+            DataPlatformClient dataPlatformClient
     ) {
         this.pointService = pointService;
         this.reservationService = reservationService;
         this.waitingQueueService = waitingQueueService;
+        this.dataPlatformClient = dataPlatformClient;
     }
 
     @Transactional
@@ -53,6 +57,9 @@ public class PaymentFacade {
 
         // 사용자의 대기열 토큰을 만료 시킨다.
         waitingQueueService.removeToken(criteria.tokenId(), criteria.concertId());
+
+        // 데이터 플랫폼 전송
+        dataPlatformClient.sendReservationPayment(userId, totalPrice, reservations);
 
         return new PaymentResult(userId, totalPrice, currentPoint.amount(), reservations);
     }
