@@ -23,4 +23,16 @@ public class AsyncConfiguration {
         taskExecutor.initialize();
         return taskExecutor;
     }
+
+    @Bean("applicationEventExecutor")
+    public Executor applicationEventExecutor(
+            @Value("${application-event.threads}") int numOfThreads
+    ) {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(numOfThreads);
+        taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+        taskExecutor.setThreadNamePrefix("application-event-");
+        taskExecutor.initialize();
+        return taskExecutor;
+    }
 }
