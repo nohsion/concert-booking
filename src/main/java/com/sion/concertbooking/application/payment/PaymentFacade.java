@@ -5,6 +5,7 @@ import com.sion.concertbooking.domain.point.PointService;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
 import com.sion.concertbooking.domain.reservation.ReservationService;
 import com.sion.concertbooking.domain.watingqueue.WaitingQueueService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,15 +18,18 @@ public class PaymentFacade {
     private final PointService pointService;
     private final ReservationService reservationService;
     private final WaitingQueueService waitingQueueService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public PaymentFacade(
             PointService pointService,
             ReservationService reservationService,
-            WaitingQueueService waitingQueueService
+            WaitingQueueService waitingQueueService,
+            ApplicationEventPublisher applicationEventPublisher
     ) {
         this.pointService = pointService;
         this.reservationService = reservationService;
         this.waitingQueueService = waitingQueueService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Transactional
@@ -53,6 +57,10 @@ public class PaymentFacade {
 
         // 사용자의 대기열 토큰을 만료 시킨다.
         waitingQueueService.removeToken(criteria.tokenId(), criteria.concertId());
+
+        PaymentEvent paymentEvent = new PaymentEvent(
+                criteria.tokenId(), criteria.concertId(), userId, totalPrice, reservations);
+        applicationEventPublisher.publishEvent(paymentEvent);
 
         return new PaymentResult(userId, totalPrice, currentPoint.amount(), reservations);
     }
