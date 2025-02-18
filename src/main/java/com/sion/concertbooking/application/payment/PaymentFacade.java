@@ -1,5 +1,6 @@
 package com.sion.concertbooking.application.payment;
 
+import com.sion.concertbooking.domain.payment.PaymentRequestEvent;
 import com.sion.concertbooking.domain.point.PointInfo;
 import com.sion.concertbooking.domain.point.PointService;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
@@ -58,9 +59,9 @@ public class PaymentFacade {
         // 사용자의 대기열 토큰을 만료 시킨다.
         waitingQueueService.removeToken(criteria.tokenId(), criteria.concertId());
 
-        PaymentEvent paymentEvent = new PaymentEvent(
+        PaymentRequestEvent event = new PaymentRequestEvent(
                 criteria.tokenId(), criteria.concertId(), userId, totalPrice, reservations);
-        applicationEventPublisher.publishEvent(paymentEvent);
+        applicationEventPublisher.publishEvent(event);
 
         return new PaymentResult(userId, totalPrice, currentPoint.amount(), reservations);
     }
