@@ -1,5 +1,6 @@
 package com.sion.concertbooking.application.payment;
 
+import com.sion.concertbooking.domain.payment.*;
 import com.sion.concertbooking.domain.point.PointInfo;
 import com.sion.concertbooking.domain.point.PointService;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
@@ -15,17 +16,20 @@ import java.util.List;
 @Component
 public class PaymentFacade {
 
+    private final PaymentService paymentService;
     private final PointService pointService;
     private final ReservationService reservationService;
     private final WaitingQueueService waitingQueueService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public PaymentFacade(
+            PaymentService paymentService,
             PointService pointService,
             ReservationService reservationService,
             WaitingQueueService waitingQueueService,
             ApplicationEventPublisher applicationEventPublisher
     ) {
+        this.paymentService = paymentService;
         this.pointService = pointService;
         this.reservationService = reservationService;
         this.waitingQueueService = waitingQueueService;
@@ -55,12 +59,16 @@ public class PaymentFacade {
         // 예약 상태를 결제 완료로 변경한다.
         reservationService.completeReservations(reservationIds);
 
+        // 결제 정보를 저장한다.
+        PaymentCreateCommand paymentCreateCommand = new PaymentCreateCommand(userId, totalPrice);
+        PaymentInfo paymentInfo = paymentService.save(paymentCreateCommand);
+
         // 사용자의 대기열 토큰을 만료 시킨다.
         waitingQueueService.removeToken(criteria.tokenId(), criteria.concertId());
 
-        PaymentEvent paymentEvent = new PaymentEvent(
-                criteria.tokenId(), criteria.concertId(), userId, totalPrice, reservations);
-        applicationEventPublisher.publishEvent(paymentEvent);
+        applicationEventPublisher.publishEvent(
+                PaymentRequestEvent.of(paymentInfo, criteria.tokenId(), criteria.concertId(), reservations)
+        );
 
         return new PaymentResult(userId, totalPrice, currentPoint.amount(), reservations);
     }
