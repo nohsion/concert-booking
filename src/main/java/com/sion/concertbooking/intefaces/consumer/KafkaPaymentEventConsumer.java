@@ -17,14 +17,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class PaymentEventKafkaConsumer {
+public class KafkaPaymentEventConsumer {
 
     private static final TypeReference<List<PaymentRequestEvent>> PAYMENT_REQUEST_EVENT_TYPE = new TypeReference<>() {
     };
 
     private final EventOutboxService eventOutboxService;
 
-    public PaymentEventKafkaConsumer(EventOutboxService eventOutboxService) {
+    public KafkaPaymentEventConsumer(EventOutboxService eventOutboxService) {
         this.eventOutboxService = eventOutboxService;
     }
 
