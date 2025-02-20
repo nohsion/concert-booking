@@ -3,6 +3,7 @@ package com.sion.concertbooking.intefaces.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.sion.concertbooking.domain.event.EventOutboxCommand;
+import com.sion.concertbooking.domain.event.EventOutboxInfo;
 import com.sion.concertbooking.domain.event.EventOutboxService;
 import com.sion.concertbooking.domain.event.EventOutboxUtils;
 import com.sion.concertbooking.domain.payment.PaymentRequestEvent;
@@ -12,6 +13,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -35,8 +37,11 @@ public class PaymentEventKafkaConsumer {
         List<PaymentRequestEvent> events = EventOutboxUtils.OBJECT_MAPPER.readValue(
                 messages.toString(), PAYMENT_REQUEST_EVENT_TYPE);
         events.stream()
-                .map(event -> eventOutboxService.getEventOutBox(EventOutboxCommand.fromEvent(event)))
-                .forEach(eventOutboxInfo -> eventOutboxService.done(eventOutboxInfo.eventId()));
+                .map(event -> eventOutboxService.getEventOutBoxes(EventOutboxCommand.fromEvent(event)))
+                .flatMap(List::stream)
+                .map(EventOutboxInfo::eventId)
+                .collect(Collectors.toSet())
+                .forEach(eventOutboxService::done);
         acknowledgment.acknowledge();
     }
 }

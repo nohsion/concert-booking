@@ -1,5 +1,7 @@
 package com.sion.concertbooking.domain.payment;
 
+import com.sion.concertbooking.domain.event.EventOutbox;
+
 public record PaymentEventMessage(
         String topic,
         String payload
@@ -15,6 +17,12 @@ public record PaymentEventMessage(
         return new PaymentEventMessage(
                 event.getAggregateType() + ".DLT",
                 event.toPayload()
+        );
+    }
+
+    public static PaymentEventMessage fromEventOutbox(EventOutbox eventOutbox) {
+        return new PaymentEventMessage(
+                eventOutbox.getAggregateType(), eventOutbox.getPayload()
         );
     }
 }

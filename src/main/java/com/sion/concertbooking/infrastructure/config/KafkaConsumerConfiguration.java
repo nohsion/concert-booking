@@ -75,7 +75,7 @@ public class KafkaConsumerConfiguration {
         return new DefaultErrorHandler((record, ex) -> {
             String deadLetterTopic = record.topic() + ".DLT";
             log.error("재시도 횟수를 초과하여 Dead Letter Topic로 메시지를 전송합니다. topic: {}, message: {}",
-                    deadLetterTopic, record.value());
+                    deadLetterTopic, record.value(), ex);
             kafkaTemplate.send(deadLetterTopic, (String) record.value());
         }, backOff);
     }

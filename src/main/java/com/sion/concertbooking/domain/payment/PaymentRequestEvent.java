@@ -8,6 +8,9 @@ import java.util.List;
 
 public final class PaymentRequestEvent extends Event {
 
+    public static final String AGGEREGATE_TYPE = "payment";
+    public static final String EVENT_TYPE = "paymentRequest";
+
     @JsonProperty("paymentId")
     private final long paymentId;
     @JsonProperty("userId")
@@ -29,7 +32,7 @@ public final class PaymentRequestEvent extends Event {
             long concertId,
             List<ReservationInfo> reservations
     ) {
-        super("payment", "paymentRequest", paymentId);
+        super(AGGEREGATE_TYPE, EVENT_TYPE, paymentId);
         this.paymentId = paymentId;
         this.userId = userId;
         this.totalPrice = totalPrice;

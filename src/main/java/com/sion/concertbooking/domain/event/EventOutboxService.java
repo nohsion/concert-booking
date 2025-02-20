@@ -3,6 +3,8 @@ package com.sion.concertbooking.domain.event;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Component
@@ -18,17 +20,24 @@ public class EventOutboxService {
         return eventOutboxRepository.save(eventOutbox);
     }
 
-    public EventOutbox findByStatus(EventOutbox.Status status) {
-        return eventOutboxRepository.findByStatus(status);
+    public List<EventOutbox> getPendingOutboxes(String aggregateType, String eventType) {
+        return eventOutboxRepository.findByAggregateTypeAndEventTypeAndStatusAndCreatedAtBefore(
+                aggregateType,
+                eventType,
+                EventOutbox.Status.READY,
+                LocalDateTime.now().minusMinutes(5)
+        );
     }
 
-    public EventOutboxInfo getEventOutBox(EventOutboxCommand command) {
-        EventOutbox eventOutbox = eventOutboxRepository.findByAggregateTypeAndAggregateIdAndEventType(
+    public List<EventOutboxInfo> getEventOutBoxes(EventOutboxCommand command) {
+        List<EventOutbox> eventOutboxes = eventOutboxRepository.findByAggregateTypeAndAggregateIdAndEventType(
                 command.aggregateType(),
                 command.aggregateId(),
                 command.eventType()
         );
-        return EventOutboxInfo.fromEntity(eventOutbox);
+        return eventOutboxes.stream()
+                .map(EventOutboxInfo::fromEntity)
+                .toList();
     }
 
     @Transactional

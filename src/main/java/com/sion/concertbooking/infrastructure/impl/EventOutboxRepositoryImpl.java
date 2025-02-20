@@ -5,6 +5,8 @@ import com.sion.concertbooking.domain.event.EventOutboxRepository;
 import com.sion.concertbooking.infrastructure.jpa.EventOutboxJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,12 +29,15 @@ public class EventOutboxRepositoryImpl implements EventOutboxRepository {
     }
 
     @Override
-    public EventOutbox findByStatus(EventOutbox.Status status) {
-        return eventOutboxJpaRepository.findByStatus(status);
+    public List<EventOutbox> findByAggregateTypeAndEventTypeAndStatusAndCreatedAtBefore(
+            String aggregateType, String eventType, EventOutbox.Status status, LocalDateTime createdAt
+    ) {
+        return eventOutboxJpaRepository.findByAggregateTypeAndEventTypeAndStatusAndCreatedAtBefore(
+                aggregateType, eventType, status, createdAt);
     }
 
     @Override
-    public EventOutbox findByAggregateTypeAndAggregateIdAndEventType(
+    public List<EventOutbox> findByAggregateTypeAndAggregateIdAndEventType(
             String aggregateType, long aggregateId, String eventType
     ) {
         return eventOutboxJpaRepository.findByAggregateTypeAndAggregateIdAndEventType(
