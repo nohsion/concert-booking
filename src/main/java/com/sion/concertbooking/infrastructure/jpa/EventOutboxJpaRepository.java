@@ -6,4 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EventOutboxJpaRepository extends JpaRepository<EventOutbox, Long> {
+    EventOutbox findByStatus(EventOutbox.Status status);
+
+    EventOutbox findByAggregateTypeAndAggregateIdAndEventType(
+            String aggregateType, long aggregateId, String eventType
+    );
 }

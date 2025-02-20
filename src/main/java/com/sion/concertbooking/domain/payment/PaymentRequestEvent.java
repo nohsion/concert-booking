@@ -1,34 +1,57 @@
 package com.sion.concertbooking.domain.payment;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sion.concertbooking.domain.event.EventOutbox;
-import com.sion.concertbooking.domain.event.EventOutboxUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sion.concertbooking.domain.event.Event;
 import com.sion.concertbooking.domain.reservation.ReservationInfo;
 
 import java.util.List;
 
-public record PaymentRequestEvent(
-        String tokenId,
-        long concertId,
-        long userId,
-        int totalPrice,
-        List<ReservationInfo> reservations
-) {
+public final class PaymentRequestEvent extends Event {
 
-    public String toPayload() {
-        try {
-            return EventOutboxUtils.OBJECT_MAPPER.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Failed to serialize PaymentEvent", e);
-        }
+    @JsonProperty("paymentId")
+    private final long paymentId;
+    @JsonProperty("userId")
+    private final long userId;
+    @JsonProperty("totalPrice")
+    private final long totalPrice;
+    @JsonProperty("tokenId")
+    private final String tokenId;
+    @JsonProperty("concertId")
+    private final long concertId;
+    @JsonProperty("reservations")
+    private final List<ReservationInfo> reservations;
+
+    public PaymentRequestEvent(
+            long paymentId,
+            long userId,
+            long totalPrice,
+            String tokenId,
+            long concertId,
+            List<ReservationInfo> reservations
+    ) {
+        super("payment", "paymentRequest", paymentId);
+        this.paymentId = paymentId;
+        this.userId = userId;
+        this.totalPrice = totalPrice;
+        this.tokenId = tokenId;
+        this.concertId = concertId;
+        this.reservations = reservations;
     }
 
-    public EventOutbox toEventOutbox() {
-        return EventOutbox.of(
-                "payment",
-                0, // payment는 테이블이 없으므로 0으로 설정
-                "paymentRequest",
-                toPayload()
+    public static PaymentRequestEvent of(
+            PaymentInfo paymentInfo,
+            String tokenId,
+            long concertId,
+            List<ReservationInfo> reservations
+    ) {
+        return new PaymentRequestEvent(
+                paymentInfo.id(),
+                paymentInfo.userId(),
+                paymentInfo.amount(),
+                tokenId,
+                concertId,
+                reservations
         );
     }
+
 }

@@ -2,11 +2,13 @@ package com.sion.concertbooking.domain.event;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 @Table(name = "event_outbox")
 public class EventOutbox {
@@ -57,5 +59,9 @@ public class EventOutbox {
                 Status.READY,
                 LocalDateTime.now()
         );
+    }
+
+    public void done() {
+        this.status = Status.DONE;
     }
 }

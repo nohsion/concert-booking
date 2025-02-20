@@ -6,14 +6,14 @@ public record PaymentEventMessage(
 ) {
     public static PaymentEventMessage from(PaymentRequestEvent event) {
         return new PaymentEventMessage(
-                "payment",
+                event.getAggregateType(), // aggregateType(ex. payment)을 kafka topic으로 사용
                 event.toPayload()
         );
     }
 
     public static PaymentEventMessage toDeadLetterTopic(PaymentRequestEvent event) {
         return new PaymentEventMessage(
-                "payment.DLT",
+                event.getAggregateType() + ".DLT",
                 event.toPayload()
         );
     }
