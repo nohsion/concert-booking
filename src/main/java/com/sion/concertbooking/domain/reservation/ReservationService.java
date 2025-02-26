@@ -71,6 +71,13 @@ public class ReservationService {
                 .toList();
     }
 
+    public long getReservedSeatCountByConcertScheduleId(long concertScheduleId) {
+        List<Reservation> reservations = reservationRepository.findByConcertScheduleId(concertScheduleId);
+        return reservations.stream()
+                .filter(Reservation::isReserved)
+                .count();
+    }
+
     private static List<Reservation> createReservations(
             ReservationCreateCommand createCommand,
             List<ReservationCreateCommand.SeatCreateCommand> seatCreateCommands
