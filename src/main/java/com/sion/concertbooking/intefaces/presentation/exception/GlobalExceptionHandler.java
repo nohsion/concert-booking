@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.naming.AuthenticationException;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @ControllerAdvice
@@ -33,7 +34,8 @@ public class GlobalExceptionHandler {
             HttpMessageNotReadableException.class,
             HttpMediaTypeNotSupportedException.class,
             HttpMediaTypeNotAcceptableException.class,
-            BindException.class
+            BindException.class,
+            NoSuchElementException.class
     })
     public ApiErrorResponse badRequest(Exception e) {
         log.info("[BadRequest] {}", e.getMessage(), e);

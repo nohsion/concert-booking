@@ -4,7 +4,9 @@ import com.sion.concertbooking.domain.concertschedule.ConcertSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ConcertScheduleJpaRepository extends JpaRepository<ConcertSchedule, Long> {
-    ConcertSchedule findByConcertId(long concertId);
+    List<ConcertSchedule> findByConcertId(long concertId);
 }

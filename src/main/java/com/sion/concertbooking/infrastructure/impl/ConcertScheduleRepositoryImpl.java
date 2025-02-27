@@ -5,6 +5,7 @@ import com.sion.concertbooking.domain.concertschedule.ConcertScheduleRepository;
 import com.sion.concertbooking.infrastructure.jpa.ConcertScheduleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,7 +28,7 @@ public class ConcertScheduleRepositoryImpl implements ConcertScheduleRepository 
     }
 
     @Override
-    public ConcertSchedule findByConcertId(final long concertId) {
+    public List<ConcertSchedule> findByConcertId(final long concertId) {
         return concertScheduleJpaRepository.findByConcertId(concertId);
     }
 }

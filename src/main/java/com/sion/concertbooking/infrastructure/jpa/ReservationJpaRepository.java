@@ -23,4 +23,6 @@ public interface ReservationJpaRepository extends JpaRepository<Reservation, Lon
             @Param("concertScheduleId") long concertScheduleId,
             @Param("seatIds") List<Long> seatIds
     );
+
+    List<Reservation> findByConcertScheduleId(long concertScheduleId);
 }

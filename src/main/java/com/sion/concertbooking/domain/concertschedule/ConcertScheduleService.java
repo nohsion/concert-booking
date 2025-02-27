@@ -2,6 +2,7 @@ package com.sion.concertbooking.domain.concertschedule;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -17,5 +18,12 @@ public class ConcertScheduleService {
         ConcertSchedule concertSchedule = concertScheduleRepository.findById(concertScheduleId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 공연 일정입니다. concertScheduleId=" + concertScheduleId));
         return ConcertScheduleInfo.fromEntity(concertSchedule);
+    }
+
+    public List<ConcertScheduleInfo> getConcertSchedulesByConcertId(final long concertId) {
+        List<ConcertSchedule> concertSchedules = concertScheduleRepository.findByConcertId(concertId);
+        return concertSchedules.stream()
+                .map(ConcertScheduleInfo::fromEntity)
+                .toList();
     }
 }
